@@ -1,5 +1,82 @@
 @import "tailwindcss";
 
+.ibm-plex-sans-thai-looped-thin {
+  font-family: "IBM Plex Sans Thai Looped", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.ibm-plex-sans-thai-looped-extralight {
+  font-family: "IBM Plex Sans Thai Looped", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.ibm-plex-sans-thai-looped-light {
+  font-family: "IBM Plex Sans Thai Looped", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.ibm-plex-sans-thai-looped-regular {
+  font-family: "IBM Plex Sans Thai Looped", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ibm-plex-sans-thai-looped-medium {
+  font-family: "IBM Plex Sans Thai Looped", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.ibm-plex-sans-thai-looped-semibold {
+  font-family: "IBM Plex Sans Thai Looped", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.ibm-plex-sans-thai-looped-bold {
+  font-family: "IBM Plex Sans Thai Looped", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Baloo Tammudu 2";
+  src: url("/fonts/baloo-tammudu-2/BalooTammudu2-Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Baloo Tammudu 2";
+  src: url("/fonts/baloo-tammudu-2/BalooTammudu2-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Baloo Tammudu 2";
+  src: url("/fonts/baloo-tammudu-2/BalooTammudu2-SemiBold.ttf")
+    format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Baloo Tammudu 2";
+  src: url("/fonts/baloo-tammudu-2/BalooTammudu2-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Baloo Tammudu 2";
+  src: url("/fonts/baloo-tammudu-2/BalooTammudu2-ExtraBold.ttf")
+    format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
+  font-family: "IBM Plex Sans Thai Looped", sans-serif;
 }

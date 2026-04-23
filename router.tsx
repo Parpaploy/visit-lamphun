@@ -1,19 +1,22 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import PrivateLayout from "./src/layouts/private-layout";
 import PublicLayout from "./src/layouts/public-layout";
+import LandingPage from "./src/pages/landing-page";
 import Homepage from "./src/pages/homepage";
 
 export const router = createBrowserRouter([
   {
+    path: "/",
     element: <PublicLayout />,
     children: [
       {
         index: true,
-        element: <Homepage />,
+        element: <LandingPage />,
       },
+
       {
-        path: "reset-password",
-        element: <></>,
+        path: "homepage",
+        element: <Homepage />,
       },
     ],
   },

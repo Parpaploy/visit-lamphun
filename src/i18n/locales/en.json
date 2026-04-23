@@ -1,0 +1,9 @@
+{
+  "landing": {
+    "start": "Start",
+
+    "howto": "Modes of Transport",
+    "tram": "Tram",
+    "other": "Other"
+  }
+}
