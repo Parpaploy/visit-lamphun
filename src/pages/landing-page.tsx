@@ -3,50 +3,53 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 export default function LandingPage() {
-  const [percentage, setPercentage] = useState<number>(0);
-  const isLoading = percentage < 100;
-  const [contentLoaded, setContentLoaded] = useState<boolean>(false);
-  const [c1X, setC1X] = useState<number>(-120);
-  const [c2X, setC2X] = useState<number>(350);
+  const [percentage, setPercentage] = useState(0);
+  const [contentLoaded, setContentLoaded] = useState(false);
+  const [c1X, setC1X] = useState(-120);
+  const [c2X, setC2X] = useState(350);
+
   const { t, i18n } = useTranslation();
 
-  const cloundMove = () => {
-    setInterval(() => {
-      setC1X((prev: number) => {
-        if (prev >= 450) {
-          return -300;
-        }
-        return prev + 0.2;
-      });
-      setC2X((prev: number) => {
-        if (prev >= 450) {
-          return -300;
-        }
-        return prev + 0.2;
-      });
-    }, 5);
-  };
+  const isLoading = percentage < 100;
 
-  const startInterval = () => {
-    const interval = setInterval(() => {
-      setPercentage((prev) => prev + 4);
-    }, 50);
-    setTimeout(() => clearInterval(interval), 1350);
-  };
   useEffect(() => {
-    const fakeLoad = setTimeout(() => {
+    const timer = setTimeout(() => {
       setContentLoaded(true);
-    }, 2000);
+    }, 1200);
 
-    return () => clearTimeout(fakeLoad);
+    return () => clearTimeout(timer);
   }, []);
+
   useEffect(() => {
-    if (!contentLoaded) {
-      return;
-    }
-    startInterval();
-    cloundMove();
+    if (!contentLoaded) return;
+
+    const interval = setInterval(() => {
+      setPercentage((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + 3;
+      });
+    }, 40);
+
+    return () => clearInterval(interval);
   }, [contentLoaded]);
+
+  useEffect(() => {
+    let frame: number;
+
+    const move = () => {
+      setC1X((prev) => (prev >= 450 ? -300 : prev + 0.2));
+      setC2X((prev) => (prev >= 450 ? -300 : prev + 0.2));
+
+      frame = requestAnimationFrame(move);
+    };
+
+    frame = requestAnimationFrame(move);
+
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   return (
     <main className="w-full max-w-107.5 h-svh mx-auto overflow-hidden">
@@ -152,7 +155,7 @@ export default function LandingPage() {
                 </div>
 
                 <Link
-                  to="/homepage"
+                  to="/app"
                   className="flex items-center justify-center w-45 bg-[#bf4b17] text-white py-3 rounded-full font-semibold text-[16px] mt-3.75"
                 >
                   {t("landing.start")}

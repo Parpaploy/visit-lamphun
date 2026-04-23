@@ -7,15 +7,15 @@ import Homepage from "./src/pages/homepage";
 export const router = createBrowserRouter([
   {
     path: "/",
+    element: <LandingPage />,
+  },
+
+  {
+    path: "/app",
     element: <PublicLayout />,
     children: [
       {
         index: true,
-        element: <LandingPage />,
-      },
-
-      {
-        path: "homepage",
         element: <Homepage />,
       },
     ],
