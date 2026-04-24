@@ -2,6 +2,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "../../constant/language";
 import { IoMenu } from "react-icons/io5";
+import NavbarMenuBtn from "./navbar-menu-btn";
+import { footerList, menuList } from "../../constant/navbar-menu";
+import type {
+  INavbarFooterMenuList,
+  INavbarMenuList,
+} from "../../interfaces/navbar.interface";
+import NavbarFooterMenu from "./navbar-footer-menu";
 
 export default function Navbar() {
   const { i18n } = useTranslation();
@@ -94,7 +101,7 @@ export default function Navbar() {
             className="fixed inset-0 z-990"
             onClick={() => setOpenMenu(false)}
           />
-          <div className="h-[78svh] px-7 py-3 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-999 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
+          <div className="h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
             <svg
               className="absolute -top-5 right-4 w-10 h-7"
               viewBox="0 0 30 20"
@@ -108,13 +115,42 @@ export default function Navbar() {
               />
             </svg>
 
-            <div className="w-full flex justify-start items-start gap-1 pt-[1svh] pb-[1svh]">
-              <div className="w-3 h-auto">
-                <img src="/icons/navbar/stat-icon.svg" />
+            <div className="z-999 overflow-y-auto w-full flex flex-col justify-start items-start gap-2 py-4">
+              <div className="flex justify-start items-start gap-1">
+                <div className="w-3 h-auto">
+                  <img src="/icons/navbar/stat-icon.svg" />
+                </div>
+
+                <div className="text-[#8B724E] text-[10px] font-medium">
+                  สถิติผู้ใช้งาน 0 คน
+                </div>
               </div>
 
-              <div className="text-[#8B724E] text-[10px] font-medium">
-                สถิติผู้ใช้งาน 0 คน
+              {(
+                menuList[i18n.language as keyof typeof menuList] || menuList.th
+              ).map((item: INavbarMenuList) => (
+                <NavbarMenuBtn
+                  key={item.sf}
+                  title={item.title}
+                  imgUrl={item.img}
+                  path={item.path}
+                  desc={item.desc}
+                />
+              ))}
+
+              <div className="w-full mt-2">
+                {(
+                  footerList[i18n.language as keyof typeof menuList] ||
+                  menuList.th
+                ).map((item: INavbarFooterMenuList, index: number) => (
+                  <NavbarFooterMenu
+                    key={index}
+                    title={item.title}
+                    imgUrl={item.img}
+                    path={item.path}
+                    callback={setOpenMenu}
+                  />
+                ))}
               </div>
             </div>
           </div>

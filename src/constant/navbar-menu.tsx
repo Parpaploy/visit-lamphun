@@ -1,18 +1,10 @@
-export interface INavbarMenuList {
-  img: string;
-  title: string;
-  path: string;
-  desc?: string;
-  sf?: string;
-}
-
-type NavbarMenuRecord = Record<"th" | "en" | "cn", INavbarMenuList[]>;
+import type { NavbarMenuRecord } from "../interfaces/navbar.interface";
 
 export const menuList: NavbarMenuRecord = {
   th: [
     {
       title: "หน้าหลัก",
-      path: "/app/homepage",
+      path: "/app",
       img: "/icons/navbar/homepage.svg",
       sf: "homepage",
     },
@@ -110,10 +102,10 @@ export const menuList: NavbarMenuRecord = {
   ],
 };
 
-export const fotterList: NavbarMenuRecord = {
+export const footerList: NavbarMenuRecord = {
   th: [
     {
-      path: "/files/Tiny-Game-Design-Mod.pdf",
+      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
       img: "/icons/navbar/download.svg",
       title: "ดาวน์โหลดเอกสารท่องเที่ยว",
     },
@@ -130,7 +122,7 @@ export const fotterList: NavbarMenuRecord = {
   ],
   en: [
     {
-      path: "/files/Tiny-Game-Design-Mod.pdf",
+      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
       img: "/icons/navbar/download.svg",
       title: "4-Hour Lamphun Travel Guide",
     },
@@ -147,7 +139,7 @@ export const fotterList: NavbarMenuRecord = {
   ],
   cn: [
     {
-      path: "/files/Tiny-Game-Design-Mod.pdf",
+      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
       img: "/icons/navbar/download.svg",
       title: "旅游指南南奔下载",
     },
