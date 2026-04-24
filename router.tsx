@@ -3,6 +3,10 @@ import PrivateLayout from "./src/layouts/private-layout";
 import PublicLayout from "./src/layouts/public-layout";
 import LandingPage from "./src/pages/landing-page";
 import Homepage from "./src/pages/homepage";
+import RecommendedPage from "./src/pages/recommended-page";
+import KomePage from "./src/pages/kome-page";
+import ContactPage from "./src/pages/contact-page";
+import TravelPage from "./src/pages/travel-page";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +21,22 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Homepage />,
+      },
+      {
+        path: "recommend",
+        element: <RecommendedPage />,
+      },
+      {
+        path: "travel",
+        element: <TravelPage />,
+      },
+      {
+        path: "komepage",
+        element: <KomePage />,
+      },
+      {
+        path: "contact",
+        element: <ContactPage />,
       },
     ],
   },

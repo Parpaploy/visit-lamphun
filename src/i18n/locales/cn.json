@@ -1,9 +1,47 @@
 {
+  "menu": {
+    "more": "查看更多"
+  },
+
   "landing": {
     "start": "開始",
 
     "howto": "交通方式",
     "tram": "電車",
     "other": "其他"
+  },
+
+  "homepage": {
+    "selectCar": "选择观光电车",
+    "car": "电车号",
+    "time": "参观这个地方的时间",
+    "minute": "分钟",
+    "ready": "准备启程前往下一个目的地",
+    "wait": "有轨电车正在等你"
+  },
+
+  "navbar": {
+    "stat": "用户数",
+    "unit": "人"
+  },
+
+  "recommend": {
+    "goods": "精品",
+    "places": "著名景点",
+    "story": "名人"
+  },
+
+  "travel": {
+    "train": "火车 ",
+    "tram": "观光电车",
+    "other": "其他选择 ",
+    "weekday": "工作日",
+    "weekdayDesc": "星期一到星期五",
+    "weekend": "周末",
+    "weekendDesc": "星期六 - 星期日",
+    "open": "营业",
+    "openDesc": "周二至周日",
+    "close": "关闭",
+    "closeDesc": "每周一"
   }
 }

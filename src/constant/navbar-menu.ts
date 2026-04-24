@@ -9,7 +9,7 @@ export const menuList: NavbarMenuRecord = {
       sf: "homepage",
     },
     {
-      title: "ของดี ที่เด่น คนดัง",
+      title: "ของดี ที่เด่น เรื่องดัง",
       path: "/app/recommend",
       img: "/icons/navbar/recommend.svg",
       sf: "goods",
@@ -27,12 +27,12 @@ export const menuList: NavbarMenuRecord = {
       img: "/icons/navbar/kome.svg",
       sf: "kome",
     },
-    {
-      title: "วารสารท่องเที่ยวลำพูน",
-      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
-      img: "/icons/navbar/shop.svg",
-      sf: "tbook",
-    },
+    // {
+    //   title: "วารสารท่องเที่ยวลำพูน",
+    //   path: "https://drive.google.com/drive/mobile/folders/18mEFDvtKv33Fc6bNdzOOTjiBmdGSbcbH?usp=share_link",
+    //   img: "/icons/navbar/shop.svg",
+    //   sf: "tbook",
+    // },
   ],
   en: [
     {
@@ -60,12 +60,12 @@ export const menuList: NavbarMenuRecord = {
       img: "/icons/navbar/kome.svg",
       sf: "kome",
     },
-    {
-      title: "Lamphun Travel Magazine",
-      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
-      img: "/icons/navbar/shop.svg",
-      sf: "tbook",
-    },
+    // {
+    //   title: "Lamphun Travel Magazine",
+    //   path: "https://drive.google.com/drive/mobile/folders/18mEFDvtKv33Fc6bNdzOOTjiBmdGSbcbH?usp=share_link",
+    //   img: "/icons/navbar/shop.svg",
+    //   sf: "tbook",
+    // },
   ],
   cn: [
     {
@@ -93,12 +93,12 @@ export const menuList: NavbarMenuRecord = {
       img: "/icons/navbar/kome.svg",
       sf: "kome",
     },
-    {
-      title: "南奔府旅游杂志",
-      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
-      img: "/icons/navbar/shop.svg",
-      sf: "tbook",
-    },
+    // {
+    //   title: "南奔府旅游杂志",
+    //   path: "https://drive.google.com/drive/mobile/folders/18mEFDvtKv33Fc6bNdzOOTjiBmdGSbcbH?usp=share_link",
+    //   img: "/icons/navbar/shop.svg",
+    //   sf: "tbook",
+    // },
   ],
 };
 
@@ -162,7 +162,7 @@ export const pageTitleMap: Record<
 > = {
   th: {
     homepage: "หน้าหลัก",
-    goods: "ของดี ที่เด่น คนดัง",
+    goods: "ของดี ที่เด่น เรื่องดัง",
     travel: "การเดินทาง",
     kome: "กลุ่มผลิตโคม",
     tbook: "วารสาร",

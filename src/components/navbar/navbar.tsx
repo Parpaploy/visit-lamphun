@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "../../constant/language";
 import { IoMenu } from "react-icons/io5";
@@ -9,15 +10,38 @@ import type {
   INavbarMenuList,
 } from "../../interfaces/navbar.interface";
 import NavbarFooterMenu from "./navbar-footer-menu";
-import { footerList, menuList } from "../../constant/navbar-menu";
+import {
+  footerList,
+  menuList,
+  pageTitleMap,
+  subtitleMap,
+} from "../../constant/navbar-menu";
 
 export default function Navbar() {
   const { i18n } = useTranslation();
+  const location = useLocation();
   const [open, setOpen] = useState<boolean>(false);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
 
   const current =
     LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
+
+  const lang = (i18n.language in pageTitleMap ? i18n.language : "th") as
+    | "th"
+    | "en"
+    | "cn";
+
+  const matched = menuList.th.find((item) => {
+    if (item.path.startsWith("http")) return false;
+    if (item.path === "/app") return location.pathname === "/app";
+    return location.pathname.startsWith(item.path);
+  });
+  const sf =
+    matched?.sf ??
+    (location.pathname.includes("contact") ? "contact" : "homepage");
+
+  const pageTitle = pageTitleMap[lang]?.[sf] ?? pageTitleMap.th[sf];
+  const subtitle = subtitleMap[lang];
 
   return (
     <div className="w-full max-w-107.5 relative z-999">
@@ -27,10 +51,12 @@ export default function Navbar() {
             <img src="/icons/logo.svg" className="h-full w-full" />
           </div>
           <div className="flex flex-col items-start justify-center">
-            <h2 className="text-white text-[15px] font-medium -mb-0.5">
-              ท่องเที่ยวลำพูน
+            <h2 className="text-white text-[15px] font-medium mb-1">
+              {subtitle}
             </h2>
-            <h1 className="text-[#543A14] text-[24px] font-bold">หน้าหลัก</h1>
+            <h1 className="text-[#543A14] text-[20px] font-bold leading-7">
+              {pageTitle}
+            </h1>
           </div>
         </div>
 
@@ -102,7 +128,7 @@ export default function Navbar() {
             className="fixed inset-0 z-990"
             onClick={() => setOpenMenu(false)}
           />
-          <div className="h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
+          <div className="min-h-[67.5svh] max-h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
             <svg
               className="absolute -top-5 right-4 w-10 h-7"
               viewBox="0 0 30 20"
@@ -116,7 +142,7 @@ export default function Navbar() {
               />
             </svg>
 
-            <div className="z-999 overflow-y-auto w-full flex flex-col justify-start items-start gap-2 py-4">
+            <div className="z-999 overflow-y-auto w-full flex flex-col justify-start items-start gap-2 pt-4 pb-1">
               <div className="flex justify-start items-start gap-1">
                 <div className="w-3 h-auto">
                   <img src="/icons/navbar/stat-icon.svg" />

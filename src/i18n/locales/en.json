@@ -1,9 +1,47 @@
 {
+  "menu": {
+    "more": "View More"
+  },
+
   "landing": {
     "start": "Start",
 
     "howto": "Modes of Transport",
     "tram": "Tram",
     "other": "Other"
+  },
+
+  "homepage": {
+    "selectCar": "Select Tram Tour",
+    "car": "Tram Car",
+    "time": "You have time to visit this location",
+    "minute": "minutes",
+    "ready": "All set for the next stop!",
+    "wait": "The tram's waiting for you!"
+  },
+
+  "navbar": {
+    "stat": "There are",
+    "unit": "users"
+  },
+
+  "recommend": {
+    "goods": "Best of the best",
+    "places": "Outstanding",
+    "story": "Famous"
+  },
+
+  "travel": {
+    "train": "Train",
+    "tram": "Tram Tours",
+    "other": "Other Options",
+    "weekday": "Weekdays",
+    "weekdayDesc": "Mon. - Fri.",
+    "weekend": "Weekends",
+    "weekendDesc": "Sat. - Sun.",
+    "open": "Open",
+    "openDesc": "Tue. - Sun.",
+    "close": "Closed",
+    "closeDesc": "every Mon."
   }
 }
