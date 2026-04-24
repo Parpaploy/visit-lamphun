@@ -1,9 +1,10 @@
 import { useState } from "react";
-import ItemMenu from "../components/recommend-page/item-menu";
-import ItemCard from "../components/recommend-page/item-card";
 import { useTranslation } from "react-i18next";
 import DayButton from "../components/travel-page/day-btn";
 import DayBlock from "../components/travel-page/day-block";
+import TrainCard from "../components/travel-page/train-card";
+import TramCard from "../components/travel-page/tram-card";
+import OtherCard from "../components/travel-page/other-card";
 
 export default function TravelPage() {
   const { t } = useTranslation();
@@ -82,29 +83,91 @@ export default function TravelPage() {
         )}
       </section>
 
-      <section className="w-full flex-1 overflow-y-auto px-5 pt-3 pb-5">
+      <section className="w-full flex-1 flex flex-col gap-y-4 overflow-y-auto p-5">
         {mode === "train" && (
-          <ItemMenu
-            title="พระรอด"
-            desc="กรุวัดมหาวัน วัดมหาวัน (มหาวันวนาราม)"
-            imgUrl="/images/landingPage/main-logo.svg"
-          />
+          <>
+            {day === "weekday" ? (
+              <TrainCard
+                origin="เชียงใหม่"
+                destination="ลำพูน"
+                originTime="07.30"
+                destinationTime="08.00"
+                originStation="สถานีรถไฟเชียงใหม่"
+                destinationStation="สถานีรถไฟลำพูน"
+                price={15}
+                desc="ชั้น 1 รถนั่งพัดลม"
+              />
+            ) : (
+              <TrainCard
+                origin="เชียงใหม่"
+                destination="ลำพูน"
+                originTime="10.30"
+                destinationTime="11.00"
+                originStation="สถานีรถไฟเชียงใหม่"
+                destinationStation="สถานีรถไฟลำพูน"
+                price={15}
+                desc="ชั้น 1 รถนั่งพัดลม"
+              />
+            )}
+          </>
         )}
 
         {mode === "tram" && (
-          <ItemMenu
-            title="วัดพระธาตุหริภุญชัย"
-            desc="วัดแห่งนี้เคยเป็นพระราชวังของพระเจ้าอาทิตยราชกษัตริย์ผู้ครองนครหริภุญชัยองค์ที่ 33"
-            imgUrl="/images/landingPage/main-logo.svg"
+          <TramCard
+            place="วัดพระธาตุหริภุญชัย"
+            time="รอบเช้า 09.30"
+            price={50}
           />
         )}
 
         {mode === "other" && (
-          <ItemCard
-            title="โคมแสนดวงที่เมืองลำพูน"
-            desc="เป็นเทศกาลที่เกิดขึ้นช่วงเดือนตุลาคม ถึงเดือนพฤศจิกายน เชื่อมโยงประเพณียี่เป็งหรือลอยกระทง โดยทั่วทั้งเมืองลำพูนจะประดับประดาไปด้วยโคมล้านนาหลากสีสันสว่างไสว ตระการตา"
-            imgUrl="/images/landingPage/main-logo.svg"
-          />
+          <>
+            {day === "weekday" ? (
+              <>
+                <OtherCard
+                  place="กลุ่มสามล้อจังหวัดลำพูน"
+                  desc="บริเวณข่วงคนเมือง ณ ศาลากลางจังหวัดลำพูน (หลังเก่า)"
+                  type="tricycle"
+                  phone="085-695-0729"
+                />
+
+                <OtherCard
+                  place="รถสองแถว"
+                  desc="บริเวณหน้าวัดพระธาตุหริภุญชัย"
+                  type="songthaew"
+                />
+
+                <OtherCard
+                  place="รถตู้โดยสาร"
+                  desc="ผู้ประกอบการบริษัทลำพูนพัฒนาเดินรถ จำกัด"
+                  desc2="บริเวณหน้าพิพิธภัณฑสถานแห่งชาติ"
+                  link="https://line.me/R/ti/g/D_bPqs3Lwe"
+                />
+              </>
+            ) : (
+              <>
+                <OtherCard
+                  place="รถตู้โดยสาร"
+                  desc="ผู้ประกอบการบริษัทลำพูนพัฒนาเดินรถ จำกัด"
+                  desc2="บริเวณหน้าพิพิธภัณฑสถานแห่งชาติ"
+                  link="https://line.me/R/ti/g/D_bPqs3Lwe"
+                />
+
+                <OtherCard
+                  place="กลุ่มสามล้อจังหวัดลำพูน"
+                  desc="บริเวณข่วงคนเมือง ณ ศาลากลางจังหวัดลำพูน (หลังเก่า)"
+                  type="tricycle"
+                  phone="085-695-0729"
+                />
+
+                <OtherCard
+                  place="รถสองแถว"
+                  desc="บริเวณหน้าวัดพระธาตุหริภุญชัย"
+                  type="songthaew"
+                />
+              </>
+            )}
+          </>
         )}
       </section>
     </main>

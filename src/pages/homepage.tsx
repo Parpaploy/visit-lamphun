@@ -76,7 +76,7 @@ export default function Homepage() {
                 value={selected}
                 onChange={(e) => setSelected(e.target.value)}
                 style={{ width: selectWidth > 0 ? selectWidth : "auto" }}
-                className="outline-none appearance-none border border-[#C6C6C6] bg-white/90 backdrop-blur-sm pl-3 pr-6 py-1 rounded-full text-[12px] text-[#543A14] font-medium shadow-sm transition-all duration-300 ease-in-out"
+                className="outline-none appearance-none border border-[#C6C6C6] bg-white/90 backdrop-blur-sm pl-3 pr-6 py-1 rounded-full text-[12px] text-[#543A14] font-medium transition-all duration-300 ease-in-out"
               >
                 <option value="tram1">{t("homepage.car")} 1 </option>
                 <option value="tram2">{t("homepage.car")} 2 </option>
@@ -97,7 +97,11 @@ export default function Homepage() {
               <span className="text-[#543A14]">
                 10.00 {t("homepage.minute")} | {t("homepage.wait")}
               </span>
-              <img src="/icons/info-icon.svg" className="w-4 h-4" alt="info" />
+              <img
+                src="/icons/homepage/info-icon.svg"
+                className="w-4 h-4"
+                alt="info"
+              />
             </div>
           </div>
         </div>

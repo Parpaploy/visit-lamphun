@@ -1,0 +1,145 @@
+import { useTranslation } from "react-i18next";
+
+export default function OtherCard({
+  place,
+  desc,
+  desc2,
+  type = "bus",
+  phone,
+  link,
+}: {
+  place: string;
+  desc: string;
+  desc2?: string;
+  type?: "bus" | "tricycle" | "songthaew";
+  phone?: string;
+  link?: string;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <>
+      {type === "songthaew" && (
+        <div className="flex flex-col bg-white justify-center items-center w-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] border-2 border-[#D9D9D9] rounded-[20px]">
+          <div className="w-full pl-7 pt-5 pb-3 pr-3">
+            <div className="flex justify-start items-center gap-x-3 mb-2">
+              <div className="w-14 h-auto">
+                <img
+                  className="w-full h-full"
+                  src="/icons/travelPage/bus.svg"
+                />
+              </div>
+
+              <div className="font-medium flex flex-col justify-center items-start gap-y-1">
+                <p className="font-bold text-[16px] text-black leading-5.5">
+                  {place}
+                </p>
+                <p className="text-[14px] text-[#543A14]">{desc}</p>
+              </div>
+            </div>
+
+            <div className="w-full flex justify-end items-center">
+              <div className="text-[12px] border border-[#BF4B17] rounded-full px-3">
+                {t("menu.more")}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {type === "tricycle" && (
+        <div className="flex flex-col bg-white justify-center items-center w-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] border-2 border-[#D9D9D9] rounded-[20px]">
+          <div className="w-full pl-7 pt-5 pb-3 pr-3">
+            <div className="flex justify-start items-start gap-x-3 mb-2">
+              <div className="w-20 h-auto">
+                <img
+                  className="w-full h-full"
+                  src="/icons/travelPage/tricycle.svg"
+                />
+              </div>
+
+              <div className="font-medium flex flex-col justify-center items-start gap-y-1">
+                <p className="font-bold text-[16px] text-black leading-5.5">
+                  {place}
+                </p>
+                <p className="text-[14px] text-[#543A14]">{desc}</p>
+
+                {phone && (
+                  <div className="flex justify-start items-center gap-x-2">
+                    <div className="w-5.5 h-5.5">
+                      <img
+                        className="w-full h-full"
+                        src="/icons/travelPage/phone-icon.svg"
+                      />
+                    </div>
+
+                    <p className="text-[14px] text-[#543A14]">{phone}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="w-full flex justify-end items-center">
+              <div className="text-[12px] border border-[#BF4B17] rounded-full px-3">
+                {t("menu.more")}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {type === "bus" && (
+        <div className="flex flex-col bg-white justify-center items-center w-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] border-2 border-[#D9D9D9] rounded-[20px]">
+          <div className="w-full pl-7 pt-5 pb-3 pr-3">
+            <div className="flex justify-start items-center gap-x-3 mb-2">
+              <div className="w-17 h-auto">
+                <img
+                  className="w-full h-full"
+                  src="/icons/travelPage/tram.svg"
+                />
+              </div>
+
+              <div className="font-medium flex flex-col justify-center items-start gap-y-1">
+                <p className="font-bold text-[16px] text-black leading-5.5">
+                  {place}
+                </p>
+
+                <p className="text-[14px] text-[#543A14]">{desc}</p>
+              </div>
+            </div>
+
+            <div className="flex justify-start items-center gap-x-3 mb-2">
+              <div className="w-14 h-auto">
+                <img
+                  className="w-full h-full"
+                  src="/icons/travelPage/line-qr.svg"
+                />
+              </div>
+
+              <div className="font-medium flex flex-col justify-center items-start gap-y-1">
+                <p className="text-[14px] text-[#543A14]">{desc2}</p>
+              </div>
+            </div>
+
+            <div className="w-full flex justify-end items-center gap-x-2">
+              {link && (
+                <div
+                  onClick={() => {
+                    window.open(link, "_blank", "noopener,noreferrer");
+                  }}
+                  className="text-[12px] text-white bg-[#1DCC64] border border-[#1DCC64] rounded-full px-3"
+                >
+                  {t("menu.friend")}
+                </div>
+              )}
+
+              <div className="text-[12px] bg-white border border-[#BF4B17] rounded-full px-3">
+                {t("menu.more")}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
