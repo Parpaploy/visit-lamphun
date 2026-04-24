@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "../../constant/language";
@@ -22,6 +22,16 @@ export default function Navbar() {
   const location = useLocation();
   const [open, setOpen] = useState<boolean>(false);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
+  const [menuReady, setMenuReady] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!openMenu) return;
+    const timer = setTimeout(() => setMenuReady(true), 350);
+    return () => {
+      clearTimeout(timer);
+      setMenuReady(false);
+    };
+  }, [openMenu]);
 
   const current =
     LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
@@ -143,43 +153,80 @@ export default function Navbar() {
             </svg>
 
             <div className="z-999 overflow-y-auto w-full flex flex-col justify-start items-start gap-2 pt-4 pb-1">
-              <div className="flex justify-start items-start gap-1">
-                <div className="w-3 h-auto">
-                  <img src="/icons/navbar/stat-icon.svg" />
-                </div>
+              {!menuReady ? (
+                <>
+                  <div className="flex justify-start items-start gap-1 animate-pulse">
+                    <div className="w-3 h-3 rounded bg-gray-200" />
+                    <div className="h-2.5 w-24 rounded bg-gray-200" />
+                  </div>
 
-                <div className="text-[#8B724E] text-[10px] font-medium">
-                  สถิติผู้ใช้งาน 0 คน
-                </div>
-              </div>
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-full flex justify-start items-center gap-10 border-2 border-[#D9D9D9] rounded-full p-1 animate-pulse"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-gray-200 shrink-0" />
+                      <div className="flex flex-col gap-1.5">
+                        <div className="h-4 w-32 rounded bg-gray-200" />
+                        <div className="h-3 w-20 rounded bg-gray-200" />
+                      </div>
+                    </div>
+                  ))}
 
-              {(
-                menuList[i18n.language as keyof typeof menuList] || menuList.th
-              ).map((item: INavbarMenuList) => (
-                <NavbarMenuBtn
-                  key={item.sf}
-                  title={item.title}
-                  imgUrl={item.img}
-                  path={item.path}
-                  desc={item.desc}
-                  setOpenMenu={setOpenMenu}
-                />
-              ))}
+                  <div className="w-full mt-2">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className="w-full flex justify-start items-center gap-5 border-t border-[#D9D9D9] pl-10 py-3 animate-pulse"
+                      >
+                        <div className="w-6.5 h-6.5 rounded-full bg-gray-200 shrink-0" />
+                        <div className="h-4 w-28 rounded bg-gray-200" />
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex justify-start items-start gap-1">
+                    <div className="w-3 h-auto">
+                      <img src="/icons/navbar/stat-icon.svg" />
+                    </div>
 
-              <div className="w-full mt-2">
-                {(
-                  footerList[i18n.language as keyof typeof menuList] ||
-                  menuList.th
-                ).map((item: INavbarFooterMenuList, index: number) => (
-                  <NavbarFooterMenu
-                    key={index}
-                    title={item.title}
-                    imgUrl={item.img}
-                    path={item.path}
-                    setOpenMenu={setOpenMenu}
-                  />
-                ))}
-              </div>
+                    <div className="text-[#8B724E] text-[10px] font-medium">
+                      สถิติผู้ใช้งาน 0 คน
+                    </div>
+                  </div>
+
+                  {(
+                    menuList[i18n.language as keyof typeof menuList] ||
+                    menuList.th
+                  ).map((item: INavbarMenuList) => (
+                    <NavbarMenuBtn
+                      key={item.sf}
+                      title={item.title}
+                      imgUrl={item.img}
+                      path={item.path}
+                      desc={item.desc}
+                      setOpenMenu={setOpenMenu}
+                    />
+                  ))}
+
+                  <div className="w-full mt-2">
+                    {(
+                      footerList[i18n.language as keyof typeof menuList] ||
+                      menuList.th
+                    ).map((item: INavbarFooterMenuList, index: number) => (
+                      <NavbarFooterMenu
+                        key={index}
+                        title={item.title}
+                        imgUrl={item.img}
+                        path={item.path}
+                        setOpenMenu={setOpenMenu}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </>
