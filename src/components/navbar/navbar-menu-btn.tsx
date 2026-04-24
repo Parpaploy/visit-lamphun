@@ -5,11 +5,13 @@ export default function NavbarMenuBtn({
   desc,
   imgUrl,
   path,
+  setOpenMenu,
 }: {
   title: string;
   desc?: string;
   imgUrl: string;
   path: string;
+  setOpenMenu: (openMenu: boolean) => void;
 }) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,6 +20,7 @@ export default function NavbarMenuBtn({
     <button
       onClick={() => {
         navigate(path);
+        setOpenMenu(false);
       }}
       className={`${location.pathname === path ? "bg-[#FEEABB] text-[#BF4B17]" : "bg-white text-[#543A14]"} w-full flex justify-start items-center gap-10 border-2 border-[#D9D9D9] rounded-full p-1`}
     >

@@ -8,12 +8,12 @@ export default function NavbarFooterMenu({
   title,
   imgUrl,
   path,
-  callback,
+  setOpenMenu,
 }: {
   title: string;
   imgUrl: string;
   path: string;
-  callback: (state: boolean) => void;
+  setOpenMenu: (openMenu: boolean) => void;
 }) {
   const navigate = useNavigate();
   const size = path.split(".")[1] ? "external" : "internal";
@@ -39,10 +39,11 @@ export default function NavbarFooterMenu({
         //saveFile();
         if (size === "external") {
           window.open(path, "_blank");
+          setOpenMenu(false);
           return;
         }
         navigate(path);
-        callback(false);
+        setOpenMenu(false);
       }}
       className="text-[#543A14] w-full flex justify-start items-center gap-5 border-t border-[#D9D9D9] pl-10 py-3"
     >

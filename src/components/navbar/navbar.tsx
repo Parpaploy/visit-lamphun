@@ -3,12 +3,13 @@ import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "../../constant/language";
 import { IoMenu } from "react-icons/io5";
 import NavbarMenuBtn from "./navbar-menu-btn";
-import { footerList, menuList } from "../../constant/navbar-menu";
+
 import type {
   INavbarFooterMenuList,
   INavbarMenuList,
 } from "../../interfaces/navbar.interface";
 import NavbarFooterMenu from "./navbar-footer-menu";
+import { footerList, menuList } from "../../constant/navbar-menu";
 
 export default function Navbar() {
   const { i18n } = useTranslation();
@@ -74,7 +75,7 @@ export default function Navbar() {
                 key={lang.code}
                 onClick={() => {
                   i18n.changeLanguage(lang.code);
-                  // setOpen(false);
+                  setOpen(false);
                 }}
                 className={`w-full flex flex-col items-center gap-3 px-4 py-2.5 transition-all ${
                   i18n.language === lang.code ? "font-medium" : "opacity-50"
@@ -135,6 +136,7 @@ export default function Navbar() {
                   imgUrl={item.img}
                   path={item.path}
                   desc={item.desc}
+                  setOpenMenu={setOpenMenu}
                 />
               ))}
 
@@ -148,7 +150,7 @@ export default function Navbar() {
                     title={item.title}
                     imgUrl={item.img}
                     path={item.path}
-                    callback={setOpenMenu}
+                    setOpenMenu={setOpenMenu}
                   />
                 ))}
               </div>
