@@ -53,11 +53,7 @@ export default function LandingPage() {
 
   return (
     <main className="w-full max-w-107.5 h-svh mx-auto overflow-hidden">
-      <div
-        className={`w-full h-full overflow-hidden relative bg-[linear-gradient(0deg,rgba(219,138,96,1)_0%,rgba(255,139,43,1)_40%,rgba(251,201,90,1)_100%)] ${
-          !contentLoaded ? "blur-xs" : ""
-        }`}
-      >
+      <div className="w-full h-full overflow-hidden relative bg-[linear-gradient(0deg,rgba(219,138,96,1)_0%,rgba(255,139,43,1)_40%,rgba(251,201,90,1)_100%)]">
         <div className="w-full h-full bg-[url('/images/landingPage/landing-bg.svg')] bg-cover bg-center flex flex-col items-center justify-between pt-[10svh] px-5 py-[3svh]">
           <div className="flex flex-col items-center z-20">
             <img
