@@ -23,6 +23,7 @@ export default function Navbar() {
   const [open, setOpen] = useState<boolean>(false);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [menuReady, setMenuReady] = useState<boolean>(false);
+  const [langReady, setLangReady] = useState<boolean>(false);
 
   useEffect(() => {
     if (!openMenu) return;
@@ -32,6 +33,15 @@ export default function Navbar() {
       setMenuReady(false);
     };
   }, [openMenu]);
+
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(() => setLangReady(true), 300);
+    return () => {
+      clearTimeout(timer);
+      setLangReady(false);
+    };
+  }, [open]);
 
   const current =
     LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
@@ -93,7 +103,7 @@ export default function Navbar() {
       {open && (
         <>
           <div className="fixed inset-0 z-990" onClick={() => setOpen(false)} />
-          <div className="flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-999 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-2 w-full">
+          <div className="flex min-h-[23svh] fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-999 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-2 w-full">
             <svg
               className="absolute -top-5 right-16 w-10 h-7"
               viewBox="0 0 30 20"
@@ -106,28 +116,38 @@ export default function Navbar() {
                 strokeLinejoin="round"
               />
             </svg>
-            {LANGUAGES.map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() => {
-                  i18n.changeLanguage(lang.code);
-                  setOpen(false);
-                }}
-                className={`w-full flex flex-col items-center gap-3 px-4 py-2.5 transition-all ${
-                  i18n.language === lang.code ? "font-medium" : "opacity-50"
-                }`}
-              >
-                <img
-                  src={lang.icon}
-                  className={`w-21 h-21 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] rounded-full ${
-                    i18n.language === lang.code
-                      ? "ring-3 ring-[#A1D6F5]/70"
-                      : ""
-                  }`}
-                />
-                <span className="text-[12px]">{lang.label}</span>
-              </button>
-            ))}
+            {!langReady
+              ? Array.from({ length: LANGUAGES.length }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-full flex flex-col items-center gap-3 px-4 py-2.5 animate-pulse"
+                  >
+                    <div className="w-21 h-21 rounded-full bg-gray-200 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]" />
+                    <div className="h-3 w-8 rounded bg-gray-200" />
+                  </div>
+                ))
+              : LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      i18n.changeLanguage(lang.code);
+                      setOpen(false);
+                    }}
+                    className={`w-full flex flex-col items-center gap-3 px-4 py-2.5 transition-all ${
+                      i18n.language === lang.code ? "font-medium" : "opacity-50"
+                    }`}
+                  >
+                    <img
+                      src={lang.icon}
+                      className={`w-21 h-21 shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] rounded-full ${
+                        i18n.language === lang.code
+                          ? "ring-3 ring-[#A1D6F5]/70"
+                          : ""
+                      }`}
+                    />
+                    <span className="text-[12px]">{lang.label}</span>
+                  </button>
+                ))}
           </div>
         </>
       )}
@@ -138,7 +158,7 @@ export default function Navbar() {
             className="fixed inset-0 z-990"
             onClick={() => setOpenMenu(false)}
           />
-          <div className="min-h-[67.5svh] max-h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
+          <div className="min-h-[68svh] max-h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
             <svg
               className="absolute -top-5 right-4 w-10 h-7"
               viewBox="0 0 30 20"
