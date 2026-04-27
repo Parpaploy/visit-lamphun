@@ -21,6 +21,12 @@
     "wait": "The tram's waiting for you!"
   },
 
+  "contact": {
+    "emergency": "Emergency Numbers",
+    "news": "Follow News",
+    "line": "LINE"
+  },
+
   "navbar": {
     "stat": "There are",
     "unit": "users"

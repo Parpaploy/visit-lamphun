@@ -21,6 +21,12 @@
     "wait": "有轨电车正在等你"
   },
 
+  "contact": {
+    "emergency": "紧急电话号码",
+    "news": "关注信息",
+    "line": "LINE"
+  },
+
   "navbar": {
     "stat": "用户数",
     "unit": "人"

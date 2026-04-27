@@ -18,7 +18,7 @@ export default function RecommendedPage() {
 
   return (
     <main className="relative w-full h-full flex flex-col overflow-hidden">
-      <section className="w-full h-[7svh] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex justify-between items-center">
+      <section className="w-full h-[8svh] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex justify-between items-center">
         <button
           onClick={() => {
             setMode("goods");
@@ -28,7 +28,7 @@ export default function RecommendedPage() {
           <p>{t("recommend.goods")}</p>
 
           {mode === "goods" && (
-            <div className="z-100 absolute -bottom-3.5 left-1/2 -translate-x-1/2 rounded-full w-[90%] border-2 border-[#BF4B17]" />
+            <div className="z-100 absolute -bottom-4.5 left-1/2 -translate-x-1/2 rounded-full w-[90%] border-2 border-[#BF4B17]" />
           )}
         </button>
         <button
@@ -40,7 +40,7 @@ export default function RecommendedPage() {
           <p>{t("recommend.places")}</p>
 
           {mode === "places" && (
-            <div className="z-100 absolute -bottom-3.5 left-1/2 -translate-x-1/2 rounded-full w-[90%] border-2 border-[#BF4B17]" />
+            <div className="z-100 absolute -bottom-4.5 left-1/2 -translate-x-1/2 rounded-full w-[90%] border-2 border-[#BF4B17]" />
           )}
         </button>
         <button
@@ -52,7 +52,7 @@ export default function RecommendedPage() {
           <p>{t("recommend.story")}</p>
 
           {mode === "story" && (
-            <div className="z-100 absolute -bottom-3.5 left-1/2 -translate-x-1/2 rounded-full w-[90%] border-2 border-[#BF4B17]" />
+            <div className="z-100 absolute -bottom-4.5 left-1/2 -translate-x-1/2 rounded-full w-[90%] border-2 border-[#BF4B17]" />
           )}
         </button>
       </section>
