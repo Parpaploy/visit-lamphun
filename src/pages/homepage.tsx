@@ -52,9 +52,7 @@ export default function Homepage() {
 
         <Hitbox loaded={loaded} />
 
-        {/* Layer 3: UI Elements (Select / Time) */}
         <div className="absolute inset-0 z-20 pointer-events-none p-2.5">
-          {/* Hidden Span for measurement */}
           <span
             ref={measureRef}
             className="absolute invisible whitespace-nowrap text-[12px] font-medium pl-3 pr-8 py-1"
@@ -85,7 +83,6 @@ export default function Homepage() {
             </div>
           </div>
 
-          {/* Top Right UI */}
           <div className="absolute top-2 right-2.5 flex flex-col items-end text-right pointer-events-auto">
             <span className="text-[12px] text-[#8B724E] font-medium">
               {t("homepage.ready")} | {t("homepage.time")}

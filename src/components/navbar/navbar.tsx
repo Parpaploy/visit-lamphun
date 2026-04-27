@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "../../constant/language";
 import { IoMenu } from "react-icons/io5";
@@ -18,7 +18,10 @@ import {
 } from "../../constant/navbar-menu";
 
 export default function Navbar() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
+
+  const navigation = useNavigate();
+
   const location = useLocation();
   const [open, setOpen] = useState<boolean>(false);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -65,9 +68,14 @@ export default function Navbar() {
 
   return (
     <div className="w-full max-w-107.5 relative z-999">
-      <div className="bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)] w-full h-[15svh] px-3.75 pt-1.25 flex justify-between items-center">
+      <div className="shadow-[0_4px_10px_0_rgba(0,0,0,0.12)] bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)] w-full h-[15svh] px-3.75 pt-1.25 flex justify-between items-center">
         <div className="flex justify-center items-center gap-x-2">
-          <div className="h-19 w-19">
+          <div
+            className="h-19 w-19"
+            onClick={() => {
+              navigation("/app");
+            }}
+          >
             <img src="/icons/logo.svg" className="h-full w-full" />
           </div>
           <div className="flex flex-col items-start justify-center">
@@ -92,7 +100,7 @@ export default function Navbar() {
           </button>
 
           <button
-            className={`${openMenu ? "text-white" : "text-[#75521F]"}`}
+            className={`transition-all ${openMenu ? "text-white" : "text-[#75521F]"}`}
             onClick={() => setOpenMenu((v) => !v)}
           >
             <IoMenu size={42} />
@@ -213,7 +221,7 @@ export default function Navbar() {
                     </div>
 
                     <div className="text-[#8B724E] text-[10px] font-medium">
-                      สถิติผู้ใช้งาน 0 คน
+                      {t("navbar.stat")} 0 {t("navbar.unit")}
                     </div>
                   </div>
 
