@@ -5,6 +5,7 @@ import { BG_MAP } from "../constant/homepage";
 import HomepageLoader from "../components/skeleton-load/homepage-loader";
 import Hitbox from "../components/homepage/hitbox";
 import type { stationNumber } from "../interfaces/homepage.interface";
+import StationCard from "../components/homepage/station-card";
 
 const getActiveBg = (lang: string, station: stationNumber) => {
   if (station !== 0) {
@@ -22,7 +23,7 @@ export default function Homepage() {
   const [selectWidth, setSelectWidth] = useState<number>(0);
   const [stationExpanded, setStationExpanded] = useState<stationNumber>(0);
   const [prevStation, setPrevStation] = useState<stationNumber>(0);
-  const [isExiting, setIsExiting] = useState(false);
+  const [isExiting, setIsExiting] = useState<boolean>(false);
 
   const measureRef = useRef<HTMLSpanElement>(null);
 
@@ -84,24 +85,36 @@ export default function Homepage() {
         )}
 
         {stationExpanded !== 0 && (
-          <div
-            className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-in-out ${
-              isExiting
-                ? "opacity-0 scale-95"
-                : loaded
-                ? "opacity-100 scale-100"
-                : "opacity-0 scale-105"
-            }`}
-            style={{ backgroundImage: `url('${currentBg}')` }}
-          >
-            <img
-              key={currentBg}
-              src={currentBg}
-              className="hidden"
-              onLoad={() => setLoaded(true)}
-              alt="background-loader"
-            />
-          </div>
+          <>
+            <div
+              className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-500 ease-in-out ${
+                isExiting
+                  ? "opacity-0 scale-95"
+                  : loaded
+                    ? "opacity-100 scale-100"
+                    : "opacity-0 scale-105"
+              }`}
+              style={{ backgroundImage: `url('${currentBg}')` }}
+            >
+              <img
+                key={currentBg}
+                src={currentBg}
+                className="hidden"
+                onLoad={() => setLoaded(true)}
+                alt="background-loader"
+              />
+            </div>
+
+            <div className="z-10 absolute -bottom-1 left-0 w-full h-45 backdrop-blur-[5px] bg-[linear-gradient(0deg,rgba(255,255,255,0.8)_0%,transparent_100%)] mask-[linear-gradient(0deg,black_20%,transparent_100%)]" />
+
+            <div className="z-20 absolute -bottom-1 left-0 w-full h-45 overflow-x-auto px-7 py-5">
+              <StationCard
+                name=" อนุสาวรีย์พระนางจามเทวี"
+                img="/images/contact-page/tourist-care-pic.svg"
+                link="https://react-icons.github.io/react-icons/search/#q=more"
+              />
+            </div>
+          </>
         )}
 
         <div
@@ -162,11 +175,19 @@ export default function Homepage() {
               : "opacity-0 pointer-events-none"
           }`}
         >
+          <div className="z-10 absolute top-0 left-0 w-full h-full backdrop-blur-[5px] bg-[linear-gradient(180deg,rgba(255,255,255,0.8)_0%,transparent_100%)] mask-[linear-gradient(180deg,black_0%,transparent_100%)]" />
+
           <button
             onClick={handleBack}
-            className="shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] p-1 rounded-full w-fit bg-white aspect-square border border-[#D9D9D9]"
+            className="z-11 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] p-0.5 rounded-full w-fit bg-white aspect-square border border-[#D9D9D9]"
           >
-            <IoIosArrowBack className="text-[#543A14]" size={32} />
+            <IoIosArrowBack className="text-[#543A14]" size={38} />
+          </button>
+
+          <button className="z-11 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] px-4.5 py-1.5 rounded-full w-fit bg-[#BF4B17] aspect-square border border-[#75521F]">
+            <div className="w-1.5">
+              <img className="w-full h-full" src="/icons/homepage/i-icon.svg" />
+            </div>
           </button>
         </div>
       </div>

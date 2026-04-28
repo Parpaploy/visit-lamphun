@@ -18,7 +18,8 @@
     "time": "You have time to visit this location",
     "minute": "minutes",
     "ready": "All set for the next stop!",
-    "wait": "The tram's waiting for you!"
+    "wait": "The tram's waiting for you!",
+    "more": "View Details"
   },
 
   "contact": {
