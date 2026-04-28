@@ -6,11 +6,13 @@ import TrainCard from "../components/travel-page/train-card";
 import TramCard from "../components/travel-page/tram-card";
 import OtherCard from "../components/travel-page/other-card";
 import TravelLoader from "../components/skeleton-load/travel-loader";
+import type { ITravelMode } from "../interfaces/navbar.interface";
+import SubNavbar from "../components/navbar/sub-navbar";
 
 export default function TravelPage() {
   const { t } = useTranslation();
 
-  const [mode, setMode] = useState<"train" | "tram" | "other">("train");
+  const [mode, setMode] = useState<ITravelMode>("train");
   const [day, setDay] = useState<"weekday" | "weekend">("weekday");
   const [pageReady, setPageReady] = useState(false);
 
@@ -21,47 +23,16 @@ export default function TravelPage() {
 
   return (
     <main className="relative w-full h-full flex flex-col overflow-hidden">
-      <section className="w-full h-[8svh] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex justify-between items-center">
-        <button
-          onClick={() => {
-            setMode("train");
-            setDay("weekday");
-          }}
-          className="relative w-[33%] flex justify-center items-center font-semibold text-[#543A14] text-[15px]"
-        >
-          <p>{t("travel.train")}</p>
-
-          {mode === "train" && (
-            <div className="z-100 absolute -bottom-4.5 left-1/2 -translate-x-1/2 rounded-full w-[90%] border-2 border-[#BF4B17]" />
-          )}
-        </button>
-        <button
-          onClick={() => {
-            setMode("tram");
-            setDay("weekday");
-          }}
-          className="relative w-[33%] flex justify-center items-center font-semibold text-[#543A14] text-[15px]"
-        >
-          <p>{t("travel.tram")}</p>
-
-          {mode === "tram" && (
-            <div className="z-100 absolute -bottom-4.5 left-1/2 -translate-x-1/2 rounded-full w-[90%] border-2 border-[#BF4B17]" />
-          )}
-        </button>
-        <button
-          onClick={() => {
-            setMode("other");
-            setDay("weekday");
-          }}
-          className="relative w-[33%] flex justify-center items-center font-semibold text-[#543A14] text-[15px]"
-        >
-          <p>{t("travel.other")}</p>
-
-          {mode === "other" && (
-            <div className="z-100 absolute -bottom-4.5 left-1/2 -translate-x-1/2 rounded-full w-[90%] border-2 border-[#BF4B17]" />
-          )}
-        </button>
-      </section>
+      <SubNavbar
+        mode={mode}
+        setMode={setMode}
+        mode1="train"
+        mode2="tram"
+        mode3="other"
+        mode1Name={t("travel.train")}
+        mode2Name={t("travel.tram")}
+        mode3Name={t("travel.other")}
+      />
 
       <section className="w-[90%] mx-auto flex justify-center items-center gap-x-4 border-b border-[#D9D9D9] py-5">
         {mode !== "tram" ? (

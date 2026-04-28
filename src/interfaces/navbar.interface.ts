@@ -13,3 +13,9 @@ export interface INavbarFooterMenuList {
 }
 
 export type NavbarMenuRecord = Record<"th" | "en" | "cn", INavbarMenuList[]>;
+
+export type IContactMode = "emergency" | "news" | "line";
+
+export type ITravelMode = "train" | "tram" | "other";
+
+export type IRecommendMode = "goods" | "places" | "story";
