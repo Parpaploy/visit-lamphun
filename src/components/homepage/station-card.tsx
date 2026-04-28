@@ -18,7 +18,7 @@ export default function StationCard({
       onClick={() => {
         window.open(link, "_blank", "noopener,noreferrer");
       }}
-      className="bg-white h-full w-50 rounded-xl overflow-hidden shadow-[0_4px_10px_0_rgba(0,0,0,0.125)]"
+      className="bg-white h-full min-w-50 w-50 max-w-50 rounded-xl overflow-hidden shadow-[0_4px_10px_0_rgba(0,0,0,0.125)]"
     >
       <div className="w-full h-[60%] rounded-b-xl overflow-hidden">
         <img className="w-full h-full object-cover" src={img} />

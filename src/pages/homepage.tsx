@@ -107,7 +107,7 @@ export default function Homepage() {
 
             <div className="z-10 absolute -bottom-1 left-0 w-full h-45 backdrop-blur-[5px] bg-[linear-gradient(0deg,rgba(255,255,255,0.8)_0%,transparent_100%)] mask-[linear-gradient(0deg,black_20%,transparent_100%)]" />
 
-            <div className="z-20 absolute -bottom-1 left-0 w-full h-45 overflow-x-auto px-7 py-5">
+            <div className="z-20 flex justify-start items-center gap-x-3 absolute -bottom-1 left-0 w-full h-45 overflow-x-auto px-7 py-5">
               <StationCard
                 name=" อนุสาวรีย์พระนางจามเทวี"
                 img="/images/contact-page/tourist-care-pic.svg"
