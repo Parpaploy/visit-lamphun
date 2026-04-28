@@ -9,6 +9,7 @@ export const BG_MAP: Record<string, string> = {
 export const hitboxData: Record<string, Location[]> = {
   th: [
     {
+      no: 1,
       id: "hariphunchai",
       name: "หริภุญชัย",
       points: [
@@ -17,6 +18,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 2,
       id: "community",
       name: "ชุมชนเมือง",
       points: [
@@ -25,6 +27,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 3,
       id: "chamthewi",
       name: "จามเทวี",
       points: [
@@ -33,6 +36,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 4,
       id: "khuang",
       name: "ข่วงพันปี",
       points: [
@@ -41,6 +45,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 5,
       id: "wat-chamthewi",
       name: "วัดจามเทวี",
       points: [
@@ -49,6 +54,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 6,
       id: "mahawan",
       name: "วัดมหาวัน",
       points: [
@@ -57,22 +63,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
-      id: "mai-thai",
-      name: "ไหมไทย",
-      points: [
-        { x: 290, y: 300, width: 75, height: 55 },
-        { x: 275, y: 355, width: 115, height: 30 },
-      ],
-    },
-    {
-      id: "san-pa-yang",
-      name: "สันป่ายางหลวง",
-      points: [
-        { x: 53, y: 400, width: 75, height: 65 },
-        { x: 30, y: 460, width: 120, height: 25 },
-      ],
-    },
-    {
+      no: 7,
       id: "khong-ruesi",
       name: "คงฤาษี",
       points: [
@@ -81,6 +72,16 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 8,
+      id: "san-pa-yang",
+      name: "สันป่ายางหลวง",
+      points: [
+        { x: 53, y: 400, width: 75, height: 65 },
+        { x: 30, y: 460, width: 120, height: 25 },
+      ],
+    },
+    {
+      no: 9,
       id: "ku-chang",
       name: "กู่ช้าง กู่ม้า",
       points: [
@@ -89,6 +90,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 10,
       id: "muan-chai",
       name: "ม่วนใจ๋",
       points: [
@@ -96,9 +98,19 @@ export const hitboxData: Record<string, Location[]> = {
         { x: 240, y: 560, width: 150, height: 45 },
       ],
     },
+    {
+      no: 11,
+      id: "mai-thai",
+      name: "ไหมไทย",
+      points: [
+        { x: 290, y: 300, width: 75, height: 55 },
+        { x: 275, y: 355, width: 115, height: 30 },
+      ],
+    },
   ],
   en: [
     {
+      no: 1,
       id: "hariphunchai",
       name: "Hariphunchai",
       points: [
@@ -107,6 +119,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 2,
       id: "community",
       name: "Community Museum",
       points: [
@@ -115,6 +128,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 3,
       id: "chamthewi",
       name: "Chamthewi Statue",
       points: [
@@ -123,6 +137,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 4,
       id: "khuang",
       name: "Khuang Phan Pi",
       points: [
@@ -131,6 +146,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 5,
       id: "wat-chamthewi",
       name: "Wat Chamthewi",
       points: [
@@ -139,6 +155,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 6,
       id: "mahawan",
       name: "Wat Mahawan",
       points: [
@@ -147,22 +164,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
-      id: "mai-thai",
-      name: "Mai Thai",
-      points: [
-        { x: 290, y: 300, width: 75, height: 55 },
-        { x: 270, y: 355, width: 120, height: 30 },
-      ],
-    },
-    {
-      id: "san-pa-yang",
-      name: "Wat San Pa Yang Luang",
-      points: [
-        { x: 53, y: 400, width: 75, height: 65 },
-        { x: 40, y: 460, width: 145, height: 25 },
-      ],
-    },
-    {
+      no: 7,
       id: "khong-ruesi",
       name: "Wat Phra Khong Ruesi",
       points: [
@@ -171,6 +173,16 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 8,
+      id: "san-pa-yang",
+      name: "Wat San Pa Yang Luang",
+      points: [
+        { x: 53, y: 400, width: 75, height: 65 },
+        { x: 40, y: 460, width: 145, height: 25 },
+      ],
+    },
+    {
+      no: 9,
       id: "ku-chang",
       name: "Ku Chang Ku Ma",
       points: [
@@ -179,6 +191,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 10,
       id: "muan-chai",
       name: "Muan Jai",
       points: [
@@ -186,9 +199,19 @@ export const hitboxData: Record<string, Location[]> = {
         { x: 240, y: 560, width: 150, height: 45 },
       ],
     },
+    {
+      no: 11,
+      id: "mai-thai",
+      name: "Mai Thai",
+      points: [
+        { x: 290, y: 300, width: 75, height: 55 },
+        { x: 270, y: 355, width: 120, height: 30 },
+      ],
+    },
   ],
   cn: [
     {
+      no: 1,
       id: "hariphunchai",
       name: "哈里奔猜",
       points: [
@@ -197,6 +220,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 2,
       id: "community",
       name: "社区博物馆",
       points: [
@@ -205,6 +229,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 3,
       id: "chamthewi",
       name: "占玛เทวี",
       points: [
@@ -213,6 +238,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 4,
       id: "khuang",
       name: "千年庭院",
       points: [
@@ -221,6 +247,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 5,
       id: "wat-chamthewi",
       name: "扎玛特威寺",
       points: [
@@ -229,6 +256,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 6,
       id: "mahawan",
       name: "马哈湾寺",
       points: [
@@ -237,22 +265,7 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
-      id: "mai-thai",
-      name: "泰丝学习中心",
-      points: [
-        { x: 290, y: 300, width: 75, height: 55 },
-        { x: 260, y: 350, width: 120, height: 30 },
-      ],
-    },
-    {
-      id: "san-pa-yang",
-      name: "圣巴扬寺",
-      points: [
-        { x: 53, y: 400, width: 75, height: 65 },
-        { x: 50, y: 465, width: 85, height: 25 },
-      ],
-    },
-    {
+      no: 7,
       id: "khong-ruesi",
       name: "空鲁西寺",
       points: [
@@ -261,6 +274,16 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 8,
+      id: "san-pa-yang",
+      name: "圣巴扬寺",
+      points: [
+        { x: 53, y: 400, width: 75, height: 65 },
+        { x: 50, y: 465, width: 85, height: 25 },
+      ],
+    },
+    {
+      no: 9,
       id: "ku-chang",
       name: "库常库玛",
       points: [
@@ -269,11 +292,21 @@ export const hitboxData: Record<string, Location[]> = {
       ],
     },
     {
+      no: 10,
       id: "muan-chai",
       name: "沐恩猜",
       points: [
         { x: 285, y: 510, width: 80, height: 55 },
         { x: 240, y: 560, width: 140, height: 45 },
+      ],
+    },
+    {
+      no: 11,
+      id: "mai-thai",
+      name: "泰丝学习中心",
+      points: [
+        { x: 290, y: 300, width: 75, height: 55 },
+        { x: 260, y: 350, width: 120, height: 30 },
       ],
     },
   ],

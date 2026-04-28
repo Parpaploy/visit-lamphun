@@ -1,7 +1,14 @@
 import { useTranslation } from "react-i18next";
 import { hitboxData } from "../../constant/homepage";
+import type { stationNumber } from "../../interfaces/homepage.interface";
 
-export default function Hitbox({ loaded }: { loaded: boolean }) {
+export default function Hitbox({
+  loaded,
+  setStationExpanded,
+}: {
+  loaded: boolean;
+  setStationExpanded: (stationExpanded: stationNumber) => void;
+}) {
   const { i18n } = useTranslation();
 
   const currentLangData = hitboxData[i18n.language] || hitboxData.th;
@@ -14,7 +21,10 @@ export default function Hitbox({ loaded }: { loaded: boolean }) {
     >
       <g fill="rgba(67, 56, 202, 0)">
         {currentLangData.map((loc) => (
-          <g key={loc.id} onClick={() => console.log(`คลิก ${loc.name}`)}>
+          <g
+            key={loc.id}
+            onClick={() => setStationExpanded(loc.no as stationNumber)}
+          >
             {loc.points.map((point, index) => (
               <rect
                 key={`${loc.id}-${index}`}
