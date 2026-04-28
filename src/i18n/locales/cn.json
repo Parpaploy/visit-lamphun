@@ -24,7 +24,9 @@
   "contact": {
     "emergency": "紧急电话号码",
     "news": "关注信息",
-    "line": "LINE"
+    "line": "LINE",
+    "page": "前往页面",
+    "web": "进入网站"
   },
 
   "navbar": {

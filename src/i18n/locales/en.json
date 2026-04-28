@@ -24,7 +24,9 @@
   "contact": {
     "emergency": "Emergency Numbers",
     "news": "Follow News",
-    "line": "LINE"
+    "line": "LINE",
+    "page": "Go to webpage",
+    "web": "Go to webpage"
   },
 
   "navbar": {

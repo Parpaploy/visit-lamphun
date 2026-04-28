@@ -22,7 +22,7 @@ export default function SubNavbar<T extends string>({
   return (
     <>
       {isSmallOne ? (
-        <section className="w-full h-[8svh] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex justify-between items-center">
+        <section className="z-900 w-full h-[8svh] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] flex justify-between items-center">
           <button
             onClick={() => {
               setMode(mode1);

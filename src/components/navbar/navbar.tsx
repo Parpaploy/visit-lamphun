@@ -68,7 +68,9 @@ export default function Navbar() {
 
   return (
     <div className="w-full max-w-107.5 relative z-999">
-      <div className="shadow-[0_4px_10px_0_rgba(0,0,0,0.12)] bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)] w-full h-[15svh] px-3.75 pt-1.25 flex justify-between items-center">
+      <div
+        className={`${location.pathname === "/app/contact" || location.pathname === "/app/travel" || location.pathname === "/app/recommend" ? "" : "shadow-[0_4px_10px_0_rgba(0,0,0,0.12)]"} bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)] w-full h-[15svh] px-3.75 pt-1.25 flex justify-between items-center`}
+      >
         <div className="flex justify-center items-center gap-x-2">
           <div
             className="h-19 w-19"
