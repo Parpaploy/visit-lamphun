@@ -47,7 +47,45 @@ export default function ContactPage() {
         </button>
       </section>
 
-      <section className="w-full flex-1 flex flex-col gap-y-4 overflow-y-auto p-5"></section>
+      <section className="w-full flex-1 overflow-y-auto p-7">
+        {mode === "line" && (
+          <div className="min-h-full flex flex-col justify-between items-center gap-y-2 px-10 py-5 border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+            <h1 className="text-[#11A04B] text-[24px] font-semibold">Line</h1>
+
+            <div className="w-full">
+              <img
+                className="w-full h-auto"
+                src="/images/contact-page/line-pic.svg"
+              />
+            </div>
+
+            <p className="text-[12px] text-center">
+              รายงานเหตุผิดปกติทั้งทางด้าน คน สัตว์
+              สิ่งแวดล้อมและแจ้งเหตุงานบริการสาธารณะ
+            </p>
+
+            <div className="w-24">
+              <img
+                className="w-full h-auto"
+                src="/images/contact-page/line-qr.svg"
+              />
+            </div>
+
+            <p className="text-[12px] text-[#BF4B17] text-center">
+              สามารถสแกน QR - Code หรือ เพิ่มเพื่อนได้ที่นี่
+            </p>
+
+            <div
+              // onClick={() => {
+              //   window.open(link, "_blank", "noopener,noreferrer");
+              // }}
+              className="text-[12px] text-white bg-[#1DCC64] border border-[#1DCC64] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-12 py-2"
+            >
+              {t("menu.friend")}
+            </div>
+          </div>
+        )}
+      </section>
     </main>
   );
 }
