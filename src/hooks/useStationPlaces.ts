@@ -4,23 +4,18 @@ import type { StationPlace } from "../interfaces/homepage.interface";
 
 export function useStationPlaces(stationId: string | null) {
   const [places, setPlaces] = useState<StationPlace[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [key, setKey] = useState(0);
 
   useEffect(() => {
-    if (!stationId) {
-      setPlaces([]);
-      return;
-    }
+    if (!stationId) return;
     let cancelled = false;
     fetchPlaces(stationId)
-      .then((data) => { if (!cancelled) setPlaces(data); })
-      .catch(() => { if (!cancelled) setPlaces([]); })
-      .finally(() => { if (!cancelled) setLoading(false); });
+      .then((data) => { if (!cancelled) { setPlaces(data); setLoading(false); } })
+      .catch(() => { if (!cancelled) { setPlaces([]); setLoading(false); } });
     return () => { cancelled = true; };
   }, [stationId, key]);
 
-  const refetch = useCallback(() => setKey((k) => k + 1), []);
-
+  const refetch = useCallback(() => { setLoading(true); setKey((k) => k + 1); }, []);
   return { places, loading, refetch };
 }
