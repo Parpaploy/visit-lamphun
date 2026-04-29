@@ -28,3 +28,16 @@ export interface IStationMode {
 }
 
 export type stationNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+
+export interface StationPlaceName {
+  th: string;
+  en: string;
+  cn: string;
+}
+
+export interface StationPlace {
+  id: string;
+  name: StationPlaceName;
+  img: string;
+  link: string;
+}

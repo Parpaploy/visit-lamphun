@@ -7,6 +7,7 @@ import RecommendedPage from "./src/pages/recommended-page";
 import KomePage from "./src/pages/kome-page";
 import ContactPage from "./src/pages/contact-page";
 import TravelPage from "./src/pages/travel-page";
+import AdminDashboard from "./src/pages/admin-dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -45,7 +46,7 @@ export const router = createBrowserRouter([
     path: "/private",
     element: <PrivateLayout />,
     children: [
-      { path: "dashboard", element: <></> },
+      { path: "dashboard", element: <AdminDashboard /> },
       { index: true, element: <Navigate to="dashboard" replace /> },
     ],
   },

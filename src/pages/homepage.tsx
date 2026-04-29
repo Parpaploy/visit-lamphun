@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { IoIosArrowDown, IoIosArrowBack } from "react-icons/io";
-import { BG_MAP } from "../constant/homepage";
+import { BG_MAP, STATION_ID_MAP } from "../constant/homepage";
 import HomepageLoader from "../components/skeleton-load/homepage-loader";
 import Hitbox from "../components/homepage/hitbox";
 import type { stationNumber } from "../interfaces/homepage.interface";
 import StationCard from "../components/homepage/station-card";
 import MainPopup from "../components/homepage/main-popup";
 import SubPopup from "../components/homepage/sub-popup";
+import { useStationPlaces } from "../hooks/useStationPlaces";
 
 const getActiveBg = (lang: string, station: stationNumber) => {
   if (station !== 0) {
@@ -52,6 +53,8 @@ export default function Homepage() {
   }
 
   const currentBg = getActiveBg(i18n.language, stationExpanded);
+  const activeStationId = stationExpanded !== 0 ? STATION_ID_MAP[stationExpanded] : null;
+  const { places, loading: placesLoading } = useStationPlaces(activeStationId);
   const carNumber = selected.replace("tram", "");
   const translatedLabel = `${t("homepage.car")} ${carNumber}`;
 
@@ -112,11 +115,20 @@ export default function Homepage() {
             <div className="z-10 absolute -bottom-1 left-0 w-full h-45 backdrop-blur-[5px] bg-[linear-gradient(0deg,rgba(255,255,255,0.8)_0%,transparent_100%)] mask-[linear-gradient(0deg,black_20%,transparent_100%)]" />
 
             <div className={`z-20 flex justify-start items-center gap-x-3 absolute -bottom-1 left-0 w-full h-45 overflow-x-auto px-7 py-5 transition-opacity duration-500 ${isExiting ? "opacity-0" : "opacity-100"}`}>
-              <StationCard
-                name=" อนุสาวรีย์พระนางจามเทวี"
-                img="/images/contact-page/tourist-care-pic.svg"
-                link="https://react-icons.github.io/react-icons/search/#q=more"
-              />
+              {placesLoading && (
+                <p className="text-[12px] text-[#8B724E]">กำลังโหลด...</p>
+              )}
+              {!placesLoading && places.length === 0 && (
+                <p className="text-[12px] text-[#C6C6C6]">ยังไม่มีสถานที่</p>
+              )}
+              {!placesLoading && places.map((place) => (
+                <StationCard
+                  key={place.id}
+                  name={place.name[i18n.language as keyof typeof place.name] ?? place.name.th}
+                  img={place.img}
+                  link={place.link}
+                />
+              ))}
             </div>
           </>
         )}

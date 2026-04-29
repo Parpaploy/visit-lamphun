@@ -6,6 +6,34 @@ export const BG_MAP: Record<string, string> = {
   cn: "/images/homepage/cn-bg.svg",
 };
 
+export const STATION_ID_MAP: Record<number, string> = {
+  1: "hariphunchai",
+  2: "community",
+  3: "chamthewi",
+  4: "khuang",
+  5: "wat-chamthewi",
+  6: "mahawan",
+  7: "khong-ruesi",
+  8: "san-pa-yang",
+  9: "ku-chang",
+  10: "muan-chai",
+  11: "mai-thai",
+};
+
+export const STATION_NAMES_TH: Record<string, string> = {
+  hariphunchai: "หริภุญชัย",
+  community: "ชุมชนเมือง",
+  chamthewi: "จามเทวี",
+  khuang: "ข่วงพันปี",
+  "wat-chamthewi": "วัดจามเทวี",
+  mahawan: "วัดมหาวัน",
+  "khong-ruesi": "คงฤาษี",
+  "san-pa-yang": "สันป่ายางหลวง",
+  "ku-chang": "กู่ช้าง กู่ม้า",
+  "muan-chai": "ม่วนใจ๋",
+  "mai-thai": "ไหมไทย",
+};
+
 export const hitboxData: Record<string, Location[]> = {
   th: [
     {
