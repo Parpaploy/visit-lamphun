@@ -67,7 +67,7 @@ export default function Navbar() {
   const subtitle = subtitleMap[lang];
 
   return (
-    <div className="w-full max-w-107.5 relative z-999">
+    <div className="w-full max-w-107.5 mx-auto relative z-999">
       <div
         className={`${location.pathname === "/app/contact" || location.pathname === "/app/travel" || location.pathname === "/app/recommend" ? "" : "shadow-[0_4px_10px_0_rgba(0,0,0,0.12)]"} bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)] w-full h-[15svh] px-3.75 pt-1.25 flex justify-between items-center`}
       >
@@ -113,7 +113,7 @@ export default function Navbar() {
       {open && (
         <>
           <div className="fixed inset-0 z-990" onClick={() => setOpen(false)} />
-          <div className="flex min-h-[23svh] fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-999 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-2 w-full">
+          <div className="max-w-107.5 mx-auto flex min-h-[23svh] fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-999 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-2 w-full">
             <svg
               className="absolute -top-5 right-16 w-10 h-7"
               viewBox="0 0 30 20"
@@ -143,7 +143,7 @@ export default function Navbar() {
                       i18n.changeLanguage(lang.code);
                       setOpen(false);
                     }}
-                    className={`w-full flex flex-col items-center gap-3 px-4 py-2.5 transition-all ${
+                    className={`w-full flex flex-col items-center gap-3 px-4 py-2.5 aspect-square transition-all ${
                       i18n.language === lang.code ? "font-medium" : "opacity-50"
                     }`}
                   >
@@ -168,7 +168,7 @@ export default function Navbar() {
             className="fixed inset-0 z-990"
             onClick={() => setOpenMenu(false)}
           />
-          <div className="min-h-[68svh] max-h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
+          <div className="min-h-[68svh] max-w-107.5 mx-auto max-h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
             <svg
               className="absolute -top-5 right-4 w-10 h-7"
               viewBox="0 0 30 20"
