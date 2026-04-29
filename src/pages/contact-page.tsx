@@ -3,11 +3,12 @@ import { useTranslation } from "react-i18next";
 import SubNavbar from "../components/navbar/sub-navbar";
 import type { IContactMode } from "../interfaces/navbar.interface";
 import EmergencyCard from "../components/contact-page/emergency-card";
+import { useEmergencyItems } from "../hooks/useEmergencyItems";
 
 export default function ContactPage() {
   const { t } = useTranslation();
-
   const [mode, setMode] = useState<IContactMode>("emergency");
+  const { items, loading } = useEmergencyItems();
 
   return (
     <main className="relative w-full h-full flex flex-col overflow-hidden">
@@ -25,19 +26,23 @@ export default function ContactPage() {
 
       <section className="w-full flex-1 overflow-y-auto space-y-4 p-7">
         {mode === "emergency" && (
-          <>
-            <EmergencyCard
-              header="เบอร์โทรฉุกเฉิน"
-              items={[
-                {
-                  type: "address",
-                  text: "356/1 ถ.สันป่ายาง ซ.12 ต.ในเมือง อ.เมือง จ.ลำพูน",
-                },
-                { type: "hours", text: "เปิดทำการ : 07.30 - 18.00 น." },
-                { type: "phone", text: "เหตุด่วน เหตุร้าย : 191" },
-              ]}
-            />
-          </>
+          loading ? (
+            <p className="text-center text-[13px] text-[#8B724E]">กำลังโหลด...</p>
+          ) : items.length === 0 ? (
+            <p className="text-center text-[13px] text-[#C6C6C6]">ยังไม่มีข้อมูล</p>
+          ) : (
+            items.map((item) => (
+              <EmergencyCard
+                key={item.id}
+                header={item.header}
+                items={[
+                  ...(item.address ? [{ type: "address" as const, text: item.address }] : []),
+                  ...(item.hours ? [{ type: "hours" as const, text: item.hours }] : []),
+                  ...item.phones.map((p) => ({ type: "phone" as const, text: p })),
+                ]}
+              />
+            ))
+          )
         )}
 
         {mode === "news" && (
