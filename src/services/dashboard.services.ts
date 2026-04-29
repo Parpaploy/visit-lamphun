@@ -2,6 +2,7 @@ import {
   collection,
   addDoc,
   deleteDoc,
+  updateDoc,
   doc,
   serverTimestamp,
 } from "firebase/firestore";
@@ -41,4 +42,12 @@ export const deletePlace = async (
   placeId: string,
 ): Promise<void> => {
   await deleteDoc(doc(db, "stations", stationId, "places", placeId));
+};
+
+export const updatePlace = async (
+  stationId: string,
+  placeId: string,
+  data: { name: StationPlaceName; img: string; link: string },
+): Promise<void> => {
+  await updateDoc(doc(db, "stations", stationId, "places", placeId), data);
 };
