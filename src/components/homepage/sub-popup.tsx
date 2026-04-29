@@ -1,0 +1,47 @@
+import { useTranslation } from "react-i18next";
+
+export default function SubPopup({
+  setIsPopup,
+  setIsSubPopup,
+  header,
+  desc,
+  img,
+}: {
+  setIsPopup: (isPopup: boolean) => void;
+  setIsSubPopup: (isPopup: boolean) => void;
+  header: string;
+  desc: string;
+  img: string;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="z-998 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full p-2.5 flex justify-center items-center">
+      <div className="overflow-hidden p-8 flex flex-col justify-between items-center shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] border border-[#D9D9D9] bg-white w-full h-full rounded-[26px]">
+        <div className="w-full h-[90%] flex flex-col justify-start items-center gap-y-5">
+          <div className="w-full h-fit flex flex-col justify-start items-center gap-y-5">
+            <h1 className="text-[#543A14] font-bold text-[16px]">{header}</h1>
+
+            <div className="w-full h-42 rounded-xl overflow-hidden">
+              <img className="w-full h-full object-cover" src={img} />
+            </div>
+          </div>
+
+          <p className="h-full overflow-y-auto pt-1 text-[#543A14] text-[16px] font-normal text-center">
+            {desc}
+          </p>
+        </div>
+
+        <button
+          onClick={() => {
+            setIsPopup(false);
+            setIsSubPopup(false);
+          }}
+          className="text-[16px] font-semibold mt-2 text-white bg-[#BF4B17] border border-[#BF4B17] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-7 py-2"
+        >
+          {t("homepage.close")}
+        </button>
+      </div>
+    </div>
+  );
+}

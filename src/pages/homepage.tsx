@@ -6,6 +6,8 @@ import HomepageLoader from "../components/skeleton-load/homepage-loader";
 import Hitbox from "../components/homepage/hitbox";
 import type { stationNumber } from "../interfaces/homepage.interface";
 import StationCard from "../components/homepage/station-card";
+import MainPopup from "../components/homepage/main-popup";
+import SubPopup from "../components/homepage/sub-popup";
 
 const getActiveBg = (lang: string, station: stationNumber) => {
   if (station !== 0) {
@@ -24,6 +26,8 @@ export default function Homepage() {
   const [stationExpanded, setStationExpanded] = useState<stationNumber>(0);
   const [prevStation, setPrevStation] = useState<stationNumber>(0);
   const [isExiting, setIsExiting] = useState<boolean>(false);
+  const [isPopup, setIsPopup] = useState<boolean>(true);
+  const [isSubPopup, setIsSubPopup] = useState<boolean>(false);
 
   const measureRef = useRef<HTMLSpanElement>(null);
 
@@ -159,11 +163,18 @@ export default function Homepage() {
               <span className="text-[#543A14]">
                 10.00 {t("homepage.minute")} | {t("homepage.wait")}
               </span>
-              <img
-                src="/icons/homepage/info-icon.svg"
+              <button
+                onClick={() => {
+                  setIsPopup(true);
+                }}
                 className="w-4 h-4"
-                alt="info"
-              />
+              >
+                <img
+                  src="/icons/homepage/info-icon.svg"
+                  className="w-full h-full"
+                  alt="info"
+                />
+              </button>
             </div>
           </div>
         </div>
@@ -179,18 +190,45 @@ export default function Homepage() {
 
           <button
             onClick={handleBack}
-            className="z-11 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] p-0.5 rounded-full w-fit bg-white aspect-square border border-[#D9D9D9]"
+            className="z-11 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] p-0.75 rounded-full w-fit bg-white aspect-square border border-[#D9D9D9]"
           >
-            <IoIosArrowBack className="text-[#543A14]" size={38} />
+            <IoIosArrowBack className="text-[#543A14]" size={32} />
           </button>
 
-          <button className="z-11 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] px-4.5 py-1.5 rounded-full w-fit bg-[#BF4B17] aspect-square border border-[#75521F]">
-            <div className="w-1.5">
+          <button
+            onClick={() => {
+              setIsSubPopup(true);
+            }}
+            className="z-11 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] px-[16.5px] py-[5.5px] rounded-full w-fit bg-[#BF4B17] aspect-square border border-[#75521F]"
+          >
+            <div className="w-1.25">
               <img className="w-full h-full" src="/icons/homepage/i-icon.svg" />
             </div>
           </button>
         </div>
       </div>
+
+      {isPopup && (
+        <MainPopup
+          setIsPopup={setIsPopup}
+          setIsSubPopup={setIsSubPopup}
+          header="วัดพระธาตุหริภุญชัย"
+          desc={`สถานที่ศักดิ์สิทธิ์คู่บ้านคู่เมืองชาวลำพูนโบราณสถานที่สำคัญของนครหริภุญชัย เป็นวังที่พระเจ้าอาทิตยราชกษัตริย์แห่งราชวงศ์จามเทวีวงศ์อุทิศถวายให้เป็น"วัด"พระบรมธาตุหริภุญชัยตั้งอยู่หลังวิหารหลวงประดิษฐานพระเกศาธาตุบรรจุในโกศทองคำ สร้างขึ้นในปี พ.ศ.1440`}
+          img="/images/contact-page/line-pic.svg"
+          number={1}
+          setStationExpanded={setStationExpanded}
+        />
+      )}
+
+      {isSubPopup && (
+        <SubPopup
+          setIsPopup={setIsPopup}
+          setIsSubPopup={setIsSubPopup}
+          header="วัดพระธาตุหริภุญชัย"
+          desc={`สถานที่ศักดิ์สิทธิ์คู่บ้านคู่เมืองชาวลำพูนโบราณสถานที่สำคัญของนครหริภุญชัย เป็นวังที่พระเจ้าอาทิตยราชกษัตริย์แห่งราชวงศ์จามเทวีวงศ์อุทิศถวายให้เป็น"วัด"พระบรมธาตุหริภุญชัยตั้งอยู่หลังวิหารหลวงประดิษฐานพระเกศาธาตุบรรจุในโกศทองคำ สร้างขึ้นในปี พ.ศ.1440`}
+          img="/images/contact-page/line-pic.svg"
+        />
+      )}
     </main>
   );
 }

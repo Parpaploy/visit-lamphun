@@ -54,7 +54,7 @@ export default function ContactPage() {
                 />
               </div>
 
-              <div
+              <button
                 onClick={() => {
                   window.open(
                     "https://www.facebook.com/TourismLamphunMunicipality/?locale=th_TH",
@@ -65,7 +65,7 @@ export default function ContactPage() {
                 className="text-[14px] font-medium mt-2 text-white bg-[#105DE2] border border-[#105DE2] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-12 py-2"
               >
                 {t("contact.page")}
-              </div>
+              </button>
             </div>
 
             <div className="overflow-hidden border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
@@ -95,7 +95,7 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <div
+                <button
                   onClick={() => {
                     window.open(
                       "https://travel.cmonehealth.org/travel-app/#/?admin_area_id=13164&authorityId=4921",
@@ -106,7 +106,7 @@ export default function ContactPage() {
                   className="text-[14px] font-medium mt-2 text-white bg-[#BF4B17] border border-[#BF4B17] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-12 py-2"
                 >
                   {t("contact.web")}
-                </div>
+                </button>
               </div>
             </div>
           </>
@@ -139,7 +139,7 @@ export default function ContactPage() {
               สามารถสแกน QR - Code หรือ เพิ่มเพื่อนได้ที่นี่
             </p>
 
-            <div
+            <button
               onClick={() => {
                 window.open(
                   "https://line.me/ti/p/Xwfq5YWEKd",
@@ -150,7 +150,7 @@ export default function ContactPage() {
               className="text-[14px] font-medium text-white bg-[#1DCC64] border border-[#1DCC64] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-12 py-2"
             >
               {t("menu.friend")}
-            </div>
+            </button>
           </div>
         )}
       </section>
