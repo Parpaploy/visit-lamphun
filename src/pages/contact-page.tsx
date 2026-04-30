@@ -7,7 +7,8 @@ import ContactLoader from "../components/skeleton-load/contact-loader";
 import { useEmergencyItems } from "../hooks/useEmergencyItems";
 
 export default function ContactPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language as "th" | "en" | "cn";
   const [mode, setMode] = useState<IContactMode>("emergency");
   const [prevMode, setPrevMode] = useState<IContactMode>(mode);
   const [modeLoading, setModeLoading] = useState(false);
@@ -57,11 +58,11 @@ export default function ContactPage() {
                 <EmergencyCard
                   header={item.header}
                   items={[
-                    ...(item.address
-                      ? [{ type: "address" as const, text: item.address }]
+                    ...(item.address[lang]
+                      ? [{ type: "address" as const, text: item.address[lang] }]
                       : []),
-                    ...(item.hours
-                      ? [{ type: "hours" as const, text: item.hours }]
+                    ...(item.hours[lang]
+                      ? [{ type: "hours" as const, text: item.hours[lang] }]
                       : []),
                     ...item.phones.map((p) => ({
                       type: "phone" as const,

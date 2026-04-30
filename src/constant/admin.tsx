@@ -29,15 +29,17 @@ export function useTravelModes(): { value: ITravelMode; label: string }[] {
   ];
 }
 
+const EMPTY_ML = { th: "", en: "", cn: "" };
+
 export const EMPTY_TRAIN: Omit<TrainItem, "id"> = {
-  origin: "",
-  destination: "",
+  origin: { ...EMPTY_ML },
+  destination: { ...EMPTY_ML },
   originTime: "",
   destinationTime: "",
-  originStation: "",
-  destinationStation: "",
+  originStation: { ...EMPTY_ML },
+  destinationStation: { ...EMPTY_ML },
   price: 0,
-  desc: "",
+  desc: { ...EMPTY_ML },
   day: "weekday",
 };
 
@@ -50,22 +52,25 @@ export const EMPTY_RECOMMEND = {
   descCn: "",
 };
 
-export const EMPTY_KOME = { name: "", phone: "" };
+export const EMPTY_KOME = { name: { ...EMPTY_ML }, phone: "" };
 
 export const EMPTY_CONTACT = {
-  header: "",
-  address: "",
-  hours: "",
+  header: { ...EMPTY_ML },
+  address: { ...EMPTY_ML },
+  hours: { ...EMPTY_ML },
   phones: [""],
 };
 
-export const TABS: { value: Tab; label: string }[] = [
-  { value: "places", label: "สถานที่" },
-  { value: "recommend", label: "แนะนำ" },
-  { value: "kome", label: "โคมไฟ" },
-  { value: "travel", label: "เดินทาง" },
-  { value: "contact", label: "ติดต่อ" },
-];
+export function useTabs(): { value: Tab; label: string }[] {
+  const { t } = useTranslation();
+  return [
+    { value: "places", label: t("dashboard.tabs.places") },
+    { value: "recommend", label: t("dashboard.tabs.recommend") },
+    { value: "kome", label: t("dashboard.tabs.kome") },
+    { value: "travel", label: t("dashboard.tabs.travel") },
+    { value: "contact", label: t("dashboard.tabs.contact") },
+  ];
+}
 
 export const EMPTY_FORM = { nameTh: "", nameEn: "", nameCn: "", link: "" };
 
@@ -75,15 +80,15 @@ export const inputCls =
   "border border-[#C6C6C6] rounded-xl px-3 py-2 text-[13px] text-[#543A14] outline-none placeholder:text-[#C6C6C6] w-full";
 
 export const EMPTY_TRAM: Omit<TramItem, "id"> = {
-  place: "",
+  place: { ...EMPTY_ML },
   time: "",
   price: 0,
 };
 
 export const EMPTY_OTHER: Omit<OtherItem, "id"> = {
-  place: "",
-  desc: "",
-  desc2: "",
+  place: { ...EMPTY_ML },
+  desc: { ...EMPTY_ML },
+  desc2: { ...EMPTY_ML },
   type: "bus",
   phone: "",
   link: "",

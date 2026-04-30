@@ -55,5 +55,58 @@
     "openDesc": "周二至周日",
     "close": "关闭",
     "closeDesc": "每周一"
+  },
+
+  "form": {
+    "inTh": "（泰语）",
+    "inEn": "（英语）",
+    "inCn": "（中文）",
+    "origin": "出发地",
+    "destination": "目的地",
+    "originStation": "出发站",
+    "destinationStation": "目的地站",
+    "desc": "备注",
+    "originTime": "出发时间",
+    "destinationTime": "到达时间",
+    "price": "价格（泰铢）",
+    "weekday": "工作日",
+    "weekend": "周末",
+    "place": "地点",
+    "descFull": "描述",
+    "desc2": "附加信息",
+    "groupName": "组名",
+    "phone": "电话号码",
+    "link": "链接",
+    "agencyName": "机构名称",
+    "address": "地址",
+    "hours": "营业时间",
+    "time": "时间"
+  },
+
+  "dashboard": {
+    "title": "管理数据",
+    "tabs": {
+      "places": "地点",
+      "recommend": "推荐",
+      "kome": "灯笼",
+      "travel": "交通",
+      "contact": "联系"
+    },
+    "loading": "加载中...",
+    "saving": "保存中...",
+    "empty": "暂无数据",
+    "edit": "编辑",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "addItem": "+ 添加项目",
+    "addNew": "添加新项目",
+    "selectImage": "选择图片 *",
+    "changeImage": "更换图片（可选）",
+    "addGroup": "添加灯笼组",
+    "addGroupBtn": "+ 添加组",
+    "addAgency": "添加紧急机构",
+    "addPhone": "+ 添加电话",
+    "phone": "电话号码"
   }
 }

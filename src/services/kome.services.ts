@@ -12,13 +12,13 @@ export const fetchKomeItems = async (): Promise<KomeItem[]> => {
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as KomeItem);
 };
 
-export const addKomeItem = async (data: { name: string; phone: string }): Promise<void> => {
+export const addKomeItem = async (data: Omit<KomeItem, "id">): Promise<void> => {
   await addDoc(collection(db, COL), { ...data, createdAt: serverTimestamp() });
 };
 
 export const updateKomeItem = async (
   id: string,
-  data: { name: string; phone: string },
+  data: Omit<KomeItem, "id">,
 ): Promise<void> => {
   await updateDoc(doc(db, COL, id), data);
 };

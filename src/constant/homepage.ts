@@ -1,9 +1,17 @@
 import type { Location } from "../interfaces/homepage.interface";
 
+export const isSaturday = new Date().getDay() === 6;
+
 export const BG_MAP: Record<string, string> = {
-  th: "/images/homepage/th-bg.svg",
-  en: "/images/homepage/en-bg.svg",
-  cn: "/images/homepage/cn-bg.svg",
+  th: isSaturday
+    ? "/images/homepage/th-bg.svg"
+    : "/images/homepage/th-bg-weekend.svg",
+  en: isSaturday
+    ? "/images/homepage/en-bg.svg"
+    : "/images/homepage/en-bg-weekend.svg",
+  cn: isSaturday
+    ? "/images/homepage/cn-bg.svg"
+    : "/images/homepage/cn-bg-weekend.svg",
 };
 
 export const STATION_ID_MAP: Record<number, string> = {

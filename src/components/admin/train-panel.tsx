@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useTrainItems } from "../../hooks/useTravelItems";
 import { EMPTY_TRAIN } from "../../constant/admin";
 import type { TrainEdit } from "../../interfaces/admin.interface";
+import type { TrainItem } from "../../interfaces/content.interface";
 import {
   addTrainItem,
   deleteTrainItem,
@@ -9,24 +11,23 @@ import {
 } from "../../services/travel.services";
 import TrainForm from "./train-form";
 
+type TrainFormData = Omit<TrainItem, "id">;
+
 export default function TrainPanel() {
+  const { t } = useTranslation();
   const { items, loading, refetch } = useTrainItems();
-  const [form, setForm] = useState(EMPTY_TRAIN);
+  const [form, setForm] = useState<TrainFormData>(EMPTY_TRAIN);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
   const [editing, setEditing] = useState<TrainEdit | null>(null);
 
-  const tf = (k: keyof typeof form, v: string | number) =>
-    setForm((f) => ({ ...f, [k]: v }));
-
   const handleAdd = async () => {
     if (
-      !form.origin ||
-      !form.destination ||
-      !form.originTime ||
-      !form.destinationTime
+      !form.origin.th || !form.origin.en || !form.origin.cn ||
+      !form.destination.th || !form.destination.en || !form.destination.cn ||
+      !form.originTime || !form.destinationTime
     ) {
-      setFormError("กรุณากรอกข้อมูลให้ครบ");
+      setFormError("กรุณากรอกต้นทาง ปลายทาง และเวลาให้ครบทั้ง 3 ภาษา");
       return;
     }
     setFormError("");
@@ -36,9 +37,7 @@ export default function TrainPanel() {
       setForm(EMPTY_TRAIN);
       refetch();
     } catch (e) {
-      setFormError(
-        `เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`,
-      );
+      setFormError(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setSaving(false);
     }
@@ -80,62 +79,53 @@ export default function TrainPanel() {
   return (
     <div className="flex flex-col gap-y-4">
       <div className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-4">
-        <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">
-          เพิ่มรถไฟ
-        </h3>
+        <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">เพิ่มรถไฟ</h3>
         <TrainForm
           val={form}
-          onChange={tf}
+          onChange={(updater) => setForm(updater)}
           onSave={handleAdd}
-          saveLabel={saving ? "กำลังบันทึก..." : "+ เพิ่มรายการ"}
+          saveLabel={saving ? t("dashboard.saving") : t("dashboard.addItem")}
           error={formError}
         />
       </div>
+
       {loading ? (
-        <p className="text-[13px] text-[#8B724E]">กำลังโหลด...</p>
+        <p className="text-[13px] text-[#8B724E]">{t("dashboard.loading")}</p>
       ) : items.length === 0 ? (
-        <p className="text-[13px] text-[#C6C6C6]">ยังไม่มีรายการ</p>
+        <p className="text-[13px] text-[#C6C6C6]">{t("dashboard.empty")}</p>
       ) : (
         items.map((item) =>
           editing?.id === item.id ? (
-            <div
-              key={item.id}
-              className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2"
-            >
-              <p className="text-[12px] font-semibold text-[#BF4B17]">แก้ไข</p>
+            <div key={item.id} className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2">
+              <p className="text-[12px] font-semibold text-[#BF4B17]">{t("dashboard.edit")}</p>
               <TrainForm
-                val={{
-                  origin: editing.origin,
-                  destination: editing.destination,
-                  originTime: editing.originTime,
-                  destinationTime: editing.destinationTime,
-                  originStation: editing.originStation,
-                  destinationStation: editing.destinationStation,
-                  price: editing.price,
-                  desc: editing.desc,
-                  day: editing.day,
-                }}
-                onChange={(k, v) => setEditing((s) => s && { ...s, [k]: v })}
+                val={editing}
+                onChange={(updater) =>
+                  setEditing((s) => {
+                    if (!s) return null;
+                    return { ...s, ...updater(s) };
+                  })
+                }
                 onSave={handleSaveEdit}
                 onCancel={() => setEditing(null)}
-                saveLabel={editing.saving ? "กำลังบันทึก..." : "บันทึก"}
+                saveLabel={editing.saving ? t("dashboard.saving") : t("dashboard.save")}
               />
             </div>
           ) : (
-            <div
-              key={item.id}
-              className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-3 flex items-start gap-x-3"
-            >
+            <div key={item.id} className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-3 flex items-start gap-x-3">
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold text-[#543A14]">
-                  {item.origin} → {item.destination}
+                  {item.origin.th} → {item.destination.th}
                 </p>
                 <p className="text-[11px] text-[#8B724E]">
+                  {item.origin.en} → {item.destination.en}
+                </p>
+                <p className="text-[11px] text-[#C6C6C6]">
                   {item.originTime} – {item.destinationTime} · {item.price} บาท
                   · {item.day === "weekday" ? "วันธรรมดา" : "วันหยุด"}
                 </p>
-                {item.desc && (
-                  <p className="text-[11px] text-[#C6C6C6]">{item.desc}</p>
+                {item.desc.th && (
+                  <p className="text-[11px] text-[#C6C6C6]">{item.desc.th}</p>
                 )}
               </div>
               <div className="flex gap-x-3 shrink-0">
@@ -143,13 +133,13 @@ export default function TrainPanel() {
                   onClick={() => setEditing({ ...item, saving: false })}
                   className="text-[12px] text-[#543A14] font-medium"
                 >
-                  แก้ไข
+                  {t("dashboard.edit")}
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
                   className="text-[12px] text-red-400 font-medium"
                 >
-                  ลบ
+                  {t("dashboard.delete")}
                 </button>
               </div>
             </div>

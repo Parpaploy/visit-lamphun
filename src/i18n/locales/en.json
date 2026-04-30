@@ -55,5 +55,58 @@
     "openDesc": "Tue. - Sun.",
     "close": "Closed",
     "closeDesc": "every Mon."
+  },
+
+  "form": {
+    "inTh": "(Thai)",
+    "inEn": "(English)",
+    "inCn": "(Chinese)",
+    "origin": "Origin",
+    "destination": "Destination",
+    "originStation": "Origin Station",
+    "destinationStation": "Destination Station",
+    "desc": "Remark",
+    "originTime": "Departure Time",
+    "destinationTime": "Arrival Time",
+    "price": "Price (THB)",
+    "weekday": "Weekdays",
+    "weekend": "Weekends",
+    "place": "Place",
+    "descFull": "Description",
+    "desc2": "Additional Info",
+    "groupName": "Group Name",
+    "phone": "Phone Number",
+    "link": "Link",
+    "agencyName": "Agency Name",
+    "address": "Address",
+    "hours": "Hours",
+    "time": "Time"
+  },
+
+  "dashboard": {
+    "title": "Manage Data",
+    "tabs": {
+      "places": "Places",
+      "recommend": "Recommend",
+      "kome": "Lanterns",
+      "travel": "Travel",
+      "contact": "Contact"
+    },
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "empty": "No items yet",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "addItem": "+ Add Item",
+    "addNew": "Add New Item",
+    "selectImage": "Select Image *",
+    "changeImage": "Change Image (optional)",
+    "addGroup": "Add Lantern Group",
+    "addGroupBtn": "+ Add Group",
+    "addAgency": "Add Emergency Agency",
+    "addPhone": "+ Add Phone",
+    "phone": "Phone Number"
   }
 }

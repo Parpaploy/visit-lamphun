@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useOtherItems } from "../../hooks/useTravelItems";
 import { EMPTY_OTHER, typeLabel } from "../../constant/admin";
+import type { OtherItem } from "../../interfaces/content.interface";
 import {
   addOtherItem,
   deleteOtherItem,
@@ -9,16 +11,19 @@ import {
 import type { OtherEdit } from "../../interfaces/admin.interface";
 import OtherForm from "./other-form";
 
+type OtherFormData = Omit<OtherItem, "id">;
+
 export default function OtherPanel() {
+  const { t } = useTranslation();
   const { items, loading, refetch } = useOtherItems();
-  const [form, setForm] = useState(EMPTY_OTHER);
+  const [form, setForm] = useState<OtherFormData>(EMPTY_OTHER);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
   const [editing, setEditing] = useState<OtherEdit | null>(null);
 
   const handleAdd = async () => {
-    if (!form.place) {
-      setFormError("กรุณากรอกสถานที่");
+    if (!form.place.th || !form.place.en || !form.place.cn) {
+      setFormError("กรุณากรอกสถานที่ครบทั้ง 3 ภาษา");
       return;
     }
     setFormError("");
@@ -28,9 +33,7 @@ export default function OtherPanel() {
       setForm(EMPTY_OTHER);
       refetch();
     } catch (e) {
-      setFormError(
-        `เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`,
-      );
+      setFormError(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setSaving(false);
     }
@@ -75,24 +78,22 @@ export default function OtherPanel() {
         </h3>
         <OtherForm
           v={form}
-          ch={(k, val) => setForm((f) => ({ ...f, [k]: val }))}
+          ch={(updater) => setForm(updater)}
           onSave={handleAdd}
-          saveLabel={saving ? "กำลังบันทึก..." : "+ เพิ่มรายการ"}
+          saveLabel={saving ? t("dashboard.saving") : t("dashboard.addItem")}
           error={formError}
         />
       </div>
+
       {loading ? (
-        <p className="text-[13px] text-[#8B724E]">กำลังโหลด...</p>
+        <p className="text-[13px] text-[#8B724E]">{t("dashboard.loading")}</p>
       ) : items.length === 0 ? (
-        <p className="text-[13px] text-[#C6C6C6]">ยังไม่มีรายการ</p>
+        <p className="text-[13px] text-[#C6C6C6]">{t("dashboard.empty")}</p>
       ) : (
         items.map((item) =>
           editing?.id === item.id ? (
-            <div
-              key={item.id}
-              className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2"
-            >
-              <p className="text-[12px] font-semibold text-[#BF4B17]">แก้ไข</p>
+            <div key={item.id} className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2">
+              <p className="text-[12px] font-semibold text-[#BF4B17]">{t("dashboard.edit")}</p>
               <OtherForm
                 v={{
                   place: editing.place,
@@ -103,29 +104,28 @@ export default function OtherPanel() {
                   link: editing.link,
                   day: editing.day,
                 }}
-                ch={(k, val) => setEditing((s) => s && { ...s, [k]: val })}
+                ch={(updater) =>
+                  setEditing((s) => {
+                    if (!s) return null;
+                    return { ...s, ...updater(s) };
+                  })
+                }
                 onSave={handleSaveEdit}
                 onCancel={() => setEditing(null)}
-                saveLabel={editing.saving ? "กำลังบันทึก..." : "บันทึก"}
+                saveLabel={editing.saving ? t("dashboard.saving") : t("dashboard.save")}
               />
             </div>
           ) : (
-            <div
-              key={item.id}
-              className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-3 flex items-start gap-x-3"
-            >
+            <div key={item.id} className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-3 flex items-start gap-x-3">
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold text-[#543A14] truncate">
-                  {item.place}
+                  {item.place.th}
                 </p>
                 <p className="text-[11px] text-[#8B724E]">
-                  {typeLabel(item.type)} ·{" "}
-                  {item.day === "weekday" ? "วันธรรมดา" : "วันหยุด"}
+                  {item.place.en} · {typeLabel(item.type)} · {item.day === "weekday" ? "วันธรรมดา" : "วันหยุด"}
                 </p>
-                {item.desc && (
-                  <p className="text-[11px] text-[#C6C6C6] line-clamp-1">
-                    {item.desc}
-                  </p>
+                {item.desc.th && (
+                  <p className="text-[11px] text-[#C6C6C6] line-clamp-1">{item.desc.th}</p>
                 )}
               </div>
               <div className="flex gap-x-3 shrink-0">
@@ -133,13 +133,13 @@ export default function OtherPanel() {
                   onClick={() => setEditing({ ...item, saving: false })}
                   className="text-[12px] text-[#543A14] font-medium"
                 >
-                  แก้ไข
+                  {t("dashboard.edit")}
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
                   className="text-[12px] text-red-400 font-medium"
                 >
-                  ลบ
+                  {t("dashboard.delete")}
                 </button>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { useRecommendItems } from "../../hooks/useRecommendItems";
 import {
   addRecommendItem,
@@ -15,6 +16,7 @@ const inputCls =
   "border border-[#C6C6C6] rounded-xl px-3 py-2 text-[13px] text-[#543A14] outline-none placeholder:text-[#C6C6C6] w-full";
 
 export default function AdminRecommend() {
+  const { t } = useTranslation();
   const modes = useRecommendModes();
   const [mode, setMode] = useState<IRecommendMode>("goods");
   const { items, loading, refetch } = useRecommendItems(mode);
@@ -132,7 +134,7 @@ export default function AdminRecommend() {
 
       <div className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-4">
         <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">
-          เพิ่มรายการใหม่
+          {t("dashboard.addNew")}
         </h3>
         <div className="flex flex-col gap-y-2">
           <input
@@ -192,7 +194,7 @@ export default function AdminRecommend() {
             onClick={() => fileInputRef.current?.click()}
             className="border border-dashed border-[#C6C6C6] rounded-xl py-2.5 text-[13px] text-[#8B724E] hover:border-[#BF4B17] transition-colors"
           >
-            {imageFile ? imageFile.name : "เลือกรูปภาพ *"}
+            {imageFile ? imageFile.name : t("dashboard.selectImage")}
           </button>
           {previewUrl && (
             <div className="w-full h-32 rounded-xl overflow-hidden">
@@ -213,15 +215,15 @@ export default function AdminRecommend() {
             disabled={saving}
             className="bg-[#BF4B17] text-white text-[13px] font-semibold rounded-full py-2 disabled:opacity-60"
           >
-            {saving ? "กำลังบันทึก..." : "+ เพิ่มรายการ"}
+            {saving ? t("dashboard.saving") : t("dashboard.addItem")}
           </button>
         </div>
       </div>
 
       {loading ? (
-        <p className="text-[13px] text-[#8B724E]">กำลังโหลด...</p>
+        <p className="text-[13px] text-[#8B724E]">{t("dashboard.loading")}</p>
       ) : items.length === 0 ? (
-        <p className="text-[13px] text-[#C6C6C6]">ยังไม่มีรายการ</p>
+        <p className="text-[13px] text-[#C6C6C6]">{t("dashboard.empty")}</p>
       ) : (
         items.map((item) =>
           editing?.id === item.id ? (
@@ -229,7 +231,7 @@ export default function AdminRecommend() {
               key={item.id}
               className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2"
             >
-              <p className="text-[12px] font-semibold text-[#BF4B17]">แก้ไข</p>
+              <p className="text-[12px] font-semibold text-[#BF4B17]">{t("dashboard.edit")}</p>
               <input
                 value={editing.title.th}
                 onChange={(e) =>
@@ -310,7 +312,7 @@ export default function AdminRecommend() {
               >
                 {editing.newFile
                   ? editing.newFile.name
-                  : "เปลี่ยนรูป (ไม่บังคับ)"}
+                  : t("dashboard.changeImage")}
               </button>
               <div className="w-full h-24 rounded-xl overflow-hidden">
                 <img
@@ -332,7 +334,7 @@ export default function AdminRecommend() {
                   disabled={editing.saving}
                   className="flex-1 bg-[#BF4B17] text-white text-[13px] font-semibold rounded-full py-2 disabled:opacity-60"
                 >
-                  บันทึก
+                  {t("dashboard.save")}
                 </button>
                 <button
                   onClick={() => {
@@ -341,7 +343,7 @@ export default function AdminRecommend() {
                   }}
                   className="flex-1 border border-[#C6C6C6] text-[#543A14] text-[13px] font-semibold rounded-full py-2"
                 >
-                  ยกเลิก
+                  {t("dashboard.cancel")}
                 </button>
               </div>
             </div>
@@ -376,13 +378,13 @@ export default function AdminRecommend() {
                   }
                   className="text-[12px] text-[#543A14] font-medium"
                 >
-                  แก้ไข
+                  {t("dashboard.edit")}
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
                   className="text-[12px] text-red-400 font-medium"
                 >
-                  ลบ
+                  {t("dashboard.delete")}
                 </button>
               </div>
             </div>

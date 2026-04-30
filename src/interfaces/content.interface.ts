@@ -13,35 +13,35 @@ export interface RecommendItem {
 
 export interface KomeItem {
   id: string;
-  name: string;
+  name: MLString;
   phone: string;
 }
 
 export interface TrainItem {
   id: string;
-  origin: string;
-  destination: string;
+  origin: MLString;
+  destination: MLString;
   originTime: string;
   destinationTime: string;
-  originStation: string;
-  destinationStation: string;
+  originStation: MLString;
+  destinationStation: MLString;
   price: number;
-  desc: string;
+  desc: MLString;
   day: "weekday" | "weekend";
 }
 
 export interface TramItem {
   id: string;
-  place: string;
+  place: MLString;
   time: string;
   price: number;
 }
 
 export interface OtherItem {
   id: string;
-  place: string;
-  desc: string;
-  desc2: string;
+  place: MLString;
+  desc: MLString;
+  desc2: MLString;
   type: "bus" | "tricycle" | "songthaew";
   phone: string;
   link: string;
@@ -50,8 +50,8 @@ export interface OtherItem {
 
 export interface EmergencyItem {
   id: string;
-  header: string;
-  address: string;
-  hours: string;
+  header: MLString;
+  address: MLString;
+  hours: MLString;
   phones: string[];
 }
