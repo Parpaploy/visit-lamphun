@@ -14,7 +14,7 @@ export default function ItemMenu({
   return (
     <div className="relative w-full border-b-2 border-[#D9D9D9] flex justify-start items-center gap-x-5 py-5">
       <div className="w-[40%] h-auto aspect-square rounded-[18px] overflow-hidden">
-        <img className="w-full h-full" src={imgUrl} />
+        <img className="w-full h-full" src={imgUrl} loading="lazy" />
       </div>
 
       <div className="w-full text-start">

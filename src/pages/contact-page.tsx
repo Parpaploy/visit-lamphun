@@ -1,13 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import SubNavbar from "../components/navbar/sub-navbar";
 import type { IContactMode } from "../interfaces/navbar.interface";
 import EmergencyCard from "../components/contact-page/emergency-card";
+import ContactLoader from "../components/skeleton-load/contact-loader";
 import { useEmergencyItems } from "../hooks/useEmergencyItems";
 
 export default function ContactPage() {
   const { t } = useTranslation();
   const [mode, setMode] = useState<IContactMode>("emergency");
+  const [prevMode, setPrevMode] = useState<IContactMode>(mode);
+  const [modeLoading, setModeLoading] = useState(false);
+
+  if (mode !== prevMode) {
+    setPrevMode(mode);
+    setModeLoading(true);
+  }
+
+  useEffect(() => {
+    if (!modeLoading) return;
+    const timer = setTimeout(() => setModeLoading(false), 350);
+    return () => clearTimeout(timer);
+  }, [modeLoading]);
+
   const { items, loading } = useEmergencyItems();
 
   return (
@@ -25,28 +40,45 @@ export default function ContactPage() {
       />
 
       <section className="w-full flex-1 overflow-y-auto space-y-4 p-7">
-        {mode === "emergency" && (
-          loading ? (
-            <p className="text-center text-[13px] text-[#8B724E]">กำลังโหลด...</p>
+        {mode === "emergency" &&
+          (modeLoading || loading ? (
+            Array.from({ length: 3 }).map((_, i) => <ContactLoader key={i} />)
           ) : items.length === 0 ? (
-            <p className="text-center text-[13px] text-[#C6C6C6]">ยังไม่มีข้อมูล</p>
+            <p className="text-center text-[13px] text-[#C6C6C6]">
+              ยังไม่มีข้อมูล
+            </p>
           ) : (
-            items.map((item) => (
-              <EmergencyCard
+            items.map((item, idx) => (
+              <div
                 key={item.id}
-                header={item.header}
-                items={[
-                  ...(item.address ? [{ type: "address" as const, text: item.address }] : []),
-                  ...(item.hours ? [{ type: "hours" as const, text: item.hours }] : []),
-                  ...item.phones.map((p) => ({ type: "phone" as const, text: p })),
-                ]}
-              />
+                className="animate-fade-in"
+                style={{ animationDelay: `${idx * 60}ms` }}
+              >
+                <EmergencyCard
+                  header={item.header}
+                  items={[
+                    ...(item.address
+                      ? [{ type: "address" as const, text: item.address }]
+                      : []),
+                    ...(item.hours
+                      ? [{ type: "hours" as const, text: item.hours }]
+                      : []),
+                    ...item.phones.map((p) => ({
+                      type: "phone" as const,
+                      text: p,
+                    })),
+                  ]}
+                />
+              </div>
             ))
-          )
+          ))}
+
+        {mode === "news" && modeLoading && (
+          Array.from({ length: 2 }).map((_, i) => <ContactLoader key={i} />)
         )}
 
-        {mode === "news" && (
-          <>
+        {mode === "news" && !modeLoading && (
+          <div className="animate-fade-in flex flex-col gap-y-4">
             <div className="flex flex-col justify-between items-center gap-y-2 px-5 py-5 border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
               <h1 className="text-[#104DB6] text-[24px] font-semibold">
                 Facebook
@@ -114,11 +146,13 @@ export default function ContactPage() {
                 </button>
               </div>
             </div>
-          </>
+          </div>
         )}
 
-        {mode === "line" && (
-          <div className="min-h-full flex flex-col justify-between items-center gap-y-2 px-10 py-5 border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+        {mode === "line" && modeLoading && <ContactLoader />}
+
+        {mode === "line" && !modeLoading && (
+          <div className="animate-fade-in min-h-full flex flex-col justify-between items-center gap-y-2 px-10 py-5 border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
             <h1 className="text-[#11A04B] text-[24px] font-semibold">Line</h1>
 
             <div className="w-full">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import DayButton from "../components/travel-page/day-btn";
 import DayBlock from "../components/travel-page/day-block";
@@ -8,19 +8,41 @@ import OtherCard from "../components/travel-page/other-card";
 import TravelLoader from "../components/skeleton-load/travel-loader";
 import type { ITravelMode } from "../interfaces/navbar.interface";
 import SubNavbar from "../components/navbar/sub-navbar";
-import { useTrainItems, useTramItems, useOtherItems } from "../hooks/useTravelItems";
+import {
+  useTrainItems,
+  useTramItems,
+  useOtherItems,
+} from "../hooks/useTravelItems";
 
 export default function TravelPage() {
   const { t } = useTranslation();
   const [mode, setMode] = useState<ITravelMode>("train");
   const [day, setDay] = useState<"weekday" | "weekend">("weekday");
+  const [prevMode, setPrevMode] = useState<ITravelMode>(mode);
+  const [modeLoading, setModeLoading] = useState(false);
+
+  if (mode !== prevMode) {
+    setPrevMode(mode);
+    setModeLoading(true);
+  }
+
+  useEffect(() => {
+    if (!modeLoading) return;
+    const t = setTimeout(() => setModeLoading(false), 350);
+    return () => clearTimeout(t);
+  }, [modeLoading]);
 
   const { items: trainItems, loading: trainLoading } = useTrainItems();
   const { items: tramItems, loading: tramLoading } = useTramItems();
   const { items: otherItems, loading: otherLoading } = useOtherItems();
 
   const loading =
-    mode === "train" ? trainLoading : mode === "tram" ? tramLoading : otherLoading;
+    modeLoading ||
+    (mode === "train"
+      ? trainLoading
+      : mode === "tram"
+        ? tramLoading
+        : otherLoading);
 
   return (
     <main className="relative w-full h-full flex flex-col overflow-hidden">
@@ -69,43 +91,58 @@ export default function TravelPage() {
             {mode === "train" &&
               trainItems
                 .filter((item) => item.day === day)
-                .map((item) => (
-                  <TrainCard
+                .map((item, idx) => (
+                  <div
                     key={item.id}
-                    origin={item.origin}
-                    destination={item.destination}
-                    originTime={item.originTime}
-                    destinationTime={item.destinationTime}
-                    originStation={item.originStation}
-                    destinationStation={item.destinationStation}
-                    price={item.price}
-                    desc={item.desc}
-                  />
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${idx * 60}ms` }}
+                  >
+                    <TrainCard
+                      origin={item.origin}
+                      destination={item.destination}
+                      originTime={item.originTime}
+                      destinationTime={item.destinationTime}
+                      originStation={item.originStation}
+                      destinationStation={item.destinationStation}
+                      price={item.price}
+                      desc={item.desc}
+                    />
+                  </div>
                 ))}
 
             {mode === "tram" &&
-              tramItems.map((item) => (
-                <TramCard
+              tramItems.map((item, idx) => (
+                <div
                   key={item.id}
-                  place={item.place}
-                  time={item.time}
-                  price={item.price}
-                />
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${idx * 60}ms` }}
+                >
+                  <TramCard
+                    place={item.place}
+                    time={item.time}
+                    price={item.price}
+                  />
+                </div>
               ))}
 
             {mode === "other" &&
               otherItems
                 .filter((item) => item.day === day)
-                .map((item) => (
-                  <OtherCard
+                .map((item, idx) => (
+                  <div
                     key={item.id}
-                    place={item.place}
-                    desc={item.desc}
-                    desc2={item.desc2}
-                    type={item.type}
-                    phone={item.phone}
-                    link={item.link}
-                  />
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${idx * 60}ms` }}
+                  >
+                    <OtherCard
+                      place={item.place}
+                      desc={item.desc}
+                      desc2={item.desc2}
+                      type={item.type}
+                      phone={item.phone}
+                      link={item.link}
+                    />
+                  </div>
                 ))}
           </>
         )}

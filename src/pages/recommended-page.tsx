@@ -42,13 +42,21 @@ export default function RecommendedPage() {
             ยังไม่มีข้อมูล
           </p>
         ) : (
-          items.map((item) => {
+          items.map((item, idx) => {
             const title = item.title[lang] ?? item.title.th;
             const desc = item.desc[lang] ?? item.desc.th;
-            return mode === "story" ? (
-              <ItemCard key={item.id} title={title} desc={desc} imgUrl={item.img} />
-            ) : (
-              <ItemMenu key={item.id} title={title} desc={desc} imgUrl={item.img} />
+            return (
+              <div
+                key={item.id}
+                className="animate-fade-in"
+                style={{ animationDelay: `${idx * 60}ms` }}
+              >
+                {mode === "story" ? (
+                  <ItemCard title={title} desc={desc} imgUrl={item.img} />
+                ) : (
+                  <ItemMenu title={title} desc={desc} imgUrl={item.img} />
+                )}
+              </div>
             );
           })
         )}

@@ -14,7 +14,7 @@ export default function ItemCard({
   return (
     <div className="w-full border-b-2 border-[#D9D9D9] flex flex-col justify-start items-center gap-y-4 pt-7 pb-4">
       <div className="w-full h-35 rounded-[18px] overflow-hidden">
-        <img className="w-full h-full" src={imgUrl} />
+        <img className="w-full h-full" src={imgUrl} loading="lazy" />
       </div>
 
       <div className="w-full text-start">
