@@ -55,3 +55,9 @@ export interface EmergencyItem {
   hours: MLString;
   phones: string[];
 }
+
+export interface StationPopupData {
+  header: MLString;
+  desc: MLString;
+  img: string;
+}

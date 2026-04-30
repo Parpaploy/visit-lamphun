@@ -19,7 +19,7 @@ export type EditState = {
   saving: boolean;
 };
 
-export type Tab = "places" | "recommend" | "kome" | "travel" | "contact";
+export type Tab = "places" | "recommend" | "kome" | "travel" | "contact" | "popup";
 
 export type ContactEditState = EmergencyItem & { saving: boolean };
 

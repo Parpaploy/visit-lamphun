@@ -56,7 +56,8 @@ export default function Homepage() {
     setLoaded(false);
   }
 
-  const currentBg = getActiveBg(i18n.language, stationExpanded);
+  const lang = i18n.language;
+  const currentBg = getActiveBg(lang, stationExpanded);
   const activeStationId =
     stationExpanded !== 0 ? STATION_ID_MAP[stationExpanded] : null;
   const { places, loading: placesLoading } = useStationPlaces(activeStationId);
@@ -235,9 +236,6 @@ export default function Homepage() {
         <MainPopup
           setIsPopup={setIsPopup}
           setIsSubPopup={setIsSubPopup}
-          header="วัดพระธาตุหริภุญชัย"
-          desc={`สถานที่ศักดิ์สิทธิ์คู่บ้านคู่เมืองชาวลำพูนโบราณสถานที่สำคัญของนครหริภุญชัย เป็นวังที่พระเจ้าอาทิตยราชกษัตริย์แห่งราชวงศ์จามเทวีวงศ์อุทิศถวายให้เป็น"วัด"พระบรมธาตุหริภุญชัยตั้งอยู่หลังวิหารหลวงประดิษฐานพระเกศาธาตุบรรจุในโกศทองคำ สร้างขึ้นในปี พ.ศ.1440`}
-          img="/images/contact-page/line-pic.svg"
           number={1}
           setStationExpanded={setStationExpanded}
         />
@@ -247,9 +245,7 @@ export default function Homepage() {
         <SubPopup
           setIsPopup={setIsPopup}
           setIsSubPopup={setIsSubPopup}
-          header="วัดพระธาตุหริภุญชัย"
-          desc={`สถานที่ศักดิ์สิทธิ์คู่บ้านคู่เมืองชาวลำพูนโบราณสถานที่สำคัญของนครหริภุญชัย เป็นวังที่พระเจ้าอาทิตยราชกษัตริย์แห่งราชวงศ์จามเทวีวงศ์อุทิศถวายให้เป็น"วัด"พระบรมธาตุหริภุญชัยตั้งอยู่หลังวิหารหลวงประดิษฐานพระเกศาธาตุบรรจุในโกศทองคำ สร้างขึ้นในปี พ.ศ.1440`}
-          img="/images/contact-page/line-pic.svg"
+          stationId={activeStationId}
         />
       )}
     </main>

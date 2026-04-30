@@ -7,6 +7,7 @@ import AdminContact from "../components/admin/admin-contact";
 import type { Tab } from "../interfaces/admin.interface";
 import { useTabs } from "../constant/admin";
 import PlacesPanel from "../components/admin/places-panel";
+import AdminPopup from "../components/admin/admin-popup";
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
@@ -41,6 +42,7 @@ export default function AdminDashboard() {
         {tab === "kome" && <AdminKome />}
         {tab === "travel" && <AdminTravel />}
         {tab === "contact" && <AdminContact />}
+        {tab === "popup" && <AdminPopup />}
       </div>
     </div>
   );

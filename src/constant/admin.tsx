@@ -69,6 +69,7 @@ export function useTabs(): { value: Tab; label: string }[] {
     { value: "kome", label: t("dashboard.tabs.kome") },
     { value: "travel", label: t("dashboard.tabs.travel") },
     { value: "contact", label: t("dashboard.tabs.contact") },
+    { value: "popup", label: t("dashboard.tabs.popup") },
   ];
 }
 

@@ -80,7 +80,8 @@
     "agencyName": "Agency Name",
     "address": "Address",
     "hours": "Hours",
-    "time": "Time"
+    "time": "Time",
+    "title": "Title"
   },
 
   "dashboard": {
@@ -90,7 +91,8 @@
       "recommend": "Recommend",
       "kome": "Lanterns",
       "travel": "Travel",
-      "contact": "Contact"
+      "contact": "Contact",
+      "popup": "Popup"
     },
     "loading": "Loading...",
     "saving": "Saving...",
@@ -107,6 +109,8 @@
     "addGroupBtn": "+ Add Group",
     "addAgency": "Add Emergency Agency",
     "addPhone": "+ Add Phone",
-    "phone": "Phone Number"
+    "phone": "Phone Number",
+    "editPopup": "Edit Popup",
+    "image": "Image"
   }
 }

@@ -80,7 +80,8 @@
     "agencyName": "机构名称",
     "address": "地址",
     "hours": "营业时间",
-    "time": "时间"
+    "time": "时间",
+    "title": "标题"
   },
 
   "dashboard": {
@@ -90,7 +91,8 @@
       "recommend": "推荐",
       "kome": "灯笼",
       "travel": "交通",
-      "contact": "联系"
+      "contact": "联系",
+      "popup": "弹窗"
     },
     "loading": "加载中...",
     "saving": "保存中...",
@@ -107,6 +109,8 @@
     "addGroupBtn": "+ 添加组",
     "addAgency": "添加紧急机构",
     "addPhone": "+ 添加电话",
-    "phone": "电话号码"
+    "phone": "电话号码",
+    "editPopup": "编辑弹窗",
+    "image": "图片"
   }
 }
