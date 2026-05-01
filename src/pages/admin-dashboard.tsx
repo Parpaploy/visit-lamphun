@@ -16,7 +16,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-[#FBFCF0] p-5">
-      <div className="max-w-lg mx-auto">
+      <div className="mx-auto">
         <h1 className="text-[20px] font-bold text-[#543A14] mb-4">
           {t("dashboard.title")}
         </h1>

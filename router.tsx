@@ -8,6 +8,7 @@ import KomePage from "./src/pages/kome-page";
 import ContactPage from "./src/pages/contact-page";
 import TravelPage from "./src/pages/travel-page";
 import AdminDashboard from "./src/pages/admin-dashboard";
+import DriverLayout from "./src/layouts/driver-layout";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,15 @@ export const router = createBrowserRouter([
     children: [
       { path: "dashboard", element: <AdminDashboard /> },
       { index: true, element: <Navigate to="dashboard" replace /> },
+    ],
+  },
+
+  {
+    path: "/driver",
+    element: <DriverLayout />,
+    children: [
+      { path: "", element: <AdminDashboard /> },
+      { index: true, element: <Navigate to="" replace /> },
     ],
   },
 ]);
