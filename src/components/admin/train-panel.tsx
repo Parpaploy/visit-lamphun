@@ -27,7 +27,7 @@ export default function TrainPanel() {
       !form.destination.th || !form.destination.en || !form.destination.cn ||
       !form.originTime || !form.destinationTime
     ) {
-      setFormError("กรุณากรอกต้นทาง ปลายทาง และเวลาให้ครบทั้ง 3 ภาษา");
+      setFormError(t("dashboard.errorRequiredTrain"));
       return;
     }
     setFormError("");
@@ -37,7 +37,7 @@ export default function TrainPanel() {
       setForm(EMPTY_TRAIN);
       refetch();
     } catch (e) {
-      setFormError(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      setFormError(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setSaving(false);
     }
@@ -61,25 +61,25 @@ export default function TrainPanel() {
       setEditing(null);
       refetch();
     } catch (e) {
-      alert(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      alert(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
       setEditing((s) => s && { ...s, saving: false });
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("ลบรายการนี้?")) return;
+    if (!confirm(t("dashboard.confirmDelete"))) return;
     try {
       await deleteTrainItem(id);
       refetch();
     } catch {
-      alert("ลบไม่สำเร็จ");
+      alert(t("dashboard.errorDelete"));
     }
   };
 
   return (
     <div className="flex flex-col gap-y-4">
       <div className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-4">
-        <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">เพิ่มรถไฟ</h3>
+        <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">{t("dashboard.addTrain")}</h3>
         <TrainForm
           val={form}
           onChange={(updater) => setForm(updater)}

@@ -97,6 +97,3 @@ export const EMPTY_OTHER: Omit<OtherItem, "id"> = {
   lineLink: "",
   day: "weekday",
 };
-
-export const typeLabel = (t: OtherItem["type"]) =>
-  t === "van" ? "รถตู้" : t === "tricycle" ? "สามล้อ" : "สองแถว";

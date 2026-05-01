@@ -17,6 +17,8 @@ const inputCls =
 
 export default function AdminRecommend() {
   const { t } = useTranslation();
+  const p = (key: string, lang: "inTh" | "inEn" | "inCn", req = false) =>
+    `${t(key)} ${t(`form.${lang}`)}${req ? " *" : ""}`;
   const modes = useRecommendModes();
   const [mode, setMode] = useState<IRecommendMode>("goods");
   const { items, loading, refetch } = useRecommendItems(mode);
@@ -57,7 +59,7 @@ export default function AdminRecommend() {
       !descCn ||
       !imageFile
     ) {
-      setFormError("กรุณากรอกข้อมูลให้ครบและเลือกรูปภาพ");
+      setFormError(t("dashboard.errorRequiredAll"));
       return;
     }
     setFormError("");
@@ -76,7 +78,7 @@ export default function AdminRecommend() {
       refetch();
     } catch (e) {
       setFormError(
-        `เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`,
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
       );
     } finally {
       setSaving(false);
@@ -100,18 +102,18 @@ export default function AdminRecommend() {
       setUploadProgress(null);
       refetch();
     } catch (e) {
-      alert(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      alert(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
       setEditing((s) => s && { ...s, saving: false });
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("ลบรายการนี้?")) return;
+    if (!confirm(t("dashboard.confirmDelete"))) return;
     try {
       await deleteRecommendItem(mode, id);
       refetch();
     } catch {
-      alert("ลบไม่สำเร็จ");
+      alert(t("dashboard.errorDelete"));
     }
   };
 
@@ -138,7 +140,7 @@ export default function AdminRecommend() {
         </h3>
         <div className="flex flex-col gap-y-2">
           <input
-            placeholder="ชื่อ (ไทย) *"
+            placeholder={p("form.title", "inTh", true)}
             value={form.titleTh}
             onChange={(e) =>
               setForm((f) => ({ ...f, titleTh: e.target.value }))
@@ -146,7 +148,7 @@ export default function AdminRecommend() {
             className={inputCls}
           />
           <input
-            placeholder="Title (English) *"
+            placeholder={p("form.title", "inEn", true)}
             value={form.titleEn}
             onChange={(e) =>
               setForm((f) => ({ ...f, titleEn: e.target.value }))
@@ -154,7 +156,7 @@ export default function AdminRecommend() {
             className={inputCls}
           />
           <input
-            placeholder="标题 (中文) *"
+            placeholder={p("form.title", "inCn", true)}
             value={form.titleCn}
             onChange={(e) =>
               setForm((f) => ({ ...f, titleCn: e.target.value }))
@@ -162,21 +164,21 @@ export default function AdminRecommend() {
             className={inputCls}
           />
           <textarea
-            placeholder="คำอธิบาย (ไทย) *"
+            placeholder={p("form.descFull", "inTh", true)}
             value={form.descTh}
             onChange={(e) => setForm((f) => ({ ...f, descTh: e.target.value }))}
             rows={2}
             className={`${inputCls} resize-none`}
           />
           <textarea
-            placeholder="Description (English) *"
+            placeholder={p("form.descFull", "inEn", true)}
             value={form.descEn}
             onChange={(e) => setForm((f) => ({ ...f, descEn: e.target.value }))}
             rows={2}
             className={`${inputCls} resize-none`}
           />
           <textarea
-            placeholder="描述 (中文) *"
+            placeholder={p("form.descFull", "inCn", true)}
             value={form.descCn}
             onChange={(e) => setForm((f) => ({ ...f, descCn: e.target.value }))}
             rows={2}
@@ -240,7 +242,7 @@ export default function AdminRecommend() {
                       s && { ...s, title: { ...s.title, th: e.target.value } },
                   )
                 }
-                placeholder="ชื่อ (ไทย)"
+                placeholder={p("form.title", "inTh")}
                 className={inputCls}
               />
               <input
@@ -251,7 +253,7 @@ export default function AdminRecommend() {
                       s && { ...s, title: { ...s.title, en: e.target.value } },
                   )
                 }
-                placeholder="Title (English)"
+                placeholder={p("form.title", "inEn")}
                 className={inputCls}
               />
               <input
@@ -262,7 +264,7 @@ export default function AdminRecommend() {
                       s && { ...s, title: { ...s.title, cn: e.target.value } },
                   )
                 }
-                placeholder="标题 (中文)"
+                placeholder={p("form.title", "inCn")}
                 className={inputCls}
               />
               <textarea
@@ -273,6 +275,7 @@ export default function AdminRecommend() {
                       s && { ...s, desc: { ...s.desc, th: e.target.value } },
                   )
                 }
+                placeholder={p("form.descFull", "inTh")}
                 rows={2}
                 className={`${inputCls} resize-none`}
               />
@@ -284,6 +287,7 @@ export default function AdminRecommend() {
                       s && { ...s, desc: { ...s.desc, en: e.target.value } },
                   )
                 }
+                placeholder={p("form.descFull", "inEn")}
                 rows={2}
                 className={`${inputCls} resize-none`}
               />
@@ -295,6 +299,7 @@ export default function AdminRecommend() {
                       s && { ...s, desc: { ...s.desc, cn: e.target.value } },
                   )
                 }
+                placeholder={p("form.descFull", "inCn")}
                 rows={2}
                 className={`${inputCls} resize-none`}
               />

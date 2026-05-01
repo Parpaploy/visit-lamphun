@@ -28,10 +28,11 @@ export default function TramCard({
               {ml(place, lang)}
             </p>
             <p className="text-[14px] text-[#543A14]">
-              {t(`form.${round}`)} {time}
+              {t(`form.${round}`)} {i18n.language !== "th" && " : "} {time}
             </p>
             <p className="text-[12px] text-[#ADADAD]">
-              {i18n.language === "th" && "ราคา"} {price} {t("travel.allRoute")}
+              {i18n.language === "th" && t("travel.price")} {price}{" "}
+              {t("travel.allRoute")}
             </p>
           </div>
         </div>

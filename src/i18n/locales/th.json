@@ -56,7 +56,8 @@
     "openDesc": "อังคาร - อาทิตย์",
     "close": "ปิดทำการ",
     "closeDesc": "ทุกวันจันทร์",
-    "allRoute": "บาทตลอดสาย"
+    "allRoute": "บาทตลอดสาย",
+    "price": "ราคา"
   },
 
   "form": {
@@ -86,7 +87,11 @@
     "title": "หัวข้อ",
     "morning": "รอบเช้า",
     "afternoon": "รอบบ่าย",
-    "phoneLabel": "ชื่อรายการ"
+    "phoneLabel": "ชื่อรายการ",
+    "van": "รถตู้",
+    "tricycle": "สามล้อ",
+    "songthaew": "สองแถว",
+    "lineLink": "LINE link (เพิ่มเพื่อน)"
   },
 
   "dashboard": {
@@ -117,6 +122,26 @@
     "addPhone": "+ เพิ่มเบอร์",
     "phone": "เบอร์โทรศัพท์",
     "editPopup": "แก้ไขข้อมูล Popup",
-    "image": "รูปภาพ"
+    "image": "รูปภาพ",
+    "addPlace": "+ เพิ่มสถานที่",
+    "addTravel": "เพิ่มการเดินทางอื่นๆ",
+    "selectStation": "เลือกสถานี",
+    "placesIn": "สถานที่ใน",
+    "editPlace": "แก้ไขสถานที่",
+    "uploading": "กำลังอัพโหลด",
+    "confirmDelete": "ลบรายการนี้?",
+    "confirmDeletePlace": "ลบสถานที่นี้?",
+    "errorDelete": "ลบไม่สำเร็จ",
+    "errorSave": "เกิดข้อผิดพลาด",
+    "errorRequiredAll": "กรุณากรอกข้อมูลให้ครบและเลือกรูปภาพ",
+    "errorRequiredName": "กรุณากรอกชื่อทั้ง 3 ภาษา, ลิงก์ และเลือกรูปภาพ",
+    "errorRequiredPlace": "กรุณากรอกสถานที่ครบทั้ง 3 ภาษา",
+    "errorRequiredGroup": "กรุณากรอกชื่อกลุ่มครบทั้ง 3 ภาษา และเบอร์โทร",
+    "errorRequiredAgency": "กรุณากรอกชื่อหน่วยงานครบทั้ง 3 ภาษา",
+    "errorRequiredTitle": "กรุณากรอกหัวข้อครบทั้ง 3 ภาษา",
+    "errorRequiredTrain": "กรุณากรอกต้นทาง ปลายทาง และเวลาให้ครบทั้ง 3 ภาษา",
+    "errorRequiredTram": "กรุณากรอกสถานที่ครบทั้ง 3 ภาษา และเวลา",
+    "addTrain": "เพิ่มรถไฟ",
+    "addTram": "เพิ่มรถราง"
   }
 }

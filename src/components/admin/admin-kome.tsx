@@ -31,7 +31,7 @@ export default function AdminKome() {
 
   const handleAdd = async () => {
     if (!form.name.th.trim() || !form.name.en.trim() || !form.name.cn.trim() || !form.phone.trim()) {
-      setFormError("กรุณากรอกชื่อกลุ่มครบทั้ง 3 ภาษา และเบอร์โทร");
+      setFormError(t("dashboard.errorRequiredGroup"));
       return;
     }
     setFormError("");
@@ -41,7 +41,7 @@ export default function AdminKome() {
       setForm(EMPTY_KOME);
       refetch();
     } catch (e) {
-      setFormError(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      setFormError(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setSaving(false);
     }
@@ -58,18 +58,18 @@ export default function AdminKome() {
       setEditing(null);
       refetch();
     } catch (e) {
-      alert(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      alert(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
       setEditing((s) => s && { ...s, saving: false });
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("ลบรายการนี้?")) return;
+    if (!confirm(t("dashboard.confirmDelete"))) return;
     try {
       await deleteKomeItem(id);
       refetch();
     } catch {
-      alert("ลบไม่สำเร็จ");
+      alert(t("dashboard.errorDelete"));
     }
   };
 

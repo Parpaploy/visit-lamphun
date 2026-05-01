@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { EMPTY_FORM, inputCls, STATION_IDS } from "../../constant/admin";
 import { useStationPlaces } from "../../hooks/useStationPlaces";
 import type { EditState } from "../../interfaces/admin.interface";
@@ -9,9 +10,16 @@ import {
   uploadImage,
 } from "../../services/dashboard.services";
 import type { StationPlace } from "../../interfaces/homepage.interface";
-import { STATION_NAMES_TH } from "../../constant/homepage";
+import { STATION_NAMES_ML } from "../../constant/homepage";
 
 export default function PlacesPanel() {
+  const { t, i18n } = useTranslation();
+  const lang =
+    i18n.language === "en" || i18n.language === "cn" ? i18n.language : "th";
+  const stationName = (id: string) => STATION_NAMES_ML[id]?.[lang] ?? id;
+  const p = (key: string, lang: "inTh" | "inEn" | "inCn", req = false) =>
+    `${t(key)} ${t(`form.${lang}`)}${req ? " *" : ""}`;
+
   const [selectedStation, setSelectedStation] = useState<string>(
     STATION_IDS[0],
   );
@@ -43,7 +51,7 @@ export default function PlacesPanel() {
       !form.link.trim() ||
       !imageFile
     ) {
-      setFormError("กรุณากรอกชื่อทั้ง 3 ภาษา, ลิงก์ และเลือกรูปภาพ");
+      setFormError(t("dashboard.errorRequiredName"));
       return;
     }
     setFormError("");
@@ -66,7 +74,7 @@ export default function PlacesPanel() {
       refetch();
     } catch (e) {
       setFormError(
-        `เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`,
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
       );
     } finally {
       setSaving(false);
@@ -74,12 +82,12 @@ export default function PlacesPanel() {
   };
 
   const handleDelete = async (placeId: string) => {
-    if (!confirm("ลบสถานที่นี้?")) return;
+    if (!confirm(t("dashboard.confirmDeletePlace"))) return;
     try {
       await deletePlace(selectedStation, placeId);
       refetch();
     } catch {
-      alert("ลบไม่สำเร็จ");
+      alert(t("dashboard.errorDelete"));
     }
   };
 
@@ -135,7 +143,9 @@ export default function PlacesPanel() {
       setUploadProgress(null);
       refetch();
     } catch (e) {
-      alert(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      alert(
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
+      );
       setEditing((prev) => prev && { ...prev, saving: false });
     }
   };
@@ -144,7 +154,7 @@ export default function PlacesPanel() {
     <div className="flex flex-col gap-y-4">
       <div>
         <label className="block text-[13px] text-[#8B724E] font-medium mb-1">
-          เลือก Station
+          {t("dashboard.selectStation")}
         </label>
         <select
           value={selectedStation}
@@ -156,7 +166,7 @@ export default function PlacesPanel() {
         >
           {STATION_IDS.map((id) => (
             <option key={id} value={id}>
-              {STATION_NAMES_TH[id]} ({id})
+              {stationName(id)}
             </option>
           ))}
         </select>
@@ -164,29 +174,29 @@ export default function PlacesPanel() {
 
       <div className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-4">
         <h2 className="text-[14px] font-semibold text-[#543A14] mb-3">
-          เพิ่มสถานที่ใหม่
+          {t("dashboard.addNew")}
         </h2>
         <div className="flex flex-col gap-y-2.5">
           <input
-            placeholder="ชื่อสถานที่ (ภาษาไทย) *"
+            placeholder={p("form.place", "inTh", true)}
             value={form.nameTh}
             onChange={(e) => setForm((f) => ({ ...f, nameTh: e.target.value }))}
             className={inputCls}
           />
           <input
-            placeholder="Place name (English) *"
+            placeholder={p("form.place", "inEn", true)}
             value={form.nameEn}
             onChange={(e) => setForm((f) => ({ ...f, nameEn: e.target.value }))}
             className={inputCls}
           />
           <input
-            placeholder="地点名称 (中文) *"
+            placeholder={p("form.place", "inCn", true)}
             value={form.nameCn}
             onChange={(e) => setForm((f) => ({ ...f, nameCn: e.target.value }))}
             className={inputCls}
           />
           <input
-            placeholder="ลิงก์ (URL) *"
+            placeholder={`${t("form.link")} *`}
             value={form.link}
             onChange={(e) => setForm((f) => ({ ...f, link: e.target.value }))}
             className={inputCls}
@@ -204,7 +214,7 @@ export default function PlacesPanel() {
             onClick={() => fileInputRef.current?.click()}
             className="border border-dashed border-[#C6C6C6] rounded-xl py-3 text-[13px] text-[#8B724E] hover:border-[#BF4B17] transition-colors"
           >
-            {imageFile ? imageFile.name : "เลือกรูปภาพ *"}
+            {imageFile ? imageFile.name : t("dashboard.selectImage")}
           </button>
 
           {previewUrl && (
@@ -232,23 +242,22 @@ export default function PlacesPanel() {
           >
             {saving
               ? uploadProgress !== null
-                ? `กำลังอัพโหลด ${uploadProgress}%`
-                : "กำลังบันทึก..."
-              : "+ เพิ่มสถานที่"}
+                ? `${t("dashboard.uploading")} ${uploadProgress}%`
+                : t("dashboard.saving")
+              : t("dashboard.addPlace")}
           </button>
         </div>
       </div>
 
-      {/* Place list */}
       <div>
         <h2 className="text-[14px] font-semibold text-[#543A14] mb-3">
-          สถานที่ใน {STATION_NAMES_TH[selectedStation]}
+          {t("dashboard.placesIn")} {stationName(selectedStation)}
         </h2>
 
         {loading ? (
-          <p className="text-[13px] text-[#8B724E]">กำลังโหลด...</p>
+          <p className="text-[13px] text-[#8B724E]">{t("dashboard.loading")}</p>
         ) : places.length === 0 ? (
-          <p className="text-[13px] text-[#C6C6C6]">ยังไม่มีสถานที่</p>
+          <p className="text-[13px] text-[#C6C6C6]">{t("dashboard.empty")}</p>
         ) : (
           <div className="flex flex-col gap-y-3">
             {places.map((place) =>
@@ -258,10 +267,10 @@ export default function PlacesPanel() {
                   className="bg-white rounded-2xl border border-[#BF4B17] shadow-sm p-4 flex flex-col gap-y-2.5"
                 >
                   <p className="text-[12px] font-semibold text-[#BF4B17]">
-                    แก้ไขสถานที่
+                    {t("dashboard.editPlace")}
                   </p>
                   <input
-                    placeholder="ชื่อ (ไทย) *"
+                    placeholder={p("form.place", "inTh")}
                     value={editing.nameTh}
                     onChange={(e) =>
                       setEditing((s) => s && { ...s, nameTh: e.target.value })
@@ -269,7 +278,7 @@ export default function PlacesPanel() {
                     className={inputCls}
                   />
                   <input
-                    placeholder="Name (English) *"
+                    placeholder={p("form.place", "inEn")}
                     value={editing.nameEn}
                     onChange={(e) =>
                       setEditing((s) => s && { ...s, nameEn: e.target.value })
@@ -277,7 +286,7 @@ export default function PlacesPanel() {
                     className={inputCls}
                   />
                   <input
-                    placeholder="名称 (中文) *"
+                    placeholder={p("form.place", "inCn")}
                     value={editing.nameCn}
                     onChange={(e) =>
                       setEditing((s) => s && { ...s, nameCn: e.target.value })
@@ -285,7 +294,7 @@ export default function PlacesPanel() {
                     className={inputCls}
                   />
                   <input
-                    placeholder="ลิงก์ (URL) *"
+                    placeholder={t("form.link")}
                     value={editing.link}
                     onChange={(e) =>
                       setEditing((s) => s && { ...s, link: e.target.value })
@@ -307,7 +316,7 @@ export default function PlacesPanel() {
                   >
                     {editing.newFile
                       ? editing.newFile.name
-                      : "เปลี่ยนรูปภาพ (ไม่บังคับ)"}
+                      : t("dashboard.changeImage")}
                   </button>
 
                   <div className="w-full h-28 rounded-xl overflow-hidden">
@@ -333,7 +342,9 @@ export default function PlacesPanel() {
                       disabled={editing.saving}
                       className="flex-1 bg-[#BF4B17] text-white text-[13px] font-semibold rounded-full py-2 disabled:opacity-60"
                     >
-                      {editing.saving ? "กำลังบันทึก..." : "บันทึก"}
+                      {editing.saving
+                        ? t("dashboard.saving")
+                        : t("dashboard.save")}
                     </button>
                     <button
                       onClick={() => {
@@ -342,7 +353,7 @@ export default function PlacesPanel() {
                       }}
                       className="flex-1 border border-[#C6C6C6] text-[#543A14] text-[13px] font-semibold rounded-full py-2"
                     >
-                      ยกเลิก
+                      {t("dashboard.cancel")}
                     </button>
                   </div>
                 </div>
@@ -374,13 +385,13 @@ export default function PlacesPanel() {
                       onClick={() => startEdit(place)}
                       className="text-[12px] text-[#543A14] font-medium"
                     >
-                      แก้ไข
+                      {t("dashboard.edit")}
                     </button>
                     <button
                       onClick={() => handleDelete(place.id)}
                       className="text-[12px] text-red-400 font-medium"
                     >
-                      ลบ
+                      {t("dashboard.delete")}
                     </button>
                   </div>
                 </div>

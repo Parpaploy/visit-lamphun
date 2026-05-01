@@ -35,7 +35,7 @@ export default function TramPanel() {
 
   const handleAdd = async () => {
     if (!form.place.th || !form.place.en || !form.place.cn) {
-      setFormError("กรุณากรอกสถานที่ครบทั้ง 3 ภาษา และเวลา");
+      setFormError(t("dashboard.errorRequiredTram"));
       return;
     }
     setFormError("");
@@ -46,7 +46,7 @@ export default function TramPanel() {
       refetch();
     } catch (e) {
       setFormError(
-        `เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`,
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
       );
     } finally {
       setSaving(false);
@@ -66,18 +66,18 @@ export default function TramPanel() {
       setEditing(null);
       refetch();
     } catch (e) {
-      alert(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      alert(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
       setEditing((s) => s && { ...s, saving: false });
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("ลบรายการนี้?")) return;
+    if (!confirm(t("dashboard.confirmDelete"))) return;
     try {
       await deleteTramItem(id);
       refetch();
     } catch {
-      alert("ลบไม่สำเร็จ");
+      alert(t("dashboard.errorDelete"));
     }
   };
 
@@ -85,7 +85,7 @@ export default function TramPanel() {
     <div className="flex flex-col gap-y-4">
       <div className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-4">
         <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">
-          เพิ่มรถราง
+          {t("dashboard.addTram")}
         </h3>
         <div className="flex flex-col gap-y-2">
           <input

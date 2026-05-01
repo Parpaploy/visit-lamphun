@@ -52,9 +52,9 @@ export default function OtherForm({
           onChange={(e) => ch((f) => ({ ...f, type: e.target.value as OtherItem["type"] }))}
           className={selectCls}
         >
-          <option value="van">รถตู้</option>
-          <option value="tricycle">สามล้อ</option>
-          <option value="songthaew">สองแถว</option>
+          <option value="van">{t("form.van")}</option>
+          <option value="tricycle">{t("form.tricycle")}</option>
+          <option value="songthaew">{t("form.songthaew")}</option>
         </select>
         <select
           value={v.day}
@@ -78,7 +78,7 @@ export default function OtherForm({
         />
         {v.type === "van" && (
           <input
-            placeholder="LINE link (เพิ่มเพื่อน)"
+            placeholder={t("form.lineLink")}
             value={v.lineLink ?? ""}
             onChange={(e) => ch((f) => ({ ...f, lineLink: e.target.value }))}
             className={`${inputCls} col-span-2`}

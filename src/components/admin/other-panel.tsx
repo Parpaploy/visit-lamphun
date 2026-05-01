@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useOtherItems } from "../../hooks/useTravelItems";
-import { EMPTY_OTHER, typeLabel } from "../../constant/admin";
+import { EMPTY_OTHER } from "../../constant/admin";
 import type { OtherItem } from "../../interfaces/content.interface";
 import {
   addOtherItem,
@@ -23,7 +23,7 @@ export default function OtherPanel() {
 
   const handleAdd = async () => {
     if (!form.place.th || !form.place.en || !form.place.cn) {
-      setFormError("กรุณากรอกสถานที่ครบทั้ง 3 ภาษา");
+      setFormError(t("dashboard.errorRequiredPlace"));
       return;
     }
     setFormError("");
@@ -33,7 +33,7 @@ export default function OtherPanel() {
       setForm(EMPTY_OTHER);
       refetch();
     } catch (e) {
-      setFormError(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      setFormError(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setSaving(false);
     }
@@ -55,18 +55,18 @@ export default function OtherPanel() {
       setEditing(null);
       refetch();
     } catch (e) {
-      alert(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      alert(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
       setEditing((s) => s && { ...s, saving: false });
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("ลบรายการนี้?")) return;
+    if (!confirm(t("dashboard.confirmDelete"))) return;
     try {
       await deleteOtherItem(id);
       refetch();
     } catch {
-      alert("ลบไม่สำเร็จ");
+      alert(t("dashboard.errorDelete"));
     }
   };
 
@@ -74,7 +74,7 @@ export default function OtherPanel() {
     <div className="flex flex-col gap-y-4">
       <div className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-4">
         <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">
-          เพิ่มการเดินทางอื่นๆ
+          {t("dashboard.addTravel")}
         </h3>
         <OtherForm
           v={form}
@@ -122,7 +122,7 @@ export default function OtherPanel() {
                   {item.place.th}
                 </p>
                 <p className="text-[11px] text-[#8B724E]">
-                  {item.place.en} · {typeLabel(item.type)} · {item.day === "weekday" ? "วันธรรมดา" : "วันหยุด"}
+                  {item.place.en} · {t(`form.${item.type}`)} · {t(`form.${item.day}`)}
                 </p>
                 {item.desc.th && (
                   <p className="text-[11px] text-[#C6C6C6] line-clamp-1">{item.desc.th}</p>

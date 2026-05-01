@@ -57,7 +57,8 @@
     "openDesc": "周二至周日",
     "close": "关闭",
     "closeDesc": "每周一",
-    "allRoute": "泰铢（全程）"
+    "allRoute": "泰铢（全程）",
+    "price": "价格"
   },
 
   "form": {
@@ -85,9 +86,13 @@
     "hours": "营业时间",
     "time": "时间",
     "title": "标题",
-    "morning": "上午游览：",
-    "afternoon": "下午游览：",
-    "phoneLabel": "项目名称"
+    "morning": "上午游览",
+    "afternoon": "下午游览",
+    "phoneLabel": "项目名称",
+    "van": "面包车",
+    "tricycle": "三轮车",
+    "songthaew": "双条车",
+    "lineLink": "LINE link（加好友）"
   },
 
   "dashboard": {
@@ -118,6 +123,26 @@
     "addPhone": "+ 添加电话",
     "phone": "电话号码",
     "editPopup": "编辑弹窗",
-    "image": "图片"
+    "image": "图片",
+    "addPlace": "+ 添加地点",
+    "addTravel": "添加其他交通方式",
+    "selectStation": "选择站点",
+    "placesIn": "位于",
+    "editPlace": "编辑地点",
+    "uploading": "上传中",
+    "confirmDelete": "删除此项目？",
+    "confirmDeletePlace": "删除此地点？",
+    "errorDelete": "删除失败",
+    "errorSave": "发生错误",
+    "errorRequiredAll": "请填写所有字段并选择图片",
+    "errorRequiredName": "请填写所有3种语言的名称、链接，并选择图片",
+    "errorRequiredPlace": "请填写所有3种语言的地点名称",
+    "errorRequiredGroup": "请填写所有3种语言的组名及电话号码",
+    "errorRequiredAgency": "请填写所有3种语言的机构名称",
+    "errorRequiredTitle": "请填写所有3种语言的标题",
+    "errorRequiredTrain": "请填写所有3种语言的出发地、目的地和时间",
+    "errorRequiredTram": "请填写所有3种语言的地点名称及时间",
+    "addTrain": "添加火车",
+    "addTram": "添加电车"
   }
 }

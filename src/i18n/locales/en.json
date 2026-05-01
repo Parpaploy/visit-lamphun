@@ -57,7 +57,8 @@
     "openDesc": "Tue. - Sun.",
     "close": "Closed",
     "closeDesc": "every Mon.",
-    "allRoute": "Baht (all route)"
+    "allRoute": "Baht (all route)",
+    "price": "Price"
   },
 
   "form": {
@@ -85,9 +86,13 @@
     "hours": "Hours",
     "time": "Time",
     "title": "Title",
-    "morning": "Morning Tour:",
-    "afternoon": "Afternoon Tour:",
-    "phoneLabel": "Item Name"
+    "morning": "Morning Tour",
+    "afternoon": "Afternoon Tour",
+    "phoneLabel": "Item Name",
+    "van": "Van",
+    "tricycle": "Tricycle",
+    "songthaew": "Songthaew",
+    "lineLink": "LINE link (Add Friend)"
   },
 
   "dashboard": {
@@ -118,6 +123,26 @@
     "addPhone": "+ Add Phone",
     "phone": "Phone Number",
     "editPopup": "Edit Popup",
-    "image": "Image"
+    "image": "Image",
+    "addPlace": "+ Add Place",
+    "addTravel": "Add Other Travel",
+    "selectStation": "Select Station",
+    "placesIn": "Places in",
+    "editPlace": "Edit Place",
+    "uploading": "Uploading",
+    "confirmDelete": "Delete this item?",
+    "confirmDeletePlace": "Delete this place?",
+    "errorDelete": "Failed to delete",
+    "errorSave": "An error occurred",
+    "errorRequiredAll": "Please fill in all fields and select an image",
+    "errorRequiredName": "Please fill in the name in all 3 languages, a link, and select an image",
+    "errorRequiredPlace": "Please fill in the place name in all 3 languages",
+    "errorRequiredGroup": "Please fill in the group name in all 3 languages and phone number",
+    "errorRequiredAgency": "Please fill in the agency name in all 3 languages",
+    "errorRequiredTitle": "Please fill in the title in all 3 languages",
+    "errorRequiredTrain": "Please fill in origin, destination, and times in all 3 languages",
+    "errorRequiredTram": "Please fill in the place name in all 3 languages and time",
+    "addTrain": "Add Train",
+    "addTram": "Add Tram"
   }
 }

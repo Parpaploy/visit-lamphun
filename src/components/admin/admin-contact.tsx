@@ -106,7 +106,7 @@ export default function AdminContact() {
       !form.header.en.trim() ||
       !form.header.cn.trim()
     ) {
-      setFormError("กรุณากรอกชื่อหน่วยงานครบทั้ง 3 ภาษา");
+      setFormError(t("dashboard.errorRequiredAgency"));
       return;
     }
     setFormError("");
@@ -122,7 +122,7 @@ export default function AdminContact() {
       refetch();
     } catch (e) {
       setFormError(
-        `เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`,
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
       );
     } finally {
       setSaving(false);
@@ -142,18 +142,18 @@ export default function AdminContact() {
       setEditing(null);
       refetch();
     } catch (e) {
-      alert(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      alert(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
       setEditing((s) => s && { ...s, saving: false });
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("ลบรายการนี้?")) return;
+    if (!confirm(t("dashboard.confirmDelete"))) return;
     try {
       await deleteEmergencyItem(id);
       refetch();
     } catch {
-      alert("ลบไม่สำเร็จ");
+      alert(t("dashboard.errorDelete"));
     }
   };
 
@@ -250,7 +250,7 @@ export default function AdminContact() {
               />
 
               <input
-                placeholder="เบอร์โทร"
+                placeholder={t("form.phone")}
                 value={ph.number}
                 onChange={(e) => setPhone(i, "number", e.target.value)}
                 className={`w-full ${inputCls}`}
@@ -383,7 +383,7 @@ export default function AdminContact() {
                   />
 
                   <input
-                    placeholder="เบอร์โทร"
+                    placeholder={t("form.phone")}
                     value={ph.number}
                     onChange={(e) => setEditPhone(i, "number", e.target.value)}
                     className={`${inputCls} w-full`}
