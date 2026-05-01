@@ -66,7 +66,7 @@ export default function ContactPage() {
                       : []),
                     ...item.phones.map((ph) => ({
                       type: "phone" as const,
-                      text: ph.label[lang] ? `${ph.label[lang]} : ${ph.number}` : ph.number,
+                      text: `${ph.label[lang] || `${t("contact.phone")}`} : ${ph.number}`,
                     })),
                   ]}
                 />
@@ -74,9 +74,9 @@ export default function ContactPage() {
             ))
           ))}
 
-        {mode === "news" && modeLoading && (
-          Array.from({ length: 2 }).map((_, i) => <ContactLoader key={i} />)
-        )}
+        {mode === "news" &&
+          modeLoading &&
+          Array.from({ length: 2 }).map((_, i) => <ContactLoader key={i} />)}
 
         {mode === "news" && !modeLoading && (
           <div className="animate-fade-in flex flex-col gap-y-4">

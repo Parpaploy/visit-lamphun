@@ -29,7 +29,9 @@
     "news": "Follow News",
     "line": "LINE",
     "page": "Go to webpage",
-    "web": "Go to webpage"
+    "web": "Go to webpage",
+    "open": "Opening Hours",
+    "phone": "Telephone"
   },
 
   "navbar": {

@@ -28,6 +28,8 @@ function AddressItem({ text }: { text: string }) {
 }
 
 function HoursItem({ text }: { text: string }) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex justify-start items-end gap-x-3">
       <div className="w-7">
@@ -37,7 +39,7 @@ function HoursItem({ text }: { text: string }) {
         />
       </div>
       <span className="text-[12px] text-[#543A14] text-center font-medium">
-        {text}
+        {t("contact.open")} : {text}
       </span>
     </div>
   );

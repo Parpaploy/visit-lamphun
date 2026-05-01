@@ -29,7 +29,9 @@
     "news": "关注信息",
     "line": "LINE",
     "page": "前往页面",
-    "web": "进入网站"
+    "web": "进入网站",
+    "open": "工作时间",
+    "phone": "电话号码"
   },
 
   "navbar": {
@@ -98,6 +100,7 @@
       "contact": "联系",
       "popup": "弹窗"
     },
+
     "loading": "加载中...",
     "saving": "保存中...",
     "empty": "暂无数据",
