@@ -23,14 +23,18 @@ export default function TramPanel() {
   const p = (key: string, lang: "inTh" | "inEn" | "inCn", req = false) =>
     `${t(key)} ${t(`form.${lang}`)}${req ? " *" : ""}`;
 
-  const setPlace = (lang: "th" | "en" | "cn") => (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm((f) => ({ ...f, place: { ...f.place, [lang]: e.target.value } }));
+  const setPlace =
+    (lang: "th" | "en" | "cn") => (e: React.ChangeEvent<HTMLInputElement>) =>
+      setForm((f) => ({ ...f, place: { ...f.place, [lang]: e.target.value } }));
 
-  const setEditPlace = (lang: "th" | "en" | "cn") => (e: React.ChangeEvent<HTMLInputElement>) =>
-    setEditing((s) => s && { ...s, place: { ...s.place, [lang]: e.target.value } });
+  const setEditPlace =
+    (lang: "th" | "en" | "cn") => (e: React.ChangeEvent<HTMLInputElement>) =>
+      setEditing(
+        (s) => s && { ...s, place: { ...s.place, [lang]: e.target.value } },
+      );
 
   const handleAdd = async () => {
-    if (!form.place.th || !form.place.en || !form.place.cn || !form.time) {
+    if (!form.place.th || !form.place.en || !form.place.cn) {
       setFormError("กรุณากรอกสถานที่ครบทั้ง 3 ภาษา และเวลา");
       return;
     }
@@ -41,7 +45,9 @@ export default function TramPanel() {
       setForm(EMPTY_TRAM);
       refetch();
     } catch (e) {
-      setFormError(`เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`);
+      setFormError(
+        `เกิดข้อผิดพลาด: ${e instanceof Error ? e.message : String(e)}`,
+      );
     } finally {
       setSaving(false);
     }
@@ -53,6 +59,7 @@ export default function TramPanel() {
     try {
       await updateTramItem(editing.id, {
         place: editing.place,
+        round: editing.round,
         time: editing.time,
         price: editing.price,
       });
@@ -77,22 +84,56 @@ export default function TramPanel() {
   return (
     <div className="flex flex-col gap-y-4">
       <div className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-4">
-        <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">เพิ่มรถราง</h3>
+        <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">
+          เพิ่มรถราง
+        </h3>
         <div className="flex flex-col gap-y-2">
-          <input placeholder={p("form.place", "inTh", true)} value={form.place.th} onChange={setPlace("th")} className={inputCls} />
-          <input placeholder={p("form.place", "inEn", true)} value={form.place.en} onChange={setPlace("en")} className={inputCls} />
-          <input placeholder={p("form.place", "inCn", true)} value={form.place.cn} onChange={setPlace("cn")} className={inputCls} />
           <input
-            placeholder={`${t("form.time")} *`}
-            value={form.time}
-            onChange={(e) => setForm((f) => ({ ...f, time: e.target.value }))}
+            placeholder={p("form.place", "inTh", true)}
+            value={form.place.th}
+            onChange={setPlace("th")}
             className={inputCls}
           />
           <input
+            placeholder={p("form.place", "inEn", true)}
+            value={form.place.en}
+            onChange={setPlace("en")}
+            className={inputCls}
+          />
+          <input
+            placeholder={p("form.place", "inCn", true)}
+            value={form.place.cn}
+            onChange={setPlace("cn")}
+            className={inputCls}
+          />
+          <div className="flex justify-center items-center gap-2">
+            <select
+              value={form.round}
+              onChange={(e) =>
+                setForm((f) => ({
+                  ...f,
+                  round: e.target.value as "morning" | "afternoon",
+                }))
+              }
+              className={`${inputCls} bg-white`}
+            >
+              <option value="morning">{t("form.morning")}</option>
+              <option value="afternoon">{t("form.afternoon")}</option>
+            </select>
+            <input
+              placeholder={`${t("form.time")} *`}
+              value={form.time}
+              onChange={(e) => setForm((f) => ({ ...f, time: e.target.value }))}
+              className={inputCls}
+            />
+          </div>
+          <input
             placeholder={t("form.price")}
             type="number"
-            value={form.price}
-            onChange={(e) => setForm((f) => ({ ...f, price: Number(e.target.value) }))}
+            value={form.price === 0 ? "" : form.price}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, price: Number(e.target.value) }))
+            }
             className={inputCls}
           />
           {formError && <p className="text-red-500 text-[12px]">{formError}</p>}
@@ -113,21 +154,63 @@ export default function TramPanel() {
       ) : (
         items.map((item) =>
           editing?.id === item.id ? (
-            <div key={item.id} className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2">
-              <p className="text-[12px] font-semibold text-[#BF4B17]">{t("dashboard.edit")}</p>
-              <input placeholder={p("form.place", "inTh")} value={editing.place.th} onChange={setEditPlace("th")} className={inputCls} />
-              <input placeholder={p("form.place", "inEn")} value={editing.place.en} onChange={setEditPlace("en")} className={inputCls} />
-              <input placeholder={p("form.place", "inCn")} value={editing.place.cn} onChange={setEditPlace("cn")} className={inputCls} />
+            <div
+              key={item.id}
+              className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2"
+            >
+              <p className="text-[12px] font-semibold text-[#BF4B17]">
+                {t("dashboard.edit")}
+              </p>
               <input
-                value={editing.time}
-                onChange={(e) => setEditing((s) => s && { ...s, time: e.target.value })}
+                placeholder={p("form.place", "inTh")}
+                value={editing.place.th}
+                onChange={setEditPlace("th")}
+                className={inputCls}
+              />
+              <input
+                placeholder={p("form.place", "inEn")}
+                value={editing.place.en}
+                onChange={setEditPlace("en")}
+                className={inputCls}
+              />
+              <input
+                placeholder={p("form.place", "inCn")}
+                value={editing.place.cn}
+                onChange={setEditPlace("cn")}
+                className={inputCls}
+              />
+              <select
+                value={editing.round}
+                onChange={(e) =>
+                  setEditing(
+                    (s) =>
+                      s && {
+                        ...s,
+                        round: e.target.value as "morning" | "afternoon",
+                      },
+                  )
+                }
+                className={`${inputCls} bg-white`}
+              >
+                <option value="morning">{t("form.morning")}</option>
+                <option value="afternoon">{t("form.afternoon")}</option>
+              </select>
+              <input
                 placeholder={t("form.time")}
+                value={editing.time}
+                onChange={(e) =>
+                  setEditing((s) => s && { ...s, time: e.target.value })
+                }
                 className={inputCls}
               />
               <input
                 type="number"
-                value={editing.price}
-                onChange={(e) => setEditing((s) => s && { ...s, price: Number(e.target.value) })}
+                value={editing.price === 0 ? "" : editing.price}
+                onChange={(e) =>
+                  setEditing(
+                    (s) => s && { ...s, price: Number(e.target.value) },
+                  )
+                }
                 placeholder={t("form.price")}
                 className={inputCls}
               />
@@ -148,17 +231,32 @@ export default function TramPanel() {
               </div>
             </div>
           ) : (
-            <div key={item.id} className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-3 flex items-center gap-x-3">
+            <div
+              key={item.id}
+              className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-3 flex items-center gap-x-3"
+            >
               <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-semibold text-[#543A14] truncate">{item.place.th}</p>
-                <p className="text-[11px] text-[#8B724E] truncate">{item.place.en}</p>
-                <p className="text-[11px] text-[#C6C6C6]">{item.time} · {item.price} บาท</p>
+                <p className="text-[13px] font-semibold text-[#543A14] truncate">
+                  {item.place.th}
+                </p>
+                <p className="text-[11px] text-[#8B724E] truncate">
+                  {item.place.en}
+                </p>
+                <p className="text-[11px] text-[#C6C6C6]">
+                  {t(`form.${item.round}`)} · {item.time} · {item.price} บาท
+                </p>
               </div>
               <div className="flex gap-x-3 shrink-0">
-                <button onClick={() => setEditing({ ...item, saving: false })} className="text-[12px] text-[#543A14] font-medium">
+                <button
+                  onClick={() => setEditing({ ...item, saving: false })}
+                  className="text-[12px] text-[#543A14] font-medium"
+                >
                   {t("dashboard.edit")}
                 </button>
-                <button onClick={() => handleDelete(item.id)} className="text-[12px] text-red-400 font-medium">
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  className="text-[12px] text-red-400 font-medium"
+                >
                   {t("dashboard.delete")}
                 </button>
               </div>

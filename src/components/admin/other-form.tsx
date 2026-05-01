@@ -52,7 +52,7 @@ export default function OtherForm({
           onChange={(e) => ch((f) => ({ ...f, type: e.target.value as OtherItem["type"] }))}
           className={selectCls}
         >
-          <option value="bus">รถบัส</option>
+          <option value="van">รถตู้</option>
           <option value="tricycle">สามล้อ</option>
           <option value="songthaew">สองแถว</option>
         </select>
@@ -76,6 +76,14 @@ export default function OtherForm({
           onChange={(e) => ch((f) => ({ ...f, link: e.target.value }))}
           className={inputCls}
         />
+        {v.type === "van" && (
+          <input
+            placeholder="LINE link (เพิ่มเพื่อน)"
+            value={v.lineLink ?? ""}
+            onChange={(e) => ch((f) => ({ ...f, lineLink: e.target.value }))}
+            className={`${inputCls} col-span-2`}
+          />
+        )}
       </div>
 
       {error && <p className="text-red-500 text-[12px]">{error}</p>}

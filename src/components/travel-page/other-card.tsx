@@ -6,16 +6,18 @@ export default function OtherCard({
   place,
   desc,
   desc2,
-  type = "bus",
+  type = "van",
   phone,
   link,
+  lineLink,
 }: {
   place: MLString;
   desc: MLString;
   desc2?: MLString;
-  type?: "bus" | "tricycle" | "songthaew";
+  type?: "van" | "tricycle" | "songthaew";
   phone?: string;
   link?: string;
+  lineLink?: string;
 }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
@@ -35,7 +37,7 @@ export default function OtherCard({
               </div>
             </div>
             <div className="w-full flex justify-end items-center">
-              <div className="text-[12px] border border-[#BF4B17] rounded-full px-3">{t("menu.more")}</div>
+              <div onClick={() => link && window.open(link, "_blank", "noopener,noreferrer")} className={`text-[12px] border border-[#BF4B17] rounded-full px-3 ${link ? "cursor-pointer" : ""}`}>{t("menu.more")}</div>
             </div>
           </div>
         </div>
@@ -62,13 +64,13 @@ export default function OtherCard({
               </div>
             </div>
             <div className="w-full flex justify-end items-center">
-              <div className="text-[12px] border border-[#BF4B17] rounded-full px-3">{t("menu.more")}</div>
+              <div onClick={() => link && window.open(link, "_blank", "noopener,noreferrer")} className={`text-[12px] border border-[#BF4B17] rounded-full px-3 ${link ? "cursor-pointer" : ""}`}>{t("menu.more")}</div>
             </div>
           </div>
         </div>
       )}
 
-      {type === "bus" && (
+      {type === "van" && (
         <div className="flex flex-col bg-white justify-center items-center w-full shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] border-2 border-[#D9D9D9] rounded-[20px]">
           <div className="w-full pl-7 pt-5 pb-3 pr-3">
             <div className="flex justify-start items-center gap-x-3 mb-2">
@@ -89,19 +91,20 @@ export default function OtherCard({
               </div>
             </div>
             <div className="w-full flex justify-end items-center gap-x-2">
-              {link && (
+              {lineLink && (
                 <div
-                  onClick={() => window.open(link, "_blank", "noopener,noreferrer")}
-                  className="text-[12px] text-white bg-[#1DCC64] border border-[#1DCC64] rounded-full px-3"
+                  onClick={() => window.open(lineLink, "_blank", "noopener,noreferrer")}
+                  className="text-[12px] text-white bg-[#1DCC64] border border-[#1DCC64] rounded-full px-3 cursor-pointer"
                 >
                   {t("menu.friend")}
                 </div>
               )}
-              <div className="text-[12px] bg-white border border-[#BF4B17] rounded-full px-3">{t("menu.more")}</div>
+              <div onClick={() => link && window.open(link, "_blank", "noopener,noreferrer")} className={`text-[12px] bg-white border border-[#BF4B17] rounded-full px-3 ${link ? "cursor-pointer" : ""}`}>{t("menu.more")}</div>
             </div>
           </div>
         </div>
       )}
+
     </>
   );
 }

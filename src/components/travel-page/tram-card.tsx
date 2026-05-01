@@ -4,10 +4,12 @@ import type { MLString } from "../../interfaces/content.interface";
 
 export default function TramCard({
   place,
+  round,
   time,
   price,
 }: {
   place: MLString;
+  round: "morning" | "afternoon";
   time: string;
   price: number;
 }) {
@@ -22,9 +24,15 @@ export default function TramCard({
             <img className="w-full h-full" src="/icons/travelPage/tram.svg" />
           </div>
           <div className="font-medium flex flex-col justify-center items-start">
-            <p className="font-bold text-[16px] text-black leading-5.5">{ml(place, lang)}</p>
-            <p className="text-[14px] text-[#543A14]">{time}</p>
-            <p className="text-[12px] text-[#ADADAD]">ราคา {price} บาทตลอดสาย</p>
+            <p className="font-bold text-[16px] text-black leading-5.5">
+              {ml(place, lang)}
+            </p>
+            <p className="text-[14px] text-[#543A14]">
+              {t(`form.${round}`)} {time}
+            </p>
+            <p className="text-[12px] text-[#ADADAD]">
+              {i18n.language === "th" && "ราคา"} {price} {t("travel.allRoute")}
+            </p>
           </div>
         </div>
         <div className="w-full flex justify-end items-center">

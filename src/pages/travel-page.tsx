@@ -119,6 +119,7 @@ export default function TravelPage() {
                 >
                   <TramCard
                     place={item.place}
+                    round={item.round}
                     time={item.time}
                     price={item.price}
                   />
@@ -141,6 +142,7 @@ export default function TravelPage() {
                       type={item.type}
                       phone={item.phone}
                       link={item.link}
+                      lineLink={item.lineLink}
                     />
                   </div>
                 ))}

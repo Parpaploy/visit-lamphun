@@ -33,6 +33,7 @@ export interface TrainItem {
 export interface TramItem {
   id: string;
   place: MLString;
+  round: "morning" | "afternoon";
   time: string;
   price: number;
 }
@@ -42,9 +43,10 @@ export interface OtherItem {
   place: MLString;
   desc: MLString;
   desc2: MLString;
-  type: "bus" | "tricycle" | "songthaew";
+  type: "van" | "tricycle" | "songthaew";
   phone: string;
   link: string;
+  lineLink?: string;
   day: "weekday" | "weekend";
 }
 

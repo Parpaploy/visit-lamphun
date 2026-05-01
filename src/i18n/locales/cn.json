@@ -54,7 +54,8 @@
     "open": "营业",
     "openDesc": "周二至周日",
     "close": "关闭",
-    "closeDesc": "每周一"
+    "closeDesc": "每周一",
+    "allRoute": "泰铢（全程）"
   },
 
   "form": {
@@ -81,7 +82,9 @@
     "address": "地址",
     "hours": "营业时间",
     "time": "时间",
-    "title": "标题"
+    "title": "标题",
+    "morning": "上午游览：",
+    "afternoon": "下午游览："
   },
 
   "dashboard": {

@@ -82,6 +82,7 @@ export const inputCls =
 
 export const EMPTY_TRAM: Omit<TramItem, "id"> = {
   place: { ...EMPTY_ML },
+  round: "morning",
   time: "",
   price: 0,
 };
@@ -90,11 +91,12 @@ export const EMPTY_OTHER: Omit<OtherItem, "id"> = {
   place: { ...EMPTY_ML },
   desc: { ...EMPTY_ML },
   desc2: { ...EMPTY_ML },
-  type: "bus",
+  type: "van",
   phone: "",
   link: "",
+  lineLink: "",
   day: "weekday",
 };
 
 export const typeLabel = (t: OtherItem["type"]) =>
-  t === "bus" ? "รถบัส" : t === "tricycle" ? "สามล้อ" : "สองแถว";
+  t === "van" ? "รถตู้" : t === "tricycle" ? "สามล้อ" : "สองแถว";

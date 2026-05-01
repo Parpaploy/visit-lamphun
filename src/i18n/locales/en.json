@@ -54,7 +54,8 @@
     "open": "Open",
     "openDesc": "Tue. - Sun.",
     "close": "Closed",
-    "closeDesc": "every Mon."
+    "closeDesc": "every Mon.",
+    "allRoute": "Baht (all route)"
   },
 
   "form": {
@@ -81,7 +82,9 @@
     "address": "Address",
     "hours": "Hours",
     "time": "Time",
-    "title": "Title"
+    "title": "Title",
+    "morning": "Morning Tour:",
+    "afternoon": "Afternoon Tour:"
   },
 
   "dashboard": {
@@ -94,6 +97,7 @@
       "contact": "Contact",
       "popup": "Popup"
     },
+
     "loading": "Loading...",
     "saving": "Saving...",
     "empty": "No items yet",

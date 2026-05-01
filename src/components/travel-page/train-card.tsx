@@ -31,18 +31,27 @@ export default function TrainCard({
           <div className="flex flex-col justify-center items-center gap-y-2">
             <div className="flex justify-center items-center gap-x-3">
               <div className="w-12 h-auto">
-                <img className="w-full h-full" src="/icons/travelPage/blue-train.svg" />
+                <img
+                  className="w-full h-full"
+                  src="/icons/travelPage/blue-train.svg"
+                />
               </div>
               <div className="font-medium text-[16px] text-[#543A14] flex flex-col justify-center items-start">
                 <p>{ml(origin, lang)}</p>
                 <p>{originTime}</p>
               </div>
             </div>
-            <p className="font-medium text-[12px] text-[#ADADAD]">{ml(originStation, lang)}</p>
+            <p className="font-medium text-[12px] text-[#ADADAD]">
+              {ml(originStation, lang)}
+            </p>
           </div>
 
           <div className="w-full mb-5">
-            <img className="w-full h-full" src="/icons/travelPage/arrow.svg" alt="" />
+            <img
+              className="w-full h-full"
+              src="/icons/travelPage/arrow.svg"
+              alt=""
+            />
           </div>
 
           <div className="flex flex-col justify-center items-center gap-y-2">
@@ -52,10 +61,15 @@ export default function TrainCard({
                 <p>{destinationTime}</p>
               </div>
               <div className="w-12 h-auto">
-                <img className="w-full h-full" src="/icons/travelPage/orange-train.svg" />
+                <img
+                  className="w-full h-full"
+                  src="/icons/travelPage/orange-train.svg"
+                />
               </div>
             </div>
-            <p className="font-medium text-[12px] text-[#ADADAD]">{ml(destinationStation, lang)}</p>
+            <p className="font-medium text-[12px] text-[#ADADAD]">
+              {ml(destinationStation, lang)}
+            </p>
           </div>
         </div>
 
@@ -65,7 +79,16 @@ export default function TrainCard({
             <span className="text-black">THB</span>
           </p>
           <p className="font-medium text-[12px]">{ml(desc, lang)}</p>
-          <div className="text-[12px] border border-[#BF4B17] rounded-full px-3">
+          <div
+            onClick={() =>
+              window.open(
+                "https://www.dticket.railway.co.th/DTicketPublicWeb/home/Home",
+                "_blank",
+                "noopener,noreferrer",
+              )
+            }
+            className="text-[12px] border border-[#BF4B17] rounded-full px-3"
+          >
             {t("menu.more")}
           </div>
         </div>
