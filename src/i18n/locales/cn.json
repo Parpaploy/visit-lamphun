@@ -84,7 +84,8 @@
     "time": "时间",
     "title": "标题",
     "morning": "上午游览：",
-    "afternoon": "下午游览："
+    "afternoon": "下午游览：",
+    "phoneLabel": "项目名称"
   },
 
   "dashboard": {

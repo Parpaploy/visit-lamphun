@@ -83,7 +83,8 @@
     "time": "เวลา",
     "title": "หัวข้อ",
     "morning": "รอบเช้า",
-    "afternoon": "รอบบ่าย"
+    "afternoon": "รอบบ่าย",
+    "phoneLabel": "ชื่อรายการ"
   },
 
   "dashboard": {

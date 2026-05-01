@@ -3,13 +3,27 @@ import {
   doc, orderBy, query, serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import type { EmergencyItem } from "../interfaces/content.interface";
+import type { EmergencyItem, PhoneEntry } from "../interfaces/content.interface";
 
 const COL = "emergency";
 
+function normalizePhone(phone: unknown): PhoneEntry {
+  if (typeof phone === "string") {
+    return { label: { th: "", en: "", cn: "" }, number: phone };
+  }
+  return phone as PhoneEntry;
+}
+
 export const fetchEmergencyItems = async (): Promise<EmergencyItem[]> => {
   const snap = await getDocs(query(collection(db, COL), orderBy("createdAt", "asc")));
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as EmergencyItem);
+  return snap.docs.map((d) => {
+    const data = d.data();
+    return {
+      id: d.id,
+      ...data,
+      phones: (data.phones ?? []).map(normalizePhone),
+    } as EmergencyItem;
+  });
 };
 
 export const addEmergencyItem = async (data: Omit<EmergencyItem, "id">): Promise<void> => {

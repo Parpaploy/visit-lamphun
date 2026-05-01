@@ -58,7 +58,7 @@ export const EMPTY_CONTACT = {
   header: { ...EMPTY_ML },
   address: { ...EMPTY_ML },
   hours: { ...EMPTY_ML },
-  phones: [""],
+  phones: [{ label: { ...EMPTY_ML }, number: "" }],
 };
 
 export function useTabs(): { value: Tab; label: string }[] {

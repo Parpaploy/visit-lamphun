@@ -64,9 +64,9 @@ export default function ContactPage() {
                     ...(item.hours[lang]
                       ? [{ type: "hours" as const, text: item.hours[lang] }]
                       : []),
-                    ...item.phones.map((p) => ({
+                    ...item.phones.map((ph) => ({
                       type: "phone" as const,
-                      text: p,
+                      text: ph.label[lang] ? `${ph.label[lang]} : ${ph.number}` : ph.number,
                     })),
                   ]}
                 />

@@ -6,17 +6,24 @@ import type { MLString } from "../../interfaces/content.interface";
 function PhoneItem({ text }: { text: string }) {
   return (
     <div className="flex justify-center items-start gap-x-3">
-      <div className="min-w-5 w-5">
-        <img className="w-full h-auto" src="/icons/contact-page/phone-icon.svg" />
+      <div className="min-w-5 w-5 mr-2">
+        <img
+          className="w-full h-auto"
+          src="/icons/contact-page/phone-icon.svg"
+        />
       </div>
-      <span className="text-[12px] text-[#543A14] font-medium text-start">{text}</span>
+      <span className="text-[12px] text-[#543A14] font-medium text-start">
+        {text}
+      </span>
     </div>
   );
 }
 
 function AddressItem({ text }: { text: string }) {
   return (
-    <span className="text-[12px] text-[#543A14] text-center font-medium">{text}</span>
+    <span className="text-[12px] text-[#543A14] text-center font-medium">
+      {text}
+    </span>
   );
 }
 
@@ -24,9 +31,14 @@ function HoursItem({ text }: { text: string }) {
   return (
     <div className="flex justify-start items-end gap-x-3">
       <div className="w-7">
-        <img className="w-full h-auto" src="/icons/contact-page/open-icon.svg" />
+        <img
+          className="w-full h-auto"
+          src="/icons/contact-page/open-icon.svg"
+        />
       </div>
-      <span className="text-[12px] text-[#543A14] text-center font-medium">{text}</span>
+      <span className="text-[12px] text-[#543A14] text-center font-medium">
+        {text}
+      </span>
     </div>
   );
 }
@@ -45,12 +57,17 @@ export default function EmergencyCard({
       <h1 className="py-2 text-center w-full bg-[#FFF0DC] text-black font-medium text-[16px]">
         {ml(header, i18n.language)}
       </h1>
-      <div className="w-full h-full px-7 py-4 flex flex-col justify-between items-start gap-y-3">
-        {items.map((item, index) => {
-          if (item.type === "phone") return <PhoneItem key={index} text={item.text} />;
-          if (item.type === "address") return <AddressItem key={index} text={item.text} />;
-          if (item.type === "hours") return <HoursItem key={index} text={item.text} />;
-        })}
+      <div className="w-full h-full flex flex-col justify-center items-center">
+        <div className="w-fit h-full px-7 py-4 flex flex-col justify-between items-start gap-y-3">
+          {items.map((item, index) => {
+            if (item.type === "phone")
+              return <PhoneItem key={index} text={item.text} />;
+            if (item.type === "address")
+              return <AddressItem key={index} text={item.text} />;
+            if (item.type === "hours")
+              return <HoursItem key={index} text={item.text} />;
+          })}
+        </div>
       </div>
     </div>
   );

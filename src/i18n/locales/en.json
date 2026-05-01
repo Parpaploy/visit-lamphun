@@ -84,7 +84,8 @@
     "time": "Time",
     "title": "Title",
     "morning": "Morning Tour:",
-    "afternoon": "Afternoon Tour:"
+    "afternoon": "Afternoon Tour:",
+    "phoneLabel": "Item Name"
   },
 
   "dashboard": {

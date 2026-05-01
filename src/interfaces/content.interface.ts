@@ -50,12 +50,17 @@ export interface OtherItem {
   day: "weekday" | "weekend";
 }
 
+export interface PhoneEntry {
+  label: MLString;
+  number: string;
+}
+
 export interface EmergencyItem {
   id: string;
   header: MLString;
   address: MLString;
   hours: MLString;
-  phones: string[];
+  phones: PhoneEntry[];
 }
 
 export interface StationPopupData {
