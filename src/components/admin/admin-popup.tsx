@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { STATION_IDS, inputCls } from "../../constant/admin";
 import { STATION_NAMES_ML } from "../../constant/homepage";
@@ -20,31 +20,29 @@ export default function AdminPopup() {
   );
   const { data, loading, refetch } = useStationPopup(selectedStation);
 
-  const [header, setHeader] = useState<MLString>({ ...EMPTY_ML });
-  const [desc, setDesc] = useState<MLString>({ ...EMPTY_ML });
-  const [imgUrl, setImgUrl] = useState("");
+  // null = no user edit yet; fall back to server data during render
+  const [editedHeader, setHeader] = useState<MLString | null>(null);
+  const [editedDesc, setDesc] = useState<MLString | null>(null);
+  const [editedImgUrl, setImgUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    setHeader({ ...EMPTY_ML });
-    setDesc({ ...EMPTY_ML });
-    setImgUrl("");
+  const serverData = !loading && data ? data : null;
+  const header = editedHeader ?? serverData?.header ?? EMPTY_ML;
+  const desc = editedDesc ?? serverData?.desc ?? EMPTY_ML;
+  const imgUrl = editedImgUrl ?? serverData?.img ?? "";
+
+  const resetEdits = () => {
+    setHeader(null);
+    setDesc(null);
+    setImgUrl(null);
     setImageFile(null);
     setPreviewUrl(null);
     setError("");
-  }, [selectedStation]);
-
-  useEffect(() => {
-    if (!loading && data) {
-      setHeader({ ...data.header });
-      setDesc({ ...data.desc });
-      setImgUrl(data.img);
-    }
-  }, [data, loading]);
+  };
 
   const p = (key: string, lang: "inTh" | "inEn" | "inCn") =>
     `${t(key)} ${t(`form.${lang}`)}`;
@@ -88,7 +86,7 @@ export default function AdminPopup() {
         <div className="mb-3">
           <select
             value={selectedStation}
-            onChange={(e) => setSelectedStation(e.target.value)}
+            onChange={(e) => { setSelectedStation(e.target.value); resetEdits(); }}
             className={inputCls}
           >
             {STATION_IDS.map((id) => (
@@ -109,19 +107,19 @@ export default function AdminPopup() {
             <input
               placeholder={p("form.title", "inTh")}
               value={header.th}
-              onChange={(e) => setHeader((h) => ({ ...h, th: e.target.value }))}
+              onChange={(e) => setHeader({ ...header, th: e.target.value })}
               className={inputCls}
             />
             <input
               placeholder={p("form.title", "inEn")}
               value={header.en}
-              onChange={(e) => setHeader((h) => ({ ...h, en: e.target.value }))}
+              onChange={(e) => setHeader({ ...header, en: e.target.value })}
               className={inputCls}
             />
             <input
               placeholder={p("form.title", "inCn")}
               value={header.cn}
-              onChange={(e) => setHeader((h) => ({ ...h, cn: e.target.value }))}
+              onChange={(e) => setHeader({ ...header, cn: e.target.value })}
               className={inputCls}
             />
 
@@ -131,21 +129,21 @@ export default function AdminPopup() {
             <textarea
               placeholder={p("form.descFull", "inTh")}
               value={desc.th}
-              onChange={(e) => setDesc((d) => ({ ...d, th: e.target.value }))}
+              onChange={(e) => setDesc({ ...desc, th: e.target.value })}
               rows={3}
               className={`${inputCls} resize-none`}
             />
             <textarea
               placeholder={p("form.descFull", "inEn")}
               value={desc.en}
-              onChange={(e) => setDesc((d) => ({ ...d, en: e.target.value }))}
+              onChange={(e) => setDesc({ ...desc, en: e.target.value })}
               rows={3}
               className={`${inputCls} resize-none`}
             />
             <textarea
               placeholder={p("form.descFull", "inCn")}
               value={desc.cn}
-              onChange={(e) => setDesc((d) => ({ ...d, cn: e.target.value }))}
+              onChange={(e) => setDesc({ ...desc, cn: e.target.value })}
               rows={3}
               className={`${inputCls} resize-none`}
             />
@@ -153,13 +151,6 @@ export default function AdminPopup() {
             <p className="text-[12px] text-[#8B724E] font-medium mt-1">
               {t("dashboard.image")}
             </p>
-            {(previewUrl || imgUrl) && (
-              <img
-                src={previewUrl ?? imgUrl}
-                alt="preview"
-                className="w-full h-36 object-cover rounded-xl border border-[#D9D9D9]"
-              />
-            )}
             <input
               type="file"
               accept="image/*"
@@ -173,13 +164,21 @@ export default function AdminPopup() {
               }}
             />
             <button
+              type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="text-[13px] text-[#BF4B17] font-medium text-left"
+              className="border border-dashed border-[#C6C6C6] rounded-xl py-3 text-[13px] text-[#8B724E] hover:border-[#BF4B17] transition-colors"
             >
-              {imgUrl || previewUrl
-                ? t("dashboard.changeImage")
-                : t("dashboard.selectImage")}
+              {imageFile ? imageFile.name : t("dashboard.selectImage")}
             </button>
+            {(previewUrl || imgUrl) && (
+              <div className="w-full h-36 rounded-xl overflow-hidden">
+                <img
+                  src={previewUrl ?? imgUrl}
+                  alt="preview"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
 
             {error && <p className="text-red-500 text-[12px]">{error}</p>}
             <button
