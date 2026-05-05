@@ -99,11 +99,11 @@
     "title": "Manage Data",
     "tabs": {
       "places": "Places",
-      "recommend": "Recommend",
-      "kome": "Lanterns",
-      "travel": "Travel",
-      "contact": "Contact",
-      "popup": "Popup"
+      "popup": "Popup",
+      "recommend": "Best of the best, outstanding, and famous",
+      "kome": "Lantern Production Groups",
+      "travel": "Lamphun Travel",
+      "contact": "Contact / Feedback"
     },
 
     "loading": "Loading...",
@@ -117,7 +117,7 @@
     "addNew": "Add New Item",
     "selectImage": "Select Image *",
     "changeImage": "Change Image (optional)",
-    "addGroup": "Add Lantern Group",
+    "addGroup": "Add Lantern Production Groups",
     "addGroupBtn": "+ Add Group",
     "addAgency": "Add Emergency Agency",
     "addPhone": "+ Add Phone",

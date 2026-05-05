@@ -99,11 +99,11 @@
     "title": "管理数据",
     "tabs": {
       "places": "地点",
-      "recommend": "推荐",
-      "kome": "灯笼",
-      "travel": "交通",
-      "contact": "联系",
-      "popup": "弹窗"
+      "popup": "弹窗",
+      "recommend": "精品，著名景点，名人",
+      "kome": "灯笼制作群体",
+      "travel": "旅行",
+      "contact": "联系方式/提出意见"
     },
 
     "loading": "加载中...",
@@ -117,7 +117,7 @@
     "addNew": "添加新项目",
     "selectImage": "选择图片 *",
     "changeImage": "更换图片（可选）",
-    "addGroup": "添加灯笼组",
+    "addGroup": "添加灯笼制作群体",
     "addGroupBtn": "+ 添加组",
     "addAgency": "添加紧急机构",
     "addPhone": "+ 添加电话",

@@ -11,7 +11,10 @@ import type {
 } from "../interfaces/navbar.interface";
 import { STATION_ID_MAP } from "./homepage";
 
-export function useRecommendModes(): { value: IRecommendMode; label: string }[] {
+export function useRecommendModes(): {
+  value: IRecommendMode;
+  label: string;
+}[] {
   const { t } = useTranslation();
   return [
     { value: "goods", label: t("recommend.goods") },
@@ -65,11 +68,11 @@ export function useTabs(): { value: Tab; label: string }[] {
   const { t } = useTranslation();
   return [
     { value: "places", label: t("dashboard.tabs.places") },
-    { value: "recommend", label: t("dashboard.tabs.recommend") },
-    { value: "kome", label: t("dashboard.tabs.kome") },
-    { value: "travel", label: t("dashboard.tabs.travel") },
-    { value: "contact", label: t("dashboard.tabs.contact") },
     { value: "popup", label: t("dashboard.tabs.popup") },
+    { value: "recommend", label: t("dashboard.tabs.recommend") },
+    { value: "travel", label: t("dashboard.tabs.travel") },
+    { value: "kome", label: t("dashboard.tabs.kome") },
+    { value: "contact", label: t("dashboard.tabs.contact") },
   ];
 }
 
