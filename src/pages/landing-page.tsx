@@ -23,6 +23,12 @@ export default function LandingPage() {
   }, []);
 
   useEffect(() => {
+    if (localStorage.getItem("transport_recorded")) {
+      navigate("/app", { replace: true });
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     if (!contentLoaded) return;
     const interval = setInterval(() => {
       setPercentage((prev) => {
