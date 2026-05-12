@@ -5,6 +5,7 @@ import type { IContactMode } from "../interfaces/navbar.interface";
 import EmergencyCard from "../components/contact-page/emergency-card";
 import ContactLoader from "../components/skeleton-load/contact-loader";
 import { useEmergencyItems } from "../hooks/useEmergencyItems";
+import LazyImage from "../components/skeleton-load/image-loader";
 
 export default function ContactPage() {
   const { t, i18n } = useTranslation();
@@ -85,12 +86,10 @@ export default function ContactPage() {
                 Facebook
               </h1>
 
-              <div className="w-full">
-                <img
-                  className="w-full h-auto"
-                  src="/images/contact-page/fb-pic.svg"
-                />
-              </div>
+              <LazyImage
+                src="/images/contact-page/fb-pic.svg"
+                className="w-full"
+              />
 
               <button
                 onClick={() => {
@@ -112,12 +111,10 @@ export default function ContactPage() {
               </h1>
 
               <div className="w-full h-full px-7 py-4 flex flex-col justify-between items-center gap-y-2">
-                <div className="w-[95%] mb-2">
-                  <img
-                    className="w-full h-auto"
-                    src="/images/contact-page/tourist-care-pic.svg"
-                  />
-                </div>
+                <LazyImage
+                  src="/images/contact-page/tourist-care-pic.svg"
+                  className="w-[95%] mb-2"
+                />
 
                 <p className="text-[12px] text-center font-normal mb-1">
                   <span className="font-bold">Public Service</span>{" "}
@@ -126,12 +123,10 @@ export default function ContactPage() {
                   เหตุเดือดร้อนจากสัตว์ และเรียกบริการฉุกเฉินจาก อปท.
                 </p>
 
-                <div className="w-32">
-                  <img
-                    className="w-full h-auto"
-                    src="/images/contact-page/tourist-care-qr.svg"
-                  />
-                </div>
+                <LazyImage
+                  src="/images/contact-page/tourist-care-qr.svg"
+                  className="w-32"
+                />
 
                 <button
                   onClick={() => {
@@ -156,24 +151,20 @@ export default function ContactPage() {
           <div className="animate-fade-in min-h-full flex flex-col justify-between items-center gap-y-2 px-10 py-5 border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
             <h1 className="text-[#11A04B] text-[24px] font-semibold">Line</h1>
 
-            <div className="w-full">
-              <img
-                className="w-full h-auto"
-                src="/images/contact-page/line-pic.svg"
-              />
-            </div>
+            <LazyImage
+              src="/images/contact-page/line-pic.svg"
+              className="w-full"
+            />
 
             <p className="text-[12px] text-center">
               รายงานเหตุผิดปกติทั้งทางด้าน คน สัตว์
               สิ่งแวดล้อมและแจ้งเหตุงานบริการสาธารณะ
             </p>
 
-            <div className="w-24">
-              <img
-                className="w-full h-auto"
-                src="/images/contact-page/line-qr.svg"
-              />
-            </div>
+            <LazyImage
+              src="/images/contact-page/line-qr.svg"
+              className="w-24"
+            />
 
             <p className="text-[12px] text-[#BF4B17] text-center">
               สามารถสแกน QR - Code หรือ เพิ่มเพื่อนได้ที่นี่
