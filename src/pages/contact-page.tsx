@@ -10,6 +10,8 @@ import LazyImage from "../components/skeleton-load/image-loader";
 export default function ContactPage() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "th" | "en" | "cn";
+  const isTH = i18n.language === "th";
+
   const [mode, setMode] = useState<IContactMode>("emergency");
   const [prevMode, setPrevMode] = useState<IContactMode>(mode);
   const [modeLoading, setModeLoading] = useState(false);
@@ -118,10 +120,14 @@ export default function ContactPage() {
                 />
 
                 <p className="text-[12px] text-center font-normal mb-1">
-                  <span className="font-bold">Public Service</span>{" "}
-                  ใส่ใจนักท่องเที่ยว เว็บไซต์สำหรับนักท่องเที่ยว ในการแจ้งเรื่อง
-                  อุบัติเหตุ ความเจ็บป่วย อาหารปลอดภัย/คุ้มครองผู้บริโภค
-                  เหตุเดือดร้อนจากสัตว์ และเรียกบริการฉุกเฉินจาก อปท.
+                  {isTH ? (
+                    <>
+                      <span className="font-bold">Public Service</span>{" "}
+                      {t("contact.touristCareDesc")}
+                    </>
+                  ) : (
+                    t("contact.touristCareDesc")
+                  )}
                 </p>
 
                 <LazyImage
@@ -157,10 +163,7 @@ export default function ContactPage() {
               className="w-full"
             />
 
-            <p className="text-[12px] text-center">
-              รายงานเหตุผิดปกติทั้งทางด้าน คน สัตว์
-              สิ่งแวดล้อมและแจ้งเหตุงานบริการสาธารณะ
-            </p>
+            <p className="text-[12px] text-center">{t("contact.lineDesc")}</p>
 
             <LazyImage
               src="/images/contact-page/line-qr.svg"
@@ -168,7 +171,7 @@ export default function ContactPage() {
             />
 
             <p className="text-[12px] text-[#BF4B17] text-center">
-              สามารถสแกน QR - Code หรือ เพิ่มเพื่อนได้ที่นี่
+              {t("contact.scan")}
             </p>
 
             <button

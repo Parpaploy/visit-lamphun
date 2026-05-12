@@ -32,7 +32,10 @@
     "web": "Go to webpage",
     "open": "Opening Hours",
     "phone": "Telephone",
-    "ext": "ext"
+    "ext": "ext",
+    "touristCareDesc": "Website for tourists to report accidents, illnesses, food safety/consumer protection, animal nuisances, and request emergency services from local administrative organizations.",
+    "lineDesc": "Report abnormal events related to people, animals, environment and public service reports.",
+    "scan": "Scan QR code or add friend here."
   },
 
   "navbar": {

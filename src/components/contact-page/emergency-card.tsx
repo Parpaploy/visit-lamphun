@@ -21,7 +21,7 @@ function PhoneItem({ text }: { text: string }) {
 
 function AddressItem({ text }: { text: string }) {
   return (
-    <span className="text-[12px] text-[#543A14] text-center font-medium">
+    <span className="text-[12px] text-[#543A14] text-start font-medium">
       {text}
     </span>
   );
@@ -31,14 +31,14 @@ function HoursItem({ text }: { text: string }) {
   const { t } = useTranslation();
 
   return (
-    <div className="flex justify-start items-end gap-x-3">
-      <div className="w-7">
+    <div className="flex justify-start items-start gap-x-3">
+      <div className="min-w-7 w-7">
         <img
           className="w-full h-auto"
           src="/icons/contact-page/open-icon.svg"
         />
       </div>
-      <span className="text-[12px] text-[#543A14] text-center font-medium">
+      <span className="text-[12px] text-[#543A14] text-start font-medium mt-1">
         {t("contact.open")} : {text}
       </span>
     </div>
