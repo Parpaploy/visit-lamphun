@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { stationNumber } from "../../interfaces/homepage.interface";
 import PopupLoader from "../skeleton-load/popup-loader";
@@ -25,7 +25,18 @@ export default function MainPopup({
   const desc = ml(data?.desc ?? { th: "", en: "", cn: "" }, i18n.language);
   const img = data?.img ?? "";
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const [imageLoaded, setImageLoaded] = useState(!img);
+  const [showTopFade, setShowTopFade] = useState<boolean>(false);
+  const [showBottomFade, setShowBottomFade] = useState<boolean>(true);
+
+  const handleScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setShowTopFade(el.scrollTop > 10);
+    setShowBottomFade(el.scrollTop + el.clientHeight < el.scrollHeight - 10);
+  };
 
   return (
     <div className="z-998 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full p-2.5 flex justify-center items-center">
@@ -56,7 +67,9 @@ export default function MainPopup({
           <div className="animate-fade-in w-full h-[90%] flex flex-col justify-start items-center gap-y-5">
             <div className="w-full h-fit flex flex-col justify-start items-center gap-y-5">
               {header ? (
-                <h1 className="text-[#543A14] font-bold text-[16px]">{header}</h1>
+                <h1 className="text-[#543A14] font-bold text-[16px]">
+                  {header}
+                </h1>
               ) : (
                 <div className="h-4 w-40 bg-[#E8E8E8] rounded-full" />
               )}
@@ -69,9 +82,31 @@ export default function MainPopup({
               </div>
             </div>
             {desc ? (
-              <p className="h-full overflow-y-auto pt-1 text-[#543A14] text-[16px] font-normal text-center">
-                {desc}
-              </p>
+              <div className="relative w-full flex-1 min-h-0">
+                <div
+                  className={`z-100 pointer-events-none absolute -top-1 left-0 w-full h-10 transition-opacity duration-50 ${showTopFade ? "block opacity-100" : "hidden opacity-0"}`}
+                  style={{
+                    background:
+                      "linear-gradient(0deg, rgba(255,255,255,0) 20%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,1) 90%, rgba(255,255,255,1) 100%)",
+                  }}
+                />
+
+                <div
+                  ref={scrollRef}
+                  onScroll={handleScroll}
+                  className="h-full overflow-y-auto pt-1 text-[#543A14] text-[16px] font-normal text-center"
+                >
+                  <p>{desc}</p>
+
+                  <div
+                    className={`z-100 pointer-events-none sticky -bottom-1 left-0 h-10 w-full transition-opacity duration-50 ${showBottomFade ? "block opacity-100" : "hidden opacity-0"}`}
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(255,255,255,0) 20%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,1) 90%, rgba(255,255,255,1) 100%)",
+                    }}
+                  />
+                </div>
+              </div>
             ) : (
               <div className="w-full flex flex-col gap-y-2 pt-1">
                 <div className="h-3 w-full bg-[#E8E8E8] rounded-full" />
