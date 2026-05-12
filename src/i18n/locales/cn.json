@@ -31,7 +31,8 @@
     "page": "前往页面",
     "web": "进入网站",
     "open": "工作时间",
-    "phone": "电话号码"
+    "phone": "电话号码",
+    "ext": "转"
   },
 
   "navbar": {
@@ -92,7 +93,8 @@
     "van": "面包车",
     "tricycle": "三轮车",
     "songthaew": "双条车",
-    "lineLink": "LINE link（加好友）"
+    "lineLink": "LINE link（加好友）",
+    "extension": "分机号"
   },
 
   "dashboard": {

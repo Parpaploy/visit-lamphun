@@ -53,6 +53,7 @@ export interface OtherItem {
 export interface PhoneEntry {
   label: MLString;
   number: string;
+  ext?: string;
 }
 
 export interface EmergencyItem {

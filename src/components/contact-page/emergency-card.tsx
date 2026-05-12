@@ -52,7 +52,7 @@ export default function EmergencyCard({
   header: MLString;
   items: CardItem[];
 }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className="overflow-hidden flex flex-col justify-start items-start border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
@@ -62,8 +62,13 @@ export default function EmergencyCard({
       <div className="w-full h-full flex flex-col justify-center items-center">
         <div className="w-fit h-full px-7 py-4 flex flex-col justify-between items-start gap-y-3">
           {items.map((item, index) => {
-            if (item.type === "phone")
-              return <PhoneItem key={index} text={item.text} />;
+            if (item.type === "phone") {
+              const phoneText = item.ext
+                ? `${item.text} ${t("contact.ext")} ${item.ext}`
+                : item.text;
+
+              return <PhoneItem key={index} text={phoneText} />;
+            }
             if (item.type === "address")
               return <AddressItem key={index} text={item.text} />;
             if (item.type === "hours")

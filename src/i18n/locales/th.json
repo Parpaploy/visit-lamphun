@@ -30,7 +30,8 @@
     "page": "ไปยังหน้าเพจ",
     "web": "ไปยังหน้าเว็บ",
     "open": "เปิดทำการ",
-    "phone": "โทรศัพท์"
+    "phone": "โทรศัพท์",
+    "ext": "ต่อ"
   },
 
   "navbar": {
@@ -91,7 +92,8 @@
     "van": "รถตู้",
     "tricycle": "สามล้อ",
     "songthaew": "สองแถว",
-    "lineLink": "LINE link (เพิ่มเพื่อน)"
+    "lineLink": "LINE link (เพิ่มเพื่อน)",
+    "extension": "เบอร์ต่อ"
   },
 
   "dashboard": {

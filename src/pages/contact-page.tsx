@@ -68,6 +68,7 @@ export default function ContactPage() {
                     ...item.phones.map((ph) => ({
                       type: "phone" as const,
                       text: `${ph.label[lang] || `${t("contact.phone")}`} : ${ph.number}`,
+                      ext: ph.ext,
                     })),
                   ]}
                 />

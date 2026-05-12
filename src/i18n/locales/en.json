@@ -31,7 +31,8 @@
     "page": "Go to webpage",
     "web": "Go to webpage",
     "open": "Opening Hours",
-    "phone": "Telephone"
+    "phone": "Telephone",
+    "ext": "ext"
   },
 
   "navbar": {
@@ -92,7 +93,8 @@
     "van": "Van",
     "tricycle": "Tricycle",
     "songthaew": "Songthaew",
-    "lineLink": "LINE link (Add Friend)"
+    "lineLink": "LINE link (Add Friend)",
+    "extension": "Extension"
   },
 
   "dashboard": {

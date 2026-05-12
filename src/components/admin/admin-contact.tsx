@@ -9,7 +9,7 @@ import {
 import { EMPTY_CONTACT } from "../../constant/admin";
 import type { ContactEditState } from "../../interfaces/admin.interface";
 
-const EMPTY_PHONE = { label: { th: "", en: "", cn: "" }, number: "" };
+const EMPTY_PHONE = { label: { th: "", en: "", cn: "" }, number: "", ext: "" };
 
 const inputCls =
   "border border-[#C6C6C6] rounded-xl px-3 py-2 text-[13px] text-[#543A14] outline-none placeholder:text-[#C6C6C6] w-full";
@@ -52,15 +52,15 @@ export default function AdminContact() {
     setForm((f) => ({ ...f, phones: f.phones.filter((_, idx) => idx !== i) }));
   const setPhone = (
     i: number,
-    field: "th" | "en" | "cn" | "number",
+    field: "th" | "en" | "cn" | "number" | "ext",
     val: string,
   ) =>
     setForm((f) => ({
       ...f,
       phones: f.phones.map((ph, idx) =>
         idx === i
-          ? field === "number"
-            ? { ...ph, number: val }
+          ? field === "number" || field === "ext"
+            ? { ...ph, [field]: val }
             : { ...ph, label: { ...ph.label, [field]: val } }
           : ph,
       ),
@@ -83,7 +83,7 @@ export default function AdminContact() {
     );
   const setEditPhone = (
     i: number,
-    field: "th" | "en" | "cn" | "number",
+    field: "th" | "en" | "cn" | "number" | "ext",
     val: string,
   ) =>
     setEditing(
@@ -92,8 +92,8 @@ export default function AdminContact() {
           ...s,
           phones: s.phones.map((ph, idx) =>
             idx === i
-              ? field === "number"
-                ? { ...ph, number: val }
+              ? field === "number" || field === "ext"
+                ? { ...ph, [field]: val }
                 : { ...ph, label: { ...ph.label, [field]: val } }
               : ph,
           ),
@@ -142,7 +142,9 @@ export default function AdminContact() {
       setEditing(null);
       refetch();
     } catch (e) {
-      alert(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
+      alert(
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
+      );
       setEditing((s) => s && { ...s, saving: false });
     }
   };
@@ -255,6 +257,14 @@ export default function AdminContact() {
                 onChange={(e) => setPhone(i, "number", e.target.value)}
                 className={`w-full ${inputCls}`}
               />
+
+              <input
+                placeholder={t("form.extension")}
+                value={ph.ext}
+                onChange={(e) => setPhone(i, "ext", e.target.value)}
+                className={inputCls}
+              />
+
               {form.phones.length > 1 && (
                 <button
                   onClick={() => removePhone(i)}
@@ -388,6 +398,12 @@ export default function AdminContact() {
                     onChange={(e) => setEditPhone(i, "number", e.target.value)}
                     className={`${inputCls} w-full`}
                   />
+                  <input
+                    placeholder={t("form.extension")}
+                    value={ph.ext}
+                    onChange={(e) => setEditPhone(i, "ext", e.target.value)}
+                    className={inputCls}
+                  />
                   {editing.phones.length > 1 && (
                     <button
                       onClick={() => removeEditPhone(i)}
@@ -445,8 +461,8 @@ export default function AdminContact() {
                     {item.phones
                       .map((ph) =>
                         ph.label.th
-                          ? `${ph.label.th} : ${ph.number}`
-                          : ph.number,
+                          ? `${ph.label.th} : ${ph.number}${ph.ext ? ` ต่อ ${ph.ext}` : ""}`
+                          : `${ph.number}${ph.ext ? ` ต่อ ${ph.ext}` : ""}`,
                       )
                       .join(", ")}
                   </p>
