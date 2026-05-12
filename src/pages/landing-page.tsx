@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { recordTransportUsage } from "../services/stat.services";
 
 export default function LandingPage() {
   const [percentage, setPercentage] = useState(0);
   const [contentLoaded, setContentLoaded] = useState(false);
   const [c1X, setC1X] = useState(-120);
   const [c2X, setC2X] = useState(350);
+  const [selectedTransport, setSelectedTransport] = useState<
+    "tram" | "other" | null
+  >(null);
 
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
 
   const isLoading = percentage < 100;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setContentLoaded(true);
-    }, 1200);
-
+    const timer = setTimeout(() => setContentLoaded(true), 1200);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     if (!contentLoaded) return;
-
     const interval = setInterval(() => {
       setPercentage((prev) => {
         if (prev >= 100) {
@@ -32,24 +33,29 @@ export default function LandingPage() {
         return prev + 3;
       });
     }, 40);
-
     return () => clearInterval(interval);
   }, [contentLoaded]);
 
   useEffect(() => {
     let frame: number;
-
     const move = () => {
       setC1X((prev) => (prev >= 450 ? -300 : prev + 0.2));
       setC2X((prev) => (prev >= 450 ? -300 : prev + 0.2));
-
       frame = requestAnimationFrame(move);
     };
-
     frame = requestAnimationFrame(move);
-
     return () => cancelAnimationFrame(frame);
   }, []);
+
+  const handleStart = async () => {
+    if (!selectedTransport) return;
+    try {
+      await recordTransportUsage(selectedTransport);
+    } catch (err) {
+      console.error("Firebase error:", err);
+    }
+    navigate("/app");
+  };
 
   return (
     <main className="w-full max-w-107.5 h-svh mx-auto overflow-hidden">
@@ -76,7 +82,6 @@ export default function LandingPage() {
                     className="h-1.75 bg-[#BF4B17] absolute bottom-0 left-0 duration-100"
                   />
                 </div>
-
                 <p className="text-[#BF4B17] font-medium text-[16px] mt-2.5">
                   Loading . . .
                 </p>
@@ -84,50 +89,27 @@ export default function LandingPage() {
             ) : (
               <>
                 <div className="mt-4 w-full flex flex-col justify-center items-center gap-y-4">
-                  <button
-                    className={`transition-all ${i18n.language === "th" ? "opacity-100 border-[#BF4B17] shadow-[0px_0px_12.3px_0px_#BF4B17]" : "border-transparent opacity-60"} border bg-white h-fit rounded-full pr-5 w-40 flex justify-between items-center`}
-                    onClick={() => i18n.changeLanguage("th")}
-                  >
-                    <div className="w-[45%] h-auto aspect-square">
-                      <img
-                        className="w-full h-full"
-                        src="/icons/thai-icon.svg"
-                      />
-                    </div>
-                    <span className="w-full text-center text-[14px] font-medium">
-                      ภาษาไทย
-                    </span>
-                  </button>
-
-                  <button
-                    className={`transition-all ${i18n.language === "en" ? "opacity-100 border-[#BF4B17] shadow-[0px_0px_12.3px_0px_#BF4B17]" : "border-transparent opacity-60"} border bg-white h-fit rounded-full pr-5 w-40 flex justify-between items-center`}
-                    onClick={() => i18n.changeLanguage("en")}
-                  >
-                    <div className="w-[45%] h-auto aspect-square">
-                      <img
-                        className="w-full h-full"
-                        src="/icons/eng-icon.svg"
-                      />
-                    </div>
-                    <span className="w-full text-center text-[14px] font-medium">
-                      English
-                    </span>
-                  </button>
-
-                  <button
-                    className={`transition-all ${i18n.language === "cn" ? "opacity-100 border-[#BF4B17] shadow-[0px_0px_12.3px_0px_#BF4B17]" : "border-transparent opacity-60"} border bg-white h-fit rounded-full pr-5 w-40 flex justify-between items-center`}
-                    onClick={() => i18n.changeLanguage("cn")}
-                  >
-                    <div className="w-[45%] h-auto aspect-square">
-                      <img
-                        className="w-full h-full"
-                        src="/icons/china-icon.svg"
-                      />
-                    </div>
-                    <span className="w-full text-center text-[14px] font-medium">
-                      中國人
-                    </span>
-                  </button>
+                  {(["th", "en", "cn"] as const).map((lang) => (
+                    <button
+                      key={lang}
+                      className={`transition-all ${i18n.language === lang ? "opacity-100 border-[#BF4B17] shadow-[0px_0px_12.3px_0px_#BF4B17]" : "border-transparent opacity-60"} border bg-white h-fit rounded-full pr-5 w-40 flex justify-between items-center`}
+                      onClick={() => i18n.changeLanguage(lang)}
+                    >
+                      <div className="w-[45%] h-auto aspect-square">
+                        <img
+                          className="w-full h-full"
+                          src={`/icons/${lang === "th" ? "thai" : lang === "en" ? "eng" : "china"}-icon.svg`}
+                        />
+                      </div>
+                      <span className="w-full text-center text-[14px] font-medium">
+                        {lang === "th"
+                          ? "ภาษาไทย"
+                          : lang === "en"
+                            ? "English"
+                            : "中國人"}
+                      </span>
+                    </button>
+                  ))}
                 </div>
 
                 <div className="w-full flex flex-col items-center justify-center mt-5 mb-3">
@@ -137,25 +119,43 @@ export default function LandingPage() {
 
                   <div className="flex justify-center items-center gap-x-3">
                     <button
-                      className={`text-[14px] font-medium flex justify-center items-center text-center bg-white h-fit py-2.5 rounded-full w-28`}
+                      onClick={() => setSelectedTransport("tram")}
+                      className={`text-[14px] font-medium flex justify-center items-center text-center h-fit py-2.5 rounded-full w-28 transition-all border
+                        ${
+                          selectedTransport === "tram"
+                            ? "bg-[#BF4B17] text-white border-[#BF4B17] shadow-[0px_0px_12.3px_0px_#BF4B17]"
+                            : "bg-white text-black border-transparent"
+                        }`}
                     >
                       {t("landing.tram")}
                     </button>
 
                     <button
-                      className={`text-[14px] font-medium flex justify-center items-center text-center bg-white h-fit py-2.5 rounded-full w-28`}
+                      onClick={() => setSelectedTransport("other")}
+                      className={`text-[14px] font-medium flex justify-center items-center text-center h-fit py-2.5 rounded-full w-28 transition-all border
+                        ${
+                          selectedTransport === "other"
+                            ? "bg-[#BF4B17] text-white border-[#BF4B17] shadow-[0px_0px_12.3px_0px_#BF4B17]"
+                            : "bg-white text-black border-transparent"
+                        }`}
                     >
                       {t("landing.other")}
                     </button>
                   </div>
                 </div>
 
-                <Link
-                  to="/app"
-                  className="flex items-center justify-center w-45 bg-[#bf4b17] text-white py-3 rounded-full font-semibold text-[16px] mt-3.75"
+                <button
+                  onClick={handleStart}
+                  disabled={!selectedTransport}
+                  className={`text-white flex items-center justify-center w-45 py-3 rounded-full font-semibold text-[16px] mt-3.75 transition-all
+                    ${
+                      selectedTransport
+                        ? "bg-[#bf4b17] cursor-pointer"
+                        : "bg-[#D9D9D9] cursor-not-allowed"
+                    }`}
                 >
                   {t("landing.start")}
-                </Link>
+                </button>
               </>
             )}
           </div>
@@ -166,7 +166,6 @@ export default function LandingPage() {
         <div style={{ top: 90, left: c1X }} className="w-50 absolute">
           <img src="/images/landingPage/Cloud1.svg" className="w-full h-full" />
         </div>
-
         <div style={{ top: 200, left: c2X }} className="w-43.75 absolute">
           <img src="/images/landingPage/Cloud2.svg" className="w-full h-full" />
         </div>

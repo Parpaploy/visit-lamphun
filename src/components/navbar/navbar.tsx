@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "../../constant/language";
 import { IoMenu } from "react-icons/io5";
 import NavbarMenuBtn from "./navbar-menu-btn";
-
 import type {
   INavbarFooterMenuList,
   INavbarMenuList,
@@ -16,6 +15,7 @@ import {
   pageTitleMap,
   subtitleMap,
 } from "../../constant/navbar-menu";
+import { subscribeTransportStats } from "../../services/stat.services";
 
 export default function Navbar() {
   const { i18n, t } = useTranslation();
@@ -27,6 +27,7 @@ export default function Navbar() {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [menuReady, setMenuReady] = useState<boolean>(false);
   const [langReady, setLangReady] = useState<boolean>(false);
+  const [totalUsers, setTotalUsers] = useState<number>(0);
 
   useEffect(() => {
     if (!openMenu) return;
@@ -45,6 +46,13 @@ export default function Navbar() {
       setLangReady(false);
     };
   }, [open]);
+
+  useEffect(() => {
+    const unsub = subscribeTransportStats((stats) => {
+      setTotalUsers(stats.tram + stats.other);
+    });
+    return () => unsub();
+  }, []);
 
   const current =
     LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
@@ -223,7 +231,8 @@ export default function Navbar() {
                     </div>
 
                     <div className="text-[#8B724E] text-[10px] font-medium">
-                      {t("navbar.stat")} 0 {t("navbar.unit")}
+                      {t("navbar.stat")} {totalUsers.toLocaleString()}{" "}
+                      {t("navbar.unit")}
                     </div>
                   </div>
 
