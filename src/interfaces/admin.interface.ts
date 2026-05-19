@@ -19,7 +19,14 @@ export type EditState = {
   saving: boolean;
 };
 
-export type Tab = "places" | "recommend" | "kome" | "travel" | "contact" | "popup";
+export type Tab =
+  | "places"
+  | "recommend"
+  | "kome"
+  | "travel"
+  | "contact"
+  | "popup"
+  | "heatmap";
 
 export type ContactEditState = EmergencyItem & { saving: boolean };
 
@@ -36,3 +43,7 @@ export type TrainEdit = TrainItem & { saving: boolean };
 export type TramEdit = TramItem & { saving: boolean };
 
 export type OtherEdit = OtherItem & { saving: boolean };
+export interface CellData {
+  count: number;
+  lastTime: string;
+}

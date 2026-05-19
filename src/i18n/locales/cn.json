@@ -108,7 +108,8 @@
       "recommend": "精品，著名景点，名人",
       "kome": "灯笼制作群体",
       "travel": "旅行",
-      "contact": "联系方式/提出意见"
+      "contact": "联系方式/提出意见",
+      "heatmap": "各地点用户数量"
     },
 
     "loading": "加载中...",
@@ -149,5 +150,19 @@
     "errorRequiredTram": "请填写所有3种语言的地点名称及时间",
     "addTrain": "添加火车",
     "addTram": "添加电车"
+  },
+
+  "heatmap": {
+    "all": "全部",
+    "today": "今天",
+    "week": "7天",
+    "noData": "暂无数据",
+    "collecting": "用户打开应用时将记录位置",
+    "people": "人",
+    "latest": "最近",
+    "low": "少",
+    "high": "多",
+    "loading": "加载中...",
+    "summary": "共 {{total}} 次访问 · X轴=时间 · Y轴=车站"
   }
 }

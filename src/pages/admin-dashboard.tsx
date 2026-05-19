@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+
 import AdminRecommend from "../components/admin/admin-recommend";
 import AdminKome from "../components/admin/admin-kome";
 import AdminTravel from "../components/admin/admin-travel";
 import AdminContact from "../components/admin/admin-contact";
+import AdminPopup from "../components/admin/admin-popup";
+import AdminHeatmap from "../components/admin/admin-heatmap";
+import PlacesPanel from "../components/admin/places-panel";
+
 import type { Tab } from "../interfaces/admin.interface";
 import { useTabs } from "../constant/admin";
-import PlacesPanel from "../components/admin/places-panel";
-import AdminPopup from "../components/admin/admin-popup";
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
@@ -17,22 +20,22 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-[#FBFCF0] p-5">
       <div className="mx-auto">
-        <h1 className="text-[20px] font-bold text-[#543A14] mb-4">
+        <h1 className="text-[20px] font-bold text-[#543A14] mb-5">
           {t("dashboard.title")}
         </h1>
 
         <div className="flex gap-x-2 mb-5 overflow-x-auto pb-1">
-          {tabs.map((t) => (
+          {tabs.map((item) => (
             <button
-              key={t.value}
-              onClick={() => setTab(t.value)}
+              key={item.value}
+              onClick={() => setTab(item.value)}
               className={`px-4 py-1.5 rounded-full text-[13px] font-medium border whitespace-nowrap transition-colors ${
-                tab === t.value
+                tab === item.value
                   ? "bg-[#BF4B17] text-white border-[#BF4B17]"
                   : "bg-white text-[#543A14] border-[#C6C6C6]"
               }`}
             >
-              {t.label}
+              {item.label}
             </button>
           ))}
         </div>
@@ -43,6 +46,7 @@ export default function AdminDashboard() {
         {tab === "travel" && <AdminTravel />}
         {tab === "contact" && <AdminContact />}
         {tab === "popup" && <AdminPopup />}
+        {tab === "heatmap" && <AdminHeatmap />}
       </div>
     </div>
   );

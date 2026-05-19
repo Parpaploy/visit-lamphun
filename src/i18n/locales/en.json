@@ -108,7 +108,8 @@
       "recommend": "Best of the best, outstanding, and famous",
       "kome": "Lantern Production Groups",
       "travel": "Lamphun Travel",
-      "contact": "Contact / Feedback"
+      "contact": "Contact / Feedback",
+      "heatmap": "Users by Location"
     },
 
     "loading": "Loading...",
@@ -149,5 +150,19 @@
     "errorRequiredTram": "Please fill in the place name in all 3 languages and time",
     "addTrain": "Add Train",
     "addTram": "Add Tram"
+  },
+
+  "heatmap": {
+    "all": "All",
+    "today": "Today",
+    "week": "7 Days",
+    "noData": "No data yet",
+    "collecting": "Data will be collected when users open the app",
+    "people": "people",
+    "latest": "Last",
+    "low": "Low",
+    "high": "High",
+    "loading": "Loading...",
+    "summary": "Total {{total}} visits · X = Time · Y = Station"
   }
 }
