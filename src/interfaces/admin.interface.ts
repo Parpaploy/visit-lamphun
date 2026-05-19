@@ -1,3 +1,4 @@
+import { STATION_COORDS } from "../utils/heatmap";
 import type {
   EmergencyItem,
   KomeItem,
@@ -6,6 +7,7 @@ import type {
   TrainItem,
   TramItem,
 } from "./content.interface";
+import type { TransportType } from "./stat.interface";
 
 export type EditState = {
   id: string;
@@ -43,7 +45,40 @@ export type TrainEdit = TrainItem & { saving: boolean };
 export type TramEdit = TramItem & { saving: boolean };
 
 export type OtherEdit = OtherItem & { saving: boolean };
+
 export interface CellData {
   count: number;
   lastTime: string;
+}
+
+export interface HeatmapRecord {
+  uid: string;
+  stationId: string;
+  timestamp: number;
+  distance: number;
+  transportType: TransportType;
+}
+
+export interface CellData {
+  count: number;
+  lastTime: string;
+}
+
+export type StationId = keyof typeof STATION_COORDS;
+
+export type FilterType = "all" | "today" | "custom";
+
+export interface HeatmapTableProps {
+  title: string;
+  grid: Record<string, Record<string, CellData>>;
+  maxValue: number;
+  lang: "th" | "en" | "cn";
+  stationIds: StationId[];
+  onCellMouseEnter: (
+    e: React.MouseEvent,
+    stationName: string,
+    slot: string,
+    cell: CellData,
+  ) => void;
+  onCellMouseLeave: () => void;
 }

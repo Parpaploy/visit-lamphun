@@ -47,6 +47,7 @@ export default function Navbar() {
     };
   }, [open]);
 
+  // 📍 สัญญาณ Realtime จะดึงค่า stats.tram + stats.other ที่วนลูปนับจาก Document รายบุคคลมาบวกรวมกันตรงนี้อัตโนมัติ
   useEffect(() => {
     const unsub = subscribeTransportStats((stats) => {
       setTotalUsers(stats.tram + stats.other);

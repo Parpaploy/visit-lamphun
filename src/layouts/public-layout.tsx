@@ -1,16 +1,22 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Navbar from "../components/navbar/navbar";
-import { recordUserLocation } from "../utils/heatmap";
+import { startLocationTracking } from "../utils/heatmap";
 
 export default function PublicLayout() {
   const location = useLocation();
 
   useEffect(() => {
     const isLanding = location.pathname === "/";
+    let cleanupFunc: (() => void) | undefined;
+
     if (!isLanding) {
-      recordUserLocation();
+      cleanupFunc = startLocationTracking();
     }
+
+    return () => {
+      if (cleanupFunc) cleanupFunc();
+    };
   }, [location.pathname]);
 
   return (

@@ -1,11 +1,7 @@
-import { collection, addDoc, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query, setDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
-
-export interface HeatmapRecord {
-  stationId: string;
-  timestamp: number;
-  distance: number;
-}
+import type { TransportType } from "../interfaces/stat.interface";
+import type { HeatmapRecord } from "../interfaces/admin.interface";
 
 export const STATION_COORDS = {
   hariphunchai: {
@@ -116,10 +112,36 @@ export const STATION_COORDS = {
   //     lat: 18.7897054,
   //     lng: 99.0180071,
   //   },
+
+  "province-lamphun": {
+    name: { th: "พื้นที่ลำพูน (อื่นๆ)", en: "Lamphun Area", cn: "南奔地区" },
+    lat: 0,
+    lng: 0,
+  },
+  "province-chiangmai": {
+    name: { th: "พื้นที่เชียงใหม่", en: "Chiang Mai Area", cn: "清迈地区" },
+    lat: 0,
+    lng: 0,
+  },
+  "province-other": {
+    name: { th: "พื้นที่อื่นๆ", en: "Other Areas", cn: "ด้านนอกพื้นที่" },
+    lat: 0,
+    lng: 0,
+  },
 };
 
 const HEATMAP_COLLECTION = "heatmap_records";
-const RECORDED_KEY = "heatmap_recorded_session";
+
+export const getDeviceUID = (): string => {
+  let uid = localStorage.getItem("device_uid");
+  if (!uid) {
+    uid = crypto.randomUUID
+      ? crypto.randomUUID()
+      : Math.random().toString(36).substring(2, 15);
+    localStorage.setItem("device_uid", uid);
+  }
+  return uid;
+};
 
 export function haversineDistance(
   lat1: number,
@@ -137,35 +159,77 @@ export function haversineDistance(
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-export function recordUserLocation(): void {
-  if (sessionStorage.getItem(RECORDED_KEY)) return;
-  if (!navigator.geolocation) return;
+function checkProvince(
+  lat: number,
+  lng: number,
+): "province-lamphun" | "province-chiangmai" | "province-other" {
+  if (lat >= 17.6 && lat <= 18.7 && lng >= 98.7 && lng <= 99.4) {
+    return "province-lamphun";
+  }
 
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    const { latitude, longitude } = pos.coords;
+  if (lat >= 17.2 && lat <= 20.1 && lng >= 98.1 && lng <= 99.5) {
+    return "province-chiangmai";
+  }
+  return "province-other";
+}
 
-    let closestId = "";
-    let closestDist = Infinity;
+export function startLocationTracking(): () => void {
+  const trackLocation = () => {
+    if (!navigator.geolocation) return;
 
-    Object.entries(STATION_COORDS).forEach(([id, { lat, lng }]) => {
-      const dist = haversineDistance(latitude, longitude, lat, lng);
-      if (dist < closestDist) {
-        closestDist = dist;
-        closestId = id;
+    const uid = getDeviceUID();
+    const transportType =
+      (localStorage.getItem("current_transport_type") as TransportType) ||
+      "unknown";
+
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      const { latitude, longitude } = pos.coords;
+
+      let closestId = "";
+      let closestDist = Infinity;
+
+      Object.entries(STATION_COORDS).forEach(([id, { lat, lng }]) => {
+        if (lat === 0 && lng === 0) return;
+        const dist = haversineDistance(latitude, longitude, lat, lng);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closestId = id;
+        }
+      });
+
+      let finalStationId = closestId;
+      let finalDistance = Math.round(closestDist);
+
+      if (!closestId || closestDist > 5) {
+        finalStationId = checkProvince(latitude, longitude);
+        finalDistance = 0;
+      }
+
+      const now = new Date();
+
+      const dateStr = now.toISOString().split("T")[0];
+
+      const docId = `${dateStr}_${uid}`;
+
+      const record: HeatmapRecord = {
+        uid,
+        transportType,
+        stationId: finalStationId,
+        timestamp: now.getTime(),
+        distance: finalDistance,
+      };
+
+      try {
+        await setDoc(doc(db, HEATMAP_COLLECTION, docId), record);
+      } catch (error) {
+        console.error("Error saving heatmap:", error);
       }
     });
+  };
 
-    if (!closestId) return;
-
-    const record: HeatmapRecord = {
-      stationId: closestId,
-      timestamp: Date.now(),
-      distance: Math.round(closestDist),
-    };
-
-    await addDoc(collection(db, HEATMAP_COLLECTION), record);
-    sessionStorage.setItem(RECORDED_KEY, "true");
-  });
+  trackLocation();
+  const intervalId = setInterval(trackLocation, 300000);
+  return () => clearInterval(intervalId);
 }
 
 export function subscribeHeatmapRecords(
