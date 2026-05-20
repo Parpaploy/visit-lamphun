@@ -37,27 +37,23 @@ export default function TrainCard({
                 />
               </div>
               <div className="font-medium text-[16px] text-[#543A14] flex flex-col justify-center items-start">
-                <p>{ml(origin, lang)}</p>
+                <p className="whitespace-nowrap">{ml(origin, lang)}</p>
                 <p>{originTime}</p>
               </div>
             </div>
-            <p className="font-medium text-[12px] text-[#ADADAD]">
+            <p className="whitespace-nowrap text-start font-medium text-[12px] text-[#ADADAD]">
               {ml(originStation, lang)}
             </p>
           </div>
 
           <div className="w-full mb-5">
-            <img
-              className="w-full h-full"
-              src="/icons/travelPage/arrow.svg"
-              alt=""
-            />
+            <img className="w-full h-full" src="/icons/travelPage/arrow.svg" />
           </div>
 
           <div className="flex flex-col justify-center items-center gap-y-2">
             <div className="flex justify-center items-center gap-x-3">
               <div className="font-medium text-[16px] text-[#543A14] flex flex-col justify-center items-end">
-                <p>{ml(destination, lang)}</p>
+                <p className="whitespace-nowrap">{ml(destination, lang)}</p>
                 <p>{destinationTime}</p>
               </div>
               <div className="w-12 h-auto">
@@ -67,7 +63,7 @@ export default function TrainCard({
                 />
               </div>
             </div>
-            <p className="font-medium text-[12px] text-[#ADADAD]">
+            <p className="whitespace-nowrap font-medium text-end text-[12px] text-[#ADADAD]">
               {ml(destinationStation, lang)}
             </p>
           </div>
