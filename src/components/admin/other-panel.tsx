@@ -33,7 +33,9 @@ export default function OtherPanel() {
       setForm(EMPTY_OTHER);
       refetch();
     } catch (e) {
-      setFormError(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
+      setFormError(
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
+      );
     } finally {
       setSaving(false);
     }
@@ -51,11 +53,14 @@ export default function OtherPanel() {
         phone: editing.phone,
         link: editing.link,
         day: editing.day,
+        lineLink: editing.lineLink ?? "",
       });
       setEditing(null);
       refetch();
     } catch (e) {
-      alert(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
+      alert(
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
+      );
       setEditing((s) => s && { ...s, saving: false });
     }
   };
@@ -92,8 +97,13 @@ export default function OtherPanel() {
       ) : (
         items.map((item) =>
           editing?.id === item.id ? (
-            <div key={item.id} className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2">
-              <p className="text-[12px] font-semibold text-[#BF4B17]">{t("dashboard.edit")}</p>
+            <div
+              key={item.id}
+              className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2"
+            >
+              <p className="text-[12px] font-semibold text-[#BF4B17]">
+                {t("dashboard.edit")}
+              </p>
               <OtherForm
                 v={{
                   place: editing.place,
@@ -103,6 +113,7 @@ export default function OtherPanel() {
                   phone: editing.phone,
                   link: editing.link,
                   day: editing.day,
+                  lineLink: editing.lineLink ?? "",
                 }}
                 ch={(updater) =>
                   setEditing((s) => {
@@ -112,20 +123,28 @@ export default function OtherPanel() {
                 }
                 onSave={handleSaveEdit}
                 onCancel={() => setEditing(null)}
-                saveLabel={editing.saving ? t("dashboard.saving") : t("dashboard.save")}
+                saveLabel={
+                  editing.saving ? t("dashboard.saving") : t("dashboard.save")
+                }
               />
             </div>
           ) : (
-            <div key={item.id} className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-3 flex items-start gap-x-3">
+            <div
+              key={item.id}
+              className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-3 flex items-start gap-x-3"
+            >
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold text-[#543A14] truncate">
                   {item.place.th}
                 </p>
                 <p className="text-[11px] text-[#8B724E]">
-                  {item.place.en} · {t(`form.${item.type}`)} · {t(`form.${item.day}`)}
+                  {item.place.en} · {t(`form.${item.type}`)} ·{" "}
+                  {t(`form.${item.day}`)}
                 </p>
                 {item.desc.th && (
-                  <p className="text-[11px] text-[#C6C6C6] line-clamp-1">{item.desc.th}</p>
+                  <p className="text-[11px] text-[#C6C6C6] line-clamp-1">
+                    {item.desc.th}
+                  </p>
                 )}
               </div>
               <div className="flex gap-x-3 shrink-0">
