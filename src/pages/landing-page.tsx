@@ -55,11 +55,17 @@ export default function LandingPage() {
 
   const handleStart = async () => {
     if (!selectedTransport) return;
+
     try {
+      localStorage.setItem("current_transport_type", selectedTransport);
+
+      localStorage.setItem("transport_recorded", "true");
+
       await recordTransportUsage(selectedTransport);
     } catch (err) {
       console.error("Firebase error:", err);
     }
+
     navigate("/app");
   };
 

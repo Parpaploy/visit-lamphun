@@ -163,7 +163,7 @@
     "low": "Low",
     "high": "High",
     "loading": "Loading...",
-    "summary": "Total {{total}} visits · X = Time · Y = Station",
+    "summary": "Total {{total}} visits · X: Time · Y: Station",
     "day": "Select Date",
     "period": "Select Date Range",
     "date": "Date",

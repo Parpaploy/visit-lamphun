@@ -5,114 +5,60 @@ import type { HeatmapRecord } from "../interfaces/admin.interface";
 
 export const STATION_COORDS = {
   hariphunchai: {
-    name: {
-      th: "หริภุญชัย",
-      en: "Hariphunchai",
-      cn: "哈里奔猜",
-    },
+    name: { th: "หริภุญชัย", en: "Hariphunchai", cn: "哈里奔猜" },
     lat: 18.5771055,
     lng: 99.008501,
   },
   community: {
-    name: {
-      th: "ชุมชนเมือง",
-      en: "Community Area",
-      cn: "社区",
-    },
+    name: { th: "ชุมชนเมือง", en: "Community Area", cn: "社区" },
     lat: 18.5775416,
     lng: 99.0060922,
   },
   chamthewi: {
-    name: {
-      th: "จามเทวี",
-      en: "Chamthewi",
-      cn: "占特威",
-    },
+    name: { th: "จามเทวี", en: "Chamthewi", cn: "占特威" },
     lat: 18.5747234,
     lng: 99.0042447,
   },
   khuang: {
-    name: {
-      th: "ข่วงพันปี",
-      en: "Khuang Phan Pi",
-      cn: "千年广场",
-    },
+    name: { th: "ข่วงพันปี", en: "Khuang Phan Pi", cn: "千年广场" },
     lat: 18.5779793,
     lng: 99.0063329,
   },
   "wat-chamthewi": {
-    name: {
-      th: "วัดจามเทวี",
-      en: "Wat Chamthewi",
-      cn: "占特威寺",
-    },
+    name: { th: "วัดจามเทวี", en: "Wat Chamthewi", cn: "占特威寺" },
     lat: 18.5815502,
     lng: 98.9963657,
   },
   mahawan: {
-    name: {
-      th: "วัดมหาวัน",
-      en: "Wat Mahawan",
-      cn: "玛哈万寺",
-    },
+    name: { th: "วัดมหาวัน", en: "Wat Mahawan", cn: "玛哈万寺" },
     lat: 18.578852,
     lng: 99.0033117,
   },
   "khong-ruesi": {
-    name: {
-      th: "คงฤาษี",
-      en: "Khong Rue Si",
-      cn: "隐士村",
-    },
+    name: { th: "คงฤาษี", en: "Khong Rue Si", cn: "隐士村" },
     lat: 18.5837282,
     lng: 99.008241,
   },
   "san-pa-yang": {
-    name: {
-      th: "สันป่ายางหลวง",
-      en: "San Pa Yang Luang",
-      cn: "三巴央",
-    },
+    name: { th: "สันป่ายางหลวง", en: "San Pa Yang Luang", cn: "三巴央" },
     lat: 18.5853532,
     lng: 99.0118584,
   },
   "ku-chang": {
-    name: {
-      th: "กู่ช้าง กู่ม้า",
-      en: "Ku Chang Ku Ma",
-      cn: "象墓马墓",
-    },
+    name: { th: "กู่ช้าง กู่ม้า", en: "Ku Chang Ku Ma", cn: "象墓马墓" },
     lat: 18.5867237,
     lng: 99.0178729,
   },
   "muan-chai": {
-    name: {
-      th: "ม่วนใจ๋",
-      en: "Muan Jai",
-      cn: "快乐",
-    },
+    name: { th: "ม่วนใจ๋", en: "Muan Jai", cn: "快乐" },
     lat: 18.5862068,
     lng: 99.0186529,
   },
   "mai-thai": {
-    name: {
-      th: "ไหมไทย",
-      en: "Mai Thai",
-      cn: "泰丝",
-    },
+    name: { th: "ไหมไทย", en: "Mai Thai", cn: "泰丝" },
     lat: 18.5828849,
     lng: 99.0165264,
   },
-  //   test: {
-  //     name: {
-  //       th: "ทดสอบ",
-  //       en: "Test",
-  //       cn: "测试",
-  //     },
-  //     lat: 18.7897054,
-  //     lng: 99.0180071,
-  //   },
-
   "province-lamphun": {
     name: { th: "พื้นที่ลำพูน (อื่นๆ)", en: "Lamphun Area", cn: "南奔地区" },
     lat: 0,
@@ -151,11 +97,14 @@ export function haversineDistance(
 ): number {
   const R = 6371000;
   const toRad = (d: number) => (d * Math.PI) / 180;
+
   const dLat = toRad(lat2 - lat1);
   const dLng = toRad(lng2 - lng1);
+
   const a =
     Math.sin(dLat / 2) ** 2 +
     Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -170,6 +119,7 @@ function checkProvince(
   if (lat >= 17.2 && lat <= 20.1 && lng >= 98.1 && lng <= 99.5) {
     return "province-chiangmai";
   }
+
   return "province-other";
 }
 
@@ -177,10 +127,13 @@ export function startLocationTracking(): () => void {
   const trackLocation = () => {
     if (!navigator.geolocation) return;
 
+    const transportType = localStorage.getItem(
+      "current_transport_type",
+    ) as TransportType | null;
+
+    if (!transportType) return;
+
     const uid = getDeviceUID();
-    const transportType =
-      (localStorage.getItem("current_transport_type") as TransportType) ||
-      "unknown";
 
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const { latitude, longitude } = pos.coords;
@@ -190,7 +143,9 @@ export function startLocationTracking(): () => void {
 
       Object.entries(STATION_COORDS).forEach(([id, { lat, lng }]) => {
         if (lat === 0 && lng === 0) return;
+
         const dist = haversineDistance(latitude, longitude, lat, lng);
+
         if (dist < closestDist) {
           closestDist = dist;
           closestId = id;
@@ -206,9 +161,7 @@ export function startLocationTracking(): () => void {
       }
 
       const now = new Date();
-
       const dateStr = now.toISOString().split("T")[0];
-
       const docId = `${dateStr}_${uid}`;
 
       const record: HeatmapRecord = {
@@ -228,7 +181,9 @@ export function startLocationTracking(): () => void {
   };
 
   trackLocation();
+
   const intervalId = setInterval(trackLocation, 300000);
+
   return () => clearInterval(intervalId);
 }
 
@@ -236,6 +191,7 @@ export function subscribeHeatmapRecords(
   callback: (records: HeatmapRecord[]) => void,
 ): () => void {
   const q = query(collection(db, HEATMAP_COLLECTION));
+
   return onSnapshot(q, (snap) => {
     const records: HeatmapRecord[] = snap.docs.map(
       (d) => d.data() as HeatmapRecord,
@@ -251,5 +207,7 @@ export function formatHour(ts: number): string {
 
 export function formatTime(ts: number): string {
   const d = new Date(ts);
-  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  return `${String(d.getHours()).padStart(2, "0")}:${String(
+    d.getMinutes(),
+  ).padStart(2, "0")}`;
 }
