@@ -75,7 +75,10 @@ export default function MainPopup({
               )}
               <div className="w-full h-42 rounded-xl overflow-hidden">
                 {img ? (
-                  <img className="w-full h-full object-cover" src={img} />
+                  <img
+                    className="w-full h-full object-cover object-top"
+                    src={img}
+                  />
                 ) : (
                   <div className="w-full h-full bg-[#E8E8E8]" />
                 )}
