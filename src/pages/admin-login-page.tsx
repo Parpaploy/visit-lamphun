@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "../constant/language";
+import { FirebaseError } from "firebase/app";
 
 export default function AdminLoginPage() {
   const navigate = useNavigate();
@@ -45,8 +46,20 @@ export default function AdminLoginPage() {
     try {
       await login(email, password);
       navigate("/private/dashboard");
-    } catch {
-      setError(t("auth.error"));
+    } catch (err) {
+      if (err instanceof FirebaseError) {
+        switch (err.code) {
+          case "auth/user-not-found":
+          case "auth/wrong-password":
+            setError("auth.error");
+            break;
+
+          default:
+            setError("auth.error");
+        }
+      } else {
+        setError("auth.error");
+      }
     } finally {
       setLoading(false);
     }
@@ -150,7 +163,7 @@ export default function AdminLoginPage() {
 
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-600 text-sm text-center py-2 rounded-lg">
-              {error}
+              {t(error)}
             </div>
           )}
 

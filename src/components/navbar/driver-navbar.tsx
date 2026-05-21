@@ -55,6 +55,18 @@ export default function DriverNavbar({ stopGps }: { stopGps?: () => void }) {
     };
   }, [openMenu]);
 
+  useEffect(() => {
+    if (openMenu) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [openMenu]);
+
   // useEffect(() => {
   //   if (!open) return;
   //   const timer = setTimeout(() => setLangReady(true), 300);
