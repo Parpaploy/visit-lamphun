@@ -21,7 +21,9 @@
     "wait": "有轨电车正在等你",
     "more": "查看详情",
     "back": "返回首页",
-    "close": "关闭"
+    "close": "关闭",
+    "loading": "加载中...",
+    "noPlaces": "暂无地点"
   },
 
   "contact": {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { verifyTramPin, fetchActiveTrams } from "../services/tram.services";
+import { verifyTramPin, fetchAllTrams } from "../services/tram.services";
 import type { Tram } from "../interfaces/tram.interface";
 import { useNavigate } from "react-router-dom";
 import { FaDeleteLeft } from "react-icons/fa6";
@@ -15,7 +15,7 @@ export default function DriverLoginPage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await fetchActiveTrams();
+        const data = await fetchAllTrams();
         setTrams(data);
       } catch (err) {
         console.error(err);

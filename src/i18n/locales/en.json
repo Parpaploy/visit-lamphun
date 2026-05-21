@@ -21,7 +21,9 @@
     "wait": "The tram's waiting for you!",
     "more": "View Details",
     "back": "Back to Home",
-    "close": "Close"
+    "close": "Close",
+    "loading": "Loading...",
+    "noPlaces": "No places available"
   },
 
   "contact": {

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import type { Station } from "../../interfaces/tram.interface";
 
 interface Props {
@@ -15,9 +16,17 @@ export default function UndoCheckinPopup({
   onConfirm,
   onClose,
 }: Props) {
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   return (
     <div
-      className="fixed inset-0 backdrop-blur-[5px] flex items-center justify-center z-50"
+      className="max-w-107.5 mx-auto fixed inset-0 backdrop-blur-[5px] flex items-center justify-center z-50"
       onClick={onClose}
     >
       <div

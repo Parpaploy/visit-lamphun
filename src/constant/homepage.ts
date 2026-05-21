@@ -42,18 +42,25 @@ export const STATION_NAMES_TH: Record<string, string> = {
   "mai-thai": "ไหมไทย",
 };
 
-export const STATION_NAMES_ML: Record<string, { th: string; en: string; cn: string }> = {
+export const STATION_NAMES_ML: Record<
+  string,
+  { th: string; en: string; cn: string }
+> = {
   hariphunchai: { th: "หริภุญชัย", en: "Hariphunchai", cn: "哈里奔猜" },
-  community:    { th: "ชุมชนเมือง", en: "Community Museum", cn: "社区博物馆" },
-  chamthewi:   { th: "จามเทวี", en: "Chamthewi Statue", cn: "占玛เทวี" },
-  khuang:      { th: "ข่วงพันปี", en: "Khuang Phan Pi", cn: "千年庭院" },
+  community: { th: "ชุมชนเมือง", en: "Community Museum", cn: "社区博物馆" },
+  chamthewi: { th: "จามเทวี", en: "Chamthewi Statue", cn: "占玛เทวี" },
+  khuang: { th: "ข่วงพันปี", en: "Khuang Phan Pi", cn: "千年庭院" },
   "wat-chamthewi": { th: "วัดจามเทวี", en: "Wat Chamthewi", cn: "扎玛特威寺" },
-  mahawan:     { th: "วัดมหาวัน", en: "Wat Mahawan", cn: "马哈湾寺" },
+  mahawan: { th: "วัดมหาวัน", en: "Wat Mahawan", cn: "马哈湾寺" },
   "khong-ruesi": { th: "คงฤาษี", en: "Wat Phra Khong Ruesi", cn: "空鲁西寺" },
-  "san-pa-yang": { th: "สันป่ายางหลวง", en: "Wat San Pa Yang Luang", cn: "圣巴扬寺" },
-  "ku-chang":  { th: "กู่ช้าง กู่ม้า", en: "Ku Chang Ku Ma", cn: "库常库玛" },
+  "san-pa-yang": {
+    th: "สันป่ายางหลวง",
+    en: "Wat San Pa Yang Luang",
+    cn: "圣巴扬寺",
+  },
+  "ku-chang": { th: "กู่ช้าง กู่ม้า", en: "Ku Chang Ku Ma", cn: "库常库玛" },
   "muan-chai": { th: "ม่วนใจ๋", en: "Muan Jai", cn: "沐恩猜" },
-  "mai-thai":  { th: "ไหมไทย", en: "Mai Thai", cn: "泰丝学习中心" },
+  "mai-thai": { th: "ไหมไทย", en: "Mai Thai", cn: "泰丝学习中心" },
 };
 
 export const hitboxData: Record<string, Location[]> = {
@@ -361,3 +368,20 @@ export const hitboxData: Record<string, Location[]> = {
     },
   ],
 };
+
+export const STATION_PIN_MAP: Record<string, { x: number; y: number }> = {
+  hariphunchai: { x: 195, y: 82 },
+  community: { x: 92, y: 165 },
+  chamthewi: { x: 300, y: 170 },
+  khuang: { x: 197, y: 245 },
+  "wat-chamthewi": { x: 115, y: 327 },
+  mahawan: { x: 217, y: 367 },
+  "khong-ruesi": { x: 247, y: 465 },
+  "san-pa-yang": { x: 90, y: 432 },
+  "ku-chang": { x: 110, y: 535 },
+  "muan-chai": { x: 325, y: 537 },
+  "mai-thai": { x: 327, y: 327 },
+};
+
+export const MAP_WIDTH = 393;
+export const MAP_HEIGHT = 615;

@@ -9,6 +9,14 @@ import {
 import { db } from "../firebase";
 import type { Tram } from "../interfaces/tram.interface";
 
+export const fetchAllTrams = async (): Promise<Tram[]> => {
+  const snap = await getDocs(collection(db, "trams"));
+
+  return snap.docs
+    .map((d) => ({ id: d.id, ...d.data() }) as Tram)
+    .sort((a, b) => a.name.localeCompare(b.name, "th"));
+};
+
 export const fetchActiveTrams = async (): Promise<Tram[]> => {
   const snap = await getDocs(collection(db, "trams"));
 
