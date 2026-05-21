@@ -5,57 +5,85 @@ import type { HeatmapRecord } from "../interfaces/admin.interface";
 
 export const STATION_COORDS = {
   hariphunchai: {
-    name: { th: "หริภุญชัย", en: "Hariphunchai", cn: "哈里奔猜" },
+    name: {
+      th: "วัดพระธาตุหริภุญชัย",
+      en: "Wat Phra That Hariphunchai",
+      cn: "哈里蓬猜寺",
+    },
     lat: 18.5771055,
     lng: 99.008501,
   },
   community: {
-    name: { th: "ชุมชนเมือง", en: "Community Area", cn: "社区" },
+    name: {
+      th: "พิพิธภัณฑ์ชุมชนเมือง",
+      en: "Lamphun Community Museum",
+      cn: "南奔城市社区博物馆",
+    },
     lat: 18.5775416,
     lng: 99.0060922,
   },
   chamthewi: {
-    name: { th: "จามเทวี", en: "Chamthewi", cn: "占特威" },
+    name: {
+      th: "อนุสาวรีย์พระนางจามเทวี",
+      en: "Queen Chama Thewi Monument",
+      cn: "乍瑪黛維女王紀念碑",
+    },
     lat: 18.5747234,
     lng: 99.0042447,
   },
   khuang: {
-    name: { th: "ข่วงพันปี", en: "Khuang Phan Pi", cn: "千年广场" },
+    name: { th: "ข่วงพันปี", en: "Millennium Square", cn: "千年广场" },
     lat: 18.5779793,
     lng: 99.0063329,
   },
   "wat-chamthewi": {
-    name: { th: "วัดจามเทวี", en: "Wat Chamthewi", cn: "占特威寺" },
+    name: { th: "วัดจามเทวี", en: "Wat Chama Thewi", cn: "乍玛黛维寺" },
     lat: 18.5815502,
     lng: 98.9963657,
   },
   mahawan: {
-    name: { th: "วัดมหาวัน", en: "Wat Mahawan", cn: "玛哈万寺" },
+    name: { th: "วัดมหาวัน", en: "Wat Mahawan", cn: "玛哈湾寺" },
     lat: 18.578852,
     lng: 99.0033117,
   },
   "khong-ruesi": {
-    name: { th: "คงฤาษี", en: "Khong Rue Si", cn: "隐士村" },
+    name: { th: "วัดพระคงฤาษี", en: "Wat Phra Khong Rue Si", cn: "帕空圣人寺" },
     lat: 18.5837282,
     lng: 99.008241,
   },
   "san-pa-yang": {
-    name: { th: "สันป่ายางหลวง", en: "San Pa Yang Luang", cn: "三巴央" },
+    name: {
+      th: "วัดสันป่ายางหลวง",
+      en: "Wat San Pa Yang Luang",
+      cn: "圣帕扬隆寺",
+    },
     lat: 18.5853532,
     lng: 99.0118584,
   },
   "ku-chang": {
-    name: { th: "กู่ช้าง กู่ม้า", en: "Ku Chang Ku Ma", cn: "象墓马墓" },
+    name: {
+      th: "กู่ช้าง - กู่ม้า",
+      en: "Ku Chang - Ku Ma",
+      cn: "古象塔 - 古马塔",
+    },
     lat: 18.5867237,
     lng: 99.0178729,
   },
   "muan-chai": {
-    name: { th: "ม่วนใจ๋", en: "Muan Jai", cn: "快乐" },
+    name: {
+      th: "สวนม่วนใจ๋ (ศูนย์การเรียนรู้รถไฟ)",
+      en: "Suan Muan Jai (Railway Learning Center)",
+      cn: "欢乐公园 (铁路学习中心)",
+    },
     lat: 18.5862068,
     lng: 99.0186529,
   },
   "mai-thai": {
-    name: { th: "ไหมไทย", en: "Mai Thai", cn: "泰丝" },
+    name: {
+      th: "ศูนย์การเรียนรู้ลำพูนไหมไทย",
+      en: "Lamphun Thai Silk Learning Center",
+      cn: "南奔泰国丝绸学习中心",
+    },
     lat: 18.5828849,
     lng: 99.0165264,
   },

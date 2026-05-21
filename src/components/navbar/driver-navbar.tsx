@@ -1,33 +1,50 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { LANGUAGES } from "../../constant/language";
+// import { LANGUAGES } from "../../constant/language";
 import { IoMenu } from "react-icons/io5";
 import NavbarMenuBtn from "./navbar-menu-btn";
-import type {
-  INavbarFooterMenuList,
-  INavbarMenuList,
-} from "../../interfaces/navbar.interface";
-import NavbarFooterMenu from "./navbar-footer-menu";
+import type { INavbarMenuList } from "../../interfaces/navbar.interface";
 import {
-  footerList,
-  menuList,
+  driverMenuList,
   pageTitleMap,
   subtitleMap,
 } from "../../constant/navbar-menu";
-import { subscribeTransportStats } from "../../services/stat.services";
+import { updateTramStatus } from "../../services/tram.services";
 
-export default function Navbar() {
-  const { i18n, t } = useTranslation();
+export default function DriverNavbar({ stopGps }: { stopGps?: () => void }) {
+  const { i18n } = useTranslation();
 
   const navigation = useNavigate();
 
   const location = useLocation();
-  const [open, setOpen] = useState<boolean>(false);
+  // const [open, setOpen] = useState<boolean>(false);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [menuReady, setMenuReady] = useState<boolean>(false);
-  const [langReady, setLangReady] = useState<boolean>(false);
-  const [totalUsers, setTotalUsers] = useState<number>(0);
+  // const [langReady, setLangReady] = useState<boolean>(false);
+  const [tramStatus, setTramStatus] = useState<"active" | "inactive">("active");
+
+  const tramId = localStorage.getItem("driver_tram_id");
+
+  const handleChangeStatus = async (status: "active" | "inactive") => {
+    if (!tramId) return;
+
+    try {
+      await updateTramStatus(tramId, status);
+      setTramStatus(status);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleLogout = () => {
+    if (stopGps) {
+      stopGps();
+    }
+    localStorage.removeItem("driver_logged_in");
+    localStorage.removeItem("driver_tram_id");
+    window.location.href = "/driver/login";
+  };
 
   useEffect(() => {
     if (!openMenu) return;
@@ -38,32 +55,24 @@ export default function Navbar() {
     };
   }, [openMenu]);
 
-  useEffect(() => {
-    if (!open) return;
-    const timer = setTimeout(() => setLangReady(true), 300);
-    return () => {
-      clearTimeout(timer);
-      setLangReady(false);
-    };
-  }, [open]);
+  // useEffect(() => {
+  //   if (!open) return;
+  //   const timer = setTimeout(() => setLangReady(true), 300);
+  //   return () => {
+  //     clearTimeout(timer);
+  //     setLangReady(false);
+  //   };
+  // }, [open]);
 
-  // 📍 สัญญาณ Realtime จะดึงค่า stats.tram + stats.other ที่วนลูปนับจาก Document รายบุคคลมาบวกรวมกันตรงนี้อัตโนมัติ
-  useEffect(() => {
-    const unsub = subscribeTransportStats((stats) => {
-      setTotalUsers(stats.tram + stats.other);
-    });
-    return () => unsub();
-  }, []);
-
-  const current =
-    LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
+  // const current =
+  //   LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
 
   const lang = (i18n.language in pageTitleMap ? i18n.language : "th") as
     | "th"
     | "en"
     | "cn";
 
-  const matched = menuList.th.find((item) => {
+  const matched = driverMenuList.th.find((item) => {
     if (item.path.startsWith("http")) return false;
     if (item.path === "/app") return location.pathname === "/app";
     return location.pathname.startsWith(item.path);
@@ -100,7 +109,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex justify-center items-center gap-2.5">
-          <button
+          {/* <button
             className="bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] rounded-full w-8.5 h-8.5"
             onClick={() => setOpen((v) => !v)}
           >
@@ -108,7 +117,7 @@ export default function Navbar() {
               src={current.icon}
               className="w-full h-full rounded-full object-cover"
             />
-          </button>
+          </button> */}
 
           <button
             className={`transition-all ${openMenu ? "text-white" : "text-[#75521F]"}`}
@@ -119,7 +128,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {open && (
+      {/* {open && (
         <>
           <div className="fixed inset-0 z-990" onClick={() => setOpen(false)} />
           <div className="max-w-107.5 mx-auto flex min-h-[23svh] fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-999 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-2 w-full">
@@ -169,7 +178,7 @@ export default function Navbar() {
                 ))}
           </div>
         </>
-      )}
+      )} */}
 
       {openMenu && (
         <>
@@ -177,7 +186,8 @@ export default function Navbar() {
             className="fixed inset-0 z-990"
             onClick={() => setOpenMenu(false)}
           />
-          <div className="min-h-[68svh] max-w-107.5 mx-auto max-h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
+
+          <div className="min-h-[50svh] max-w-107.5 mx-auto max-h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
             <svg
               className="absolute -top-5 right-4 w-10 h-7"
               viewBox="0 0 30 20"
@@ -194,12 +204,7 @@ export default function Navbar() {
             <div className="z-999 overflow-y-auto w-full flex flex-col justify-start items-start gap-2 pt-4 pb-1">
               {!menuReady ? (
                 <>
-                  <div className="flex justify-start items-start gap-1 animate-pulse">
-                    <div className="w-3 h-3 rounded bg-gray-200" />
-                    <div className="h-2.5 w-24 rounded bg-gray-200" />
-                  </div>
-
-                  {Array.from({ length: 4 }).map((_, i) => (
+                  {Array.from({ length: 2 }).map((_, i) => (
                     <div
                       key={i}
                       className="w-full flex justify-start items-center gap-10 border-2 border-[#D9D9D9] rounded-full p-1 animate-pulse"
@@ -213,33 +218,27 @@ export default function Navbar() {
                   ))}
 
                   <div className="w-full mt-2">
-                    {Array.from({ length: 3 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="w-full flex justify-start items-center gap-5 border-t border-[#D9D9D9] pl-10 py-3 animate-pulse"
-                      >
-                        <div className="w-6.5 h-6.5 rounded-full bg-gray-200 shrink-0" />
-                        <div className="h-4 w-28 rounded bg-gray-200" />
-                      </div>
-                    ))}
+                    <div className="w-full flex justify-start items-center gap-5 border-t border-[#D9D9D9] pl-16 py-3 animate-pulse">
+                      <div className="w-6.5 h-6.5 rounded-full bg-gray-200 shrink-0" />
+                      <div className="h-4 w-28 rounded bg-gray-200" />
+                    </div>
+                  </div>
+
+                  <div className="w-full flex flex-col justify-center items-center gap-5 border-t border-[#D9D9D9] py-3 animate-pulse">
+                    <div className="h-4 w-32 rounded bg-gray-200 animate-pulse mt-3" />
+
+                    <div className="flex justify-center items-center gap-3">
+                      <div className="h-9 w-32 rounded-full bg-gray-200 animate-pulse" />
+                      <div className="h-9 w-32 rounded-full bg-gray-200 animate-pulse" />
+                    </div>
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="flex justify-start items-start gap-1">
-                    <div className="w-3 h-auto">
-                      <img src="/icons/navbar/stat-icon.svg" />
-                    </div>
-
-                    <div className="text-[#8B724E] text-[10px] font-medium">
-                      {t("navbar.stat")} {totalUsers.toLocaleString()}{" "}
-                      {t("navbar.unit")}
-                    </div>
-                  </div>
-
                   {(
-                    menuList[i18n.language as keyof typeof menuList] ||
-                    menuList.th
+                    driverMenuList[
+                      i18n.language as keyof typeof driverMenuList
+                    ] || driverMenuList.th
                   ).map((item: INavbarMenuList) => (
                     <NavbarMenuBtn
                       key={item.sf}
@@ -251,19 +250,54 @@ export default function Navbar() {
                     />
                   ))}
 
-                  <div className="w-full mt-2">
-                    {(
-                      footerList[i18n.language as keyof typeof footerList] ||
-                      footerList.th
-                    ).map((item: INavbarFooterMenuList, index: number) => (
-                      <NavbarFooterMenu
-                        key={index}
-                        title={item.title}
-                        imgUrl={item.img}
-                        path={item.path}
-                        setOpenMenu={setOpenMenu}
-                      />
-                    ))}
+                  {stopGps && (
+                    <button
+                      onClick={handleLogout}
+                      className="text-[#543A14] w-full flex justify-start items-center gap-5 border-t border-[#D9D9D9] pl-16 pt-4 pb-3"
+                    >
+                      <div className="w-6.5 h-6.5">
+                        <img
+                          className="w-full h-full"
+                          src="/icons/navbar/logout-icon.svg"
+                        />
+                      </div>
+
+                      <p className="text-[16px] font-semibold mt-1">
+                        ออกจากระบบ
+                      </p>
+                    </button>
+                  )}
+
+                  <div className="text-[#543A14] w-full flex flex-col justify-center items-center gap-5 border-t border-[#D9D9D9] py-3">
+                    <h1 className="text-[16px] font-semibold mt-1">
+                      สถานะรถราง
+                    </h1>
+
+                    <div className="flex justify-center items-center gap-3">
+                      <button
+                        onClick={() => handleChangeStatus("active")}
+                        className={`border-2 font-medium rounded-full whitespace-nowrap px-5 py-1.5 text-center text-[16px] shadow
+                                    ${
+                                      tramStatus === "active"
+                                        ? "bg-[#FF8B2B] text-white border-transparent"
+                                        : "bg-white border-[#D9D9D9] text-[#655F68]"
+                                    }`}
+                      >
+                        บริการตามปกติ
+                      </button>
+
+                      <button
+                        onClick={() => handleChangeStatus("inactive")}
+                        className={`border-2 font-medium whitespace-nowrap rounded-full px-3 py-1.5 text-center text-[16px] shadow
+                                    ${
+                                      tramStatus === "inactive"
+                                        ? "bg-[#FF8B2B] text-white border-transparent"
+                                        : "bg-white border-[#D9D9D9] text-[#655F68]"
+                                    }`}
+                      >
+                        หยุดให้บริการ
+                      </button>
+                    </div>
                   </div>
                 </>
               )}

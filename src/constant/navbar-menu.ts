@@ -156,6 +156,51 @@ export const footerList: NavbarMenuRecord = {
   ],
 };
 
+export const driverMenuList: NavbarMenuRecord = {
+  th: [
+    {
+      title: "ระบบเช็คอินรถราง",
+      path: "/driver/checkin",
+      img: "/icons/navbar/checkin-icon.svg",
+      sf: "checkin",
+    },
+    {
+      title: "แผนที่รถราง",
+      path: "/driver/roadmap",
+      img: "/icons/navbar/roadmap-icon.svg",
+      sf: "roadmap",
+    },
+  ],
+  en: [
+    {
+      title: "ระบบเช็คอินรถราง",
+      path: "/driver/checkin",
+      img: "/icons/navbar/checkin-icon.svg",
+      sf: "checkin",
+    },
+    {
+      title: "แผนที่รถราง",
+      path: "/driver/roadmap",
+      img: "/icons/navbar/roadmap-icon.svg",
+      sf: "roadmap",
+    },
+  ],
+  cn: [
+    {
+      title: "ระบบเช็คอินรถราง",
+      path: "/driver/checkin",
+      img: "/icons/navbar/checkin-icon.svg",
+      sf: "checkin",
+    },
+    {
+      title: "แผนที่รถราง",
+      path: "/driver/roadmap",
+      img: "/icons/navbar/roadmap-icon.svg",
+      sf: "roadmap",
+    },
+  ],
+};
+
 export const pageTitleMap: Record<
   "th" | "en" | "cn",
   Record<string, string>
@@ -167,6 +212,8 @@ export const pageTitleMap: Record<
     kome: "กลุ่มผลิตโคม",
     tbook: "วารสาร",
     contact: "ติดต่อเรา",
+    checkin: "ติดตามรถราง",
+    roadmap: "ติดตามรถราง",
   },
   en: {
     homepage: "Homepage",
@@ -175,6 +222,8 @@ export const pageTitleMap: Record<
     kome: "Lantern Groups",
     tbook: "Magazine",
     contact: "Contact",
+    checkin: "ติดตามรถราง",
+    roadmap: "ติดตามรถราง",
   },
   cn: {
     homepage: "首页",
@@ -183,6 +232,8 @@ export const pageTitleMap: Record<
     kome: "灯笼制作",
     tbook: "旅游杂志",
     contact: "联系方式",
+    checkin: "ติดตามรถราง",
+    roadmap: "ติดตามรถราง",
   },
 };
 
