@@ -8,9 +8,9 @@ export default function LandingPage() {
   const [contentLoaded, setContentLoaded] = useState(false);
   const [c1X, setC1X] = useState(-120);
   const [c2X, setC2X] = useState(350);
-  const [selectedTransport, setSelectedTransport] = useState<
-    "tram" | "other" | null
-  >(null);
+  const [selectedTransport, setSelectedTransport] = useState<"tram" | "other">(
+    "tram",
+  );
 
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -129,29 +129,45 @@ export default function LandingPage() {
                     {t("landing.howto")}
                   </span>
 
-                  <div className="flex justify-center items-center gap-x-3">
+                  <div className="flex justify-center items-center gap-x-2">
                     <button
                       onClick={() => setSelectedTransport("tram")}
-                      className={`text-[14px] font-medium flex justify-center items-center text-center h-fit py-2.5 rounded-full w-28 transition-all border
+                      className={`bg-white w-full text-[14px] font-medium flex justify-start items-center text-center h-fit p-1 pr-3 gap-1.5 rounded-full transition-all border
                         ${
                           selectedTransport === "tram"
-                            ? "bg-[#BF4B17] text-white border-[#BF4B17] shadow-[0px_0px_12.3px_0px_#BF4B17]"
-                            : "bg-white text-black border-transparent"
+                            ? "border-[#BF4B17] shadow-[0px_0px_12.3px_0px_#BF4B17]"
+                            : "opacity-60 text-black border-transparent"
                         }`}
                     >
-                      {t("landing.tram")}
+                      <div className="rounded-full min-w-9 min-h-9 w-9 h-9">
+                        <img
+                          className="w-full h-full"
+                          src="/icons/landing-page/tram-way.svg"
+                        />
+                      </div>
+                      <p className="text-[12px] font-medium whitespace-nowrap">
+                        {t("landing.tram")}
+                      </p>
                     </button>
 
                     <button
                       onClick={() => setSelectedTransport("other")}
-                      className={`text-[14px] font-medium flex justify-center items-center text-center h-fit py-2.5 rounded-full w-28 transition-all border
+                      className={`w-full text-[14px] font-medium bg-white flex justify-start items-center text-center h-fit p-1 pr-3 gap-1.5 rounded-full transition-all border
                         ${
                           selectedTransport === "other"
-                            ? "bg-[#BF4B17] text-white border-[#BF4B17] shadow-[0px_0px_12.3px_0px_#BF4B17]"
-                            : "bg-white text-black border-transparent"
+                            ? "border-[#BF4B17] shadow-[0px_0px_12.3px_0px_#BF4B17]"
+                            : "opacity-60 text-black border-transparent"
                         }`}
                     >
-                      {t("landing.other")}
+                      <div className="rounded-full min-w-9 min-h-9 w-9 h-9">
+                        <img
+                          className="w-full h-full"
+                          src="/icons/landing-page/self-way.svg"
+                        />
+                      </div>
+                      <p className="text-[12px] font-medium whitespace-nowrap">
+                        {t("landing.other")}
+                      </p>
                     </button>
                   </div>
                 </div>
