@@ -170,5 +170,14 @@
     "period": "Select Date Range",
     "date": "Date",
     "to": "To"
+  },
+
+  "auth": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "loading": "Signing in...",
+    "error": "Invalid email or password"
   }
 }

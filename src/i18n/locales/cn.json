@@ -170,5 +170,14 @@
     "period": "选择日期范围",
     "date": "日期",
     "to": "至"
+  },
+
+  "auth": {
+    "title": "登录",
+    "email": "邮箱",
+    "password": "密码",
+    "login": "登录",
+    "loading": "正在登录...",
+    "error": "邮箱或密码错误"
   }
 }

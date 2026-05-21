@@ -12,6 +12,7 @@ import DriverLayout from "./src/layouts/driver-layout";
 import DriverLoginPage from "./src/pages/driver-login-page";
 import DriverPage from "./src/pages/driver-page";
 import DriverHomepage from "./src/pages/driver-homepage";
+import AdminLoginPage from "./src/pages/admin-login-page";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
       { path: "dashboard", element: <AdminDashboard /> },
       { index: true, element: <Navigate to="dashboard" replace /> },
     ],
+  },
+  {
+    path: "/private/login",
+    element: <AdminLoginPage />,
   },
 
   {

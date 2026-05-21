@@ -11,14 +11,19 @@ import PlacesPanel from "../components/admin/places-panel";
 
 import type { Tab } from "../interfaces/admin.interface";
 import { useTabs } from "../constant/admin";
+import { useAuth } from "../hooks/useAuth";
+import AdminLoginPage from "./admin-login-page";
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
   const tabs = useTabs();
   const [tab, setTab] = useState<Tab>("places");
+  const { user } = useAuth();
+
+  if (!user) return <AdminLoginPage />;
 
   return (
-    <div className="min-h-screen bg-[#FBFCF0] p-5">
+    <div className="min-h-screen bg-[linear-gradient(161deg,#FFE2A5_0%,#FBFCF0_22%,#FFFFFF_62%,#E6EFD8_100%)] p-5">
       <div className="mx-auto">
         <h1 className="text-[20px] font-bold text-[#543A14] mb-5">
           {t("dashboard.title")}
