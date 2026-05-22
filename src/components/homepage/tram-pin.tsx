@@ -39,9 +39,10 @@ export default function TramPin({
       className={`absolute z-30 -translate-x-1/2 -translate-y-full pointer-events-none transition-opacity duration-700 ease-in-out ${loaded ? "opacity-100" : "opacity-0"}`}
       style={{ left: `${xPct}%`, top: `${yPct}%` }}
     >
-      <div className="w-18 h-auto">
-        <img className="w-full h-full" src="/icons/homepage/tram-pin.svg" />
-      </div>
+      <img
+        className="w-14 h-auto object-contain drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)]"
+        src="/icons/homepage/tram-pin.svg"
+      />
     </div>
   );
 }
