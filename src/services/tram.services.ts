@@ -48,7 +48,7 @@ export const updateTramCheckin = async (
     lat: number;
     lng: number;
   },
-  mode: "manual" | "auto",
+  mode: "manual" | "auto" | "gps",
 ) => {
   await updateDoc(doc(db, "trams", tramId), {
     current_station_id: station.id,
@@ -80,6 +80,24 @@ export const clearTramStation = async (tramId: string) => {
   await updateDoc(doc(db, "trams", tramId), {
     current_station_id: null,
     current_station_name: null,
+    current_lat: null,
+    current_lng: null,
     last_checkin_at: null,
+    last_checkin_mode: null,
+  });
+};
+
+export const updateTramPosition = async (
+  tramId: string,
+  nearestStation: { id: string; name: string; lat: number; lng: number },
+  actualLat: number,
+  actualLng: number,
+) => {
+  await updateDoc(doc(db, "trams", tramId), {
+    current_station_id: nearestStation.id,
+    current_station_name: nearestStation.name,
+    current_lat: actualLat,
+    current_lng: actualLng,
+    last_checkin_mode: "gps",
   });
 };

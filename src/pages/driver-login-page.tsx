@@ -72,7 +72,7 @@ export default function DriverLoginPage() {
         <div className="absolute inset-0 backdrop-blur-[5px] bg-white/10" />
 
         <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-5">
-          <div className="relative w-full bg-white rounded-2xl shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] p-5">
+          <div className="relative w-full bg-white rounded-[18px] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] p-5">
             <div className="rounded-full overflow-hidden w-20 h-20 absolute -top-10 left-1/2 -translate-x-1/2">
               <img
                 className="w-full h-full"
@@ -119,7 +119,7 @@ export default function DriverLoginPage() {
             ))}
 
             {error && (
-              <p className="absolute left-1/2 -translate-x-1/2 -bottom-11 whitespace-nowrap text-red-500 text-center mb-3">
+              <p className="absolute left-1/2 -translate-x-1/2 -bottom-11 whitespace-nowrap text-[#FF0000] text-center mb-3">
                 {error}
               </p>
             )}

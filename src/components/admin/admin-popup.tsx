@@ -86,7 +86,10 @@ export default function AdminPopup() {
         <div className="mb-3">
           <select
             value={selectedStation}
-            onChange={(e) => { setSelectedStation(e.target.value); resetEdits(); }}
+            onChange={(e) => {
+              setSelectedStation(e.target.value);
+              resetEdits();
+            }}
             className={inputCls}
           >
             {STATION_IDS.map((id) => (
@@ -180,7 +183,7 @@ export default function AdminPopup() {
               </div>
             )}
 
-            {error && <p className="text-red-500 text-[12px]">{error}</p>}
+            {error && <p className="text-[#FF0000] text-[12px]">{error}</p>}
             <button
               onClick={handleSave}
               disabled={saving}

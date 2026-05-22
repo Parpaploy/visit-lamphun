@@ -3,13 +3,15 @@ import {
   updateTramCheckin,
   fetchTramById,
   clearTramStation,
+  updateTramPosition,
 } from "../services/tram.services";
 import { haversineDistance } from "../utils/geo";
 import type { GpsPosition, Station } from "../interfaces/tram.interface";
-import { AUTO_CHECKIN_RADIUS, STATIONS } from "../constant/tram";
+import { STATIONS } from "../constant/tram";
 import CheckinPopup from "../components/driver-page/checkin-popup";
 import UndoCheckinPopup from "../components/driver-page/undo-checkin-popup";
 import FinishRoutePopup from "../components/driver-page/finish-route-popup";
+import { IoIosArrowBack } from "react-icons/io";
 
 export default function DriverPage() {
   const tramId = localStorage.getItem("driver_tram_id") ?? "";
@@ -43,28 +45,48 @@ export default function DriverPage() {
   const writeCheckin = useCallback(
     async (station: Station, mode: "manual" | "auto") => {
       if (!tramId) return;
-      await updateTramCheckin(tramId, station, mode);
+      try {
+        await updateTramCheckin(tramId, station, mode);
+      } catch (err) {
+        console.error("Checkin failed:", err);
+      }
     },
     [tramId],
   );
 
-  const tryAutoCheckin = useCallback(
+  const updateNearestStation = useCallback(
     async (lat: number, lng: number) => {
       let nearest: Station | null = null;
       let minDist = Infinity;
-      for (const s of STATIONS) {
-        const dist = haversineDistance(lat, lng, s.lat, s.lng);
+      let nearestIdx = -1;
+
+      for (let i = 0; i < STATIONS.length; i++) {
+        const dist = haversineDistance(
+          lat,
+          lng,
+          STATIONS[i].lat,
+          STATIONS[i].lng,
+        );
         if (dist < minDist) {
           minDist = dist;
-          nearest = s;
+          nearest = STATIONS[i];
+          nearestIdx = i;
         }
       }
-      if (!nearest || minDist > AUTO_CHECKIN_RADIUS) return;
-      if (lastAutoCheckinRef.current === nearest.id) return;
-      lastAutoCheckinRef.current = nearest.id;
-      await writeCheckin(nearest, "auto");
+
+      if (!nearest || !tramId) return;
+
+      await updateTramPosition(tramId, nearest, lat, lng);
+
+      if (minDist <= 5 && nearestIdx === nextIndex) {
+        if (lastAutoCheckinRef.current === nearest.id) return;
+        lastAutoCheckinRef.current = nearest.id;
+
+        await updateTramCheckin(tramId, nearest, "gps");
+        setNextIndex(nearestIdx + 1);
+      }
     },
-    [writeCheckin],
+    [tramId, nextIndex],
   );
 
   const handleFinishConfirm = async () => {
@@ -82,13 +104,13 @@ export default function DriverPage() {
         if (step !== "gps") return;
         const { latitude, longitude, accuracy } = pos.coords;
         setGpsPosition({ lat: latitude, lng: longitude, accuracy });
-        tryAutoCheckin(latitude, longitude);
+        updateNearestStation(latitude, longitude);
       },
       (err) => setGpsError(err.message),
       { enableHighAccuracy: true },
     );
     return () => stopGps();
-  }, [step, tryAutoCheckin, stopGps]);
+  }, [step, updateNearestStation, stopGps]);
 
   const enterManual = async () => {
     setLoadingManual(true);
@@ -108,6 +130,23 @@ export default function DriverPage() {
       setLoadingManual(false);
       setStep("manual");
     }
+  };
+
+  const enterGps = async () => {
+    try {
+      const tram = await fetchTramById(tramId);
+      if (tram?.current_station_id) {
+        const currentIdx = STATIONS.findIndex(
+          (s) => s.id === tram.current_station_id,
+        );
+        setNextIndex(currentIdx >= 0 ? currentIdx + 1 : 0);
+      } else {
+        setNextIndex(0);
+      }
+    } catch {
+      setNextIndex(0);
+    }
+    setStep("gps");
   };
 
   const handleConfirmCheckin = async () => {
@@ -134,24 +173,37 @@ export default function DriverPage() {
   };
 
   return (
-    <main className="h-full flex flex-col items-center">
+    <main
+      className={`h-full flex flex-col items-center ${step === "mode" ? "bg-[linear-gradient(161deg,#FFE2A5_0%,#FBFCF0_22%,#FFFFFF_62%,#E6EFD8_100%)]" : "bg-white"}`}
+    >
       <div className="w-full p-4">
         {/* Mode Selection */}
         {step === "mode" && (
-          <div className="mt-6 flex flex-col gap-3">
-            <button
-              onClick={enterManual}
-              disabled={loadingManual}
-              className="bg-white rounded-full py-3 shadow disabled:opacity-50"
-            >
-              {loadingManual ? "กำลังโหลด..." : "Manual"}
-            </button>
-            <button
-              onClick={() => setStep("gps")}
-              className="bg-orange-500 text-white rounded-full py-3 shadow"
-            >
-              GPS
-            </button>
+          <div className="w-full h-[80svh] flex justify-center items-center">
+            <div className="w-full bg-white rounded-[18px] shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-5 px-7 flex flex-col justify-center items-center">
+              <h1 className="text-[20px] font-medium text-black mb-1">
+                เลือกโหมดการใช้งาน
+              </h1>
+              <p className="text-[16px] font-normal text-[#543A14] mb-4">
+                กรุณาเลือก Manual หรือ GPS
+              </p>
+
+              <div className="w-full flex justify-center items-center gap-2">
+                <button
+                  onClick={enterManual}
+                  disabled={loadingManual}
+                  className="bg-[#FF8B2B] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
+                >
+                  {loadingManual ? "กำลังโหลด..." : "Manual"}
+                </button>
+                <button
+                  onClick={enterGps}
+                  className="bg-[#FF8B2B] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
+                >
+                  GPS
+                </button>
+              </div>
+            </div>
           </div>
         )}
 
@@ -160,9 +212,9 @@ export default function DriverPage() {
           <div className="space-y-1.5">
             <button
               onClick={() => setStep("mode")}
-              className="text-sm text-gray-400"
+              className="text-[#B9B9B9] flex justify-center items-center"
             >
-              ← กลับ
+              <IoIosArrowBack size={28} /> <p className="mt-0.5">กลับ</p>
             </button>
 
             {STATIONS.map((s, i) => {
@@ -243,20 +295,111 @@ export default function DriverPage() {
 
         {/* GPS */}
         {step === "gps" && (
-          <div className="mt-6 bg-white rounded-2xl shadow p-4 text-center">
-            <p className="font-semibold mb-2">GPS Mode</p>
-            {gpsError && <p className="text-red-500">{gpsError}</p>}
-            {gpsPosition && (
-              <p className="text-sm text-gray-600">
-                {gpsPosition.lat}, {gpsPosition.lng}
-              </p>
-            )}
+          <div className="w-full h-full flex flex-col gap-3">
             <button
               onClick={() => setStep("mode")}
-              className="text-sm text-gray-400 mt-4"
+              className="text-[#B9B9B9] flex justify-start items-center"
             >
-              ← กลับ
+              <IoIosArrowBack size={28} /> <p className="mt-0.5">กลับ</p>
             </button>
+
+            <div className="relative w-full bg-white rounded-[18px] shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-5 px-7">
+              <div className="flex items-center gap-5 mb-3">
+                <div className="relative flex items-center justify-center w-7 h-7">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-[#559200] opacity-40 animate-ping" />
+                  <span className="relative inline-flex rounded-full h-5 w-5 bg-[#559200]" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-[16px] font-medium text-[#543A14]">
+                    GPS กำลังทำงาน
+                  </p>
+                  <p className="text-[14px] text-[#559200]">รับสัญญาณอยู่</p>
+                </div>
+                {gpsPosition?.accuracy && (
+                  <span className="text-[14px] bg-[#559200]/15 text-[#559200] font-medium px-2.5 py-1 rounded-full">
+                    ±{Math.round(gpsPosition.accuracy)} ม.
+                  </span>
+                )}
+              </div>
+
+              {gpsError && (
+                <p className="text-[14px] text-[#FF0000] text-center bg-red-50 rounded-xl px-3 py-2">
+                  {gpsError}
+                </p>
+              )}
+
+              {gpsPosition && (
+                <div className="flex justify-center items-center gap-3 bg-[#FFF0DC] rounded-[9px] text-center py-3 text-[16px] font-medium text-[#543A14]">
+                  <span>{gpsPosition.lat.toFixed(4)}°N</span>
+                  <span>{gpsPosition.lng.toFixed(4)}°E</span>
+                </div>
+              )}
+            </div>
+
+            <p className="text-[16px] text-[#B9B9B9] font-medium px-1 -mb-2 mt-1">
+              สถานีถัดไป
+            </p>
+
+            <div className="space-y-1.5">
+              {STATIONS.map((s, i) => {
+                const isDone = i < nextIndex;
+                const isCurrent = i === nextIndex;
+
+                return (
+                  <div
+                    key={s.id}
+                    className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center
+                    ${
+                      isDone
+                        ? "bg-[#FEEABB]"
+                        : isCurrent
+                          ? "bg-white"
+                          : "bg-white"
+                    }`}
+
+                    //       className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl border
+                    // ${
+                    //   isDone
+                    //     ? "bg-[#FEEABB] border-[#F5C47560]"
+                    //     : isCurrent
+                    //       ? "bg-white border-[#FF8B2B] border-2"
+                    //       : "bg-white border-gray-100"
+                    // }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className="w-7 h-7 rounded-full flex items-center justify-center font-medium text-[20px]">
+                        {i + 1}
+                      </span>
+                      <p className="font-medium text-[16px]">
+                        {s.name.includes("(") ? (
+                          <>
+                            {s.name.split("(")[0]}
+                            <br />
+                            {"(" + s.name.split("(")[1]}
+                          </>
+                        ) : (
+                          s.name
+                        )}
+                      </p>
+                    </span>
+
+                    {isDone ? (
+                      <span className="px-4 py-px rounded-full text-[14px] font-medium bg-[#FFFFFF] text-[#B9B9B9]">
+                        เช็คอินแล้ว
+                      </span>
+                    ) : isCurrent ? (
+                      <span className="px-4 py-0.5 rounded-full text-[14px] font-medium text-white bg-[#FF8B2B] animate-pulse">
+                        กำลังมุ่งหน้า
+                      </span>
+                    ) : (
+                      <span className="bg-[#B9B9B9] text-white px-4 py-0.5 rounded-full text-[14px] font-medium">
+                        รออยู่
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>

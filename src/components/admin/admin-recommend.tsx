@@ -102,7 +102,9 @@ export default function AdminRecommend() {
       setUploadProgress(null);
       refetch();
     } catch (e) {
-      alert(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
+      alert(
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
+      );
       setEditing((s) => s && { ...s, saving: false });
     }
   };
@@ -211,7 +213,9 @@ export default function AdminRecommend() {
               />
             </div>
           )}
-          {formError && <p className="text-red-500 text-[12px]">{formError}</p>}
+          {formError && (
+            <p className="text-[#FF0000] text-[12px]">{formError}</p>
+          )}
           <button
             onClick={handleAdd}
             disabled={saving}
@@ -233,7 +237,9 @@ export default function AdminRecommend() {
               key={item.id}
               className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2"
             >
-              <p className="text-[12px] font-semibold text-[#BF4B17]">{t("dashboard.edit")}</p>
+              <p className="text-[12px] font-semibold text-[#BF4B17]">
+                {t("dashboard.edit")}
+              </p>
               <input
                 value={editing.title.th}
                 onChange={(e) =>
@@ -387,7 +393,7 @@ export default function AdminRecommend() {
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="text-[12px] text-red-400 font-medium"
+                  className="text-[12px] text-[#FF0000] font-medium"
                 >
                   {t("dashboard.delete")}
                 </button>

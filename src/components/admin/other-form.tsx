@@ -147,7 +147,7 @@ export default function OtherForm({
         )}
       </div>
 
-      {error && <p className="text-red-500 text-[12px]">{error}</p>}
+      {error && <p className="text-[#FF0000] text-[12px]">{error}</p>}
       <div className="flex gap-x-2">
         <button
           onClick={onSave}

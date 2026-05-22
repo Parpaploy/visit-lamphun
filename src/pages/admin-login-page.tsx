@@ -162,7 +162,7 @@ export default function AdminLoginPage() {
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 text-sm text-center py-2 rounded-lg">
+            <div className="bg-red-50 border border-red-200 text-[#FF0000] text-sm text-center py-2 rounded-lg">
               {t(error)}
             </div>
           )}

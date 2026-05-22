@@ -166,6 +166,8 @@ export function startLocationTracking(): () => void {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       const { latitude, longitude } = pos.coords;
 
+      // console.log("📍 GPS:", latitude, longitude);
+
       let closestId = "";
       let closestDist = Infinity;
 
@@ -183,7 +185,7 @@ export function startLocationTracking(): () => void {
       let finalStationId = closestId;
       let finalDistance = Math.round(closestDist);
 
-      if (!closestId || closestDist > 5) {
+      if (!closestId || closestDist > 5000) {
         finalStationId = checkProvince(latitude, longitude);
         finalDistance = 0;
       }
@@ -205,6 +207,10 @@ export function startLocationTracking(): () => void {
       } catch (error) {
         console.error("Error saving heatmap:", error);
       }
+
+      // console.log("🏪 closestId:", closestId);
+      // console.log("📏 closestDist (m):", closestDist);
+      // console.log("✅ finalStationId:", finalStationId);
     });
   };
 

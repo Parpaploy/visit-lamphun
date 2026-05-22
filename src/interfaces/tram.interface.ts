@@ -10,7 +10,7 @@ export type Tram = {
   current_lat?: number;
   current_lng?: number;
   last_checkin_at?: Timestamp;
-  last_checkin_mode?: "manual" | "auto";
+  last_checkin_mode: "manual" | "auto" | "gps" | null;
 };
 
 export type Station = {

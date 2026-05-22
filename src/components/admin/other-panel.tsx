@@ -156,7 +156,7 @@ export default function OtherPanel() {
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="text-[12px] text-red-400 font-medium"
+                  className="text-[12px] text-[#FF0000] font-medium"
                 >
                   {t("dashboard.delete")}
                 </button>

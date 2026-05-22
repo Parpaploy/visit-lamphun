@@ -268,7 +268,7 @@ export default function AdminContact() {
               {form.phones.length > 1 && (
                 <button
                   onClick={() => removePhone(i)}
-                  className="text-red-400 text-[13px] shrink-0 px-2"
+                  className="text-[#FF0000] text-[13px] shrink-0 px-2"
                 >
                   {t("dashboard.delete")}
                 </button>
@@ -281,7 +281,9 @@ export default function AdminContact() {
           >
             {t("dashboard.addPhone")}
           </button>
-          {formError && <p className="text-red-500 text-[12px]">{formError}</p>}
+          {formError && (
+            <p className="text-[#FF0000] text-[12px]">{formError}</p>
+          )}
           <button
             onClick={handleAdd}
             disabled={saving}
@@ -407,7 +409,7 @@ export default function AdminContact() {
                   {editing.phones.length > 1 && (
                     <button
                       onClick={() => removeEditPhone(i)}
-                      className="text-red-400 text-[13px] shrink-0 px-2"
+                      className="text-[#FF0000] text-[13px] shrink-0 px-2"
                     >
                       {t("dashboard.delete")}
                     </button>
@@ -477,7 +479,7 @@ export default function AdminContact() {
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="text-[12px] text-red-400 font-medium"
+                  className="text-[12px] text-[#FF0000] font-medium"
                 >
                   {t("dashboard.delete")}
                 </button>

@@ -23,9 +23,14 @@ export default function TrainPanel() {
 
   const handleAdd = async () => {
     if (
-      !form.origin.th || !form.origin.en || !form.origin.cn ||
-      !form.destination.th || !form.destination.en || !form.destination.cn ||
-      !form.originTime || !form.destinationTime
+      !form.origin.th ||
+      !form.origin.en ||
+      !form.origin.cn ||
+      !form.destination.th ||
+      !form.destination.en ||
+      !form.destination.cn ||
+      !form.originTime ||
+      !form.destinationTime
     ) {
       setFormError(t("dashboard.errorRequiredTrain"));
       return;
@@ -37,7 +42,9 @@ export default function TrainPanel() {
       setForm(EMPTY_TRAIN);
       refetch();
     } catch (e) {
-      setFormError(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
+      setFormError(
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
+      );
     } finally {
       setSaving(false);
     }
@@ -61,7 +68,9 @@ export default function TrainPanel() {
       setEditing(null);
       refetch();
     } catch (e) {
-      alert(`${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`);
+      alert(
+        `${t("dashboard.errorSave")}: ${e instanceof Error ? e.message : String(e)}`,
+      );
       setEditing((s) => s && { ...s, saving: false });
     }
   };
@@ -79,7 +88,9 @@ export default function TrainPanel() {
   return (
     <div className="flex flex-col gap-y-4">
       <div className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-4">
-        <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">{t("dashboard.addTrain")}</h3>
+        <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">
+          {t("dashboard.addTrain")}
+        </h3>
         <TrainForm
           val={form}
           onChange={(updater) => setForm(updater)}
@@ -96,8 +107,13 @@ export default function TrainPanel() {
       ) : (
         items.map((item) =>
           editing?.id === item.id ? (
-            <div key={item.id} className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2">
-              <p className="text-[12px] font-semibold text-[#BF4B17]">{t("dashboard.edit")}</p>
+            <div
+              key={item.id}
+              className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2"
+            >
+              <p className="text-[12px] font-semibold text-[#BF4B17]">
+                {t("dashboard.edit")}
+              </p>
               <TrainForm
                 val={editing}
                 onChange={(updater) =>
@@ -108,11 +124,16 @@ export default function TrainPanel() {
                 }
                 onSave={handleSaveEdit}
                 onCancel={() => setEditing(null)}
-                saveLabel={editing.saving ? t("dashboard.saving") : t("dashboard.save")}
+                saveLabel={
+                  editing.saving ? t("dashboard.saving") : t("dashboard.save")
+                }
               />
             </div>
           ) : (
-            <div key={item.id} className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-3 flex items-start gap-x-3">
+            <div
+              key={item.id}
+              className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-3 flex items-start gap-x-3"
+            >
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold text-[#543A14]">
                   {item.origin.th} → {item.destination.th}
@@ -137,7 +158,7 @@ export default function TrainPanel() {
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="text-[12px] text-red-400 font-medium"
+                  className="text-[12px] text-[#FF0000] font-medium"
                 >
                   {t("dashboard.delete")}
                 </button>

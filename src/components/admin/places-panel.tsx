@@ -234,7 +234,9 @@ export default function PlacesPanel() {
               />
             </div>
           )}
-          {formError && <p className="text-red-500 text-[12px]">{formError}</p>}
+          {formError && (
+            <p className="text-[#FF0000] text-[12px]">{formError}</p>
+          )}
           <button
             onClick={handleAdd}
             disabled={saving}
@@ -389,7 +391,7 @@ export default function PlacesPanel() {
                     </button>
                     <button
                       onClick={() => handleDelete(place.id)}
-                      className="text-[12px] text-red-400 font-medium"
+                      className="text-[12px] text-[#FF0000] font-medium"
                     >
                       {t("dashboard.delete")}
                     </button>
