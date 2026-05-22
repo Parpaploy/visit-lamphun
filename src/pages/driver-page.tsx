@@ -179,28 +179,28 @@ export default function DriverPage() {
       <div className="w-full p-4">
         {/* Mode Selection */}
         {step === "mode" && (
-          <div className="w-full h-[80svh] flex justify-center items-center">
+          <div className="w-full h-[80svh] flex justify-center items-start pt-10 px-3">
             <div className="w-full bg-white rounded-[18px] shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-5 px-7 flex flex-col justify-center items-center">
               <h1 className="text-[20px] font-medium text-black mb-1">
                 เลือกโหมดการใช้งาน
               </h1>
-              <p className="text-[16px] font-normal text-[#543A14] mb-4">
-                กรุณาเลือก Manual หรือ GPS
+              <p className="text-[14px] font-normal text-[#543A14] mb-4 text-center">
+                กรุณาเลือก เช็คอินด้วยตนเอง หรือ เช็คอินด้วย GPS
               </p>
 
-              <div className="w-full flex justify-center items-center gap-2">
+              <div className="w-full flex flex-col justify-center items-center gap-2">
                 <button
                   onClick={enterManual}
                   disabled={loadingManual}
                   className="bg-[#FF8B2B] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
                 >
-                  {loadingManual ? "กำลังโหลด..." : "Manual"}
+                  {loadingManual ? "กำลังโหลด..." : "เช็คอินด้วยตนเอง"}
                 </button>
                 <button
                   onClick={enterGps}
-                  className="bg-[#FF8B2B] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
+                  className="bg-[#BF4B17] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
                 >
-                  GPS
+                  เช็คอินด้วย GPS
                 </button>
               </div>
             </div>

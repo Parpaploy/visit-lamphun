@@ -265,7 +265,7 @@ export default function DriverNavbar({ stopGps }: { stopGps?: () => void }) {
                   {stopGps && (
                     <button
                       onClick={handleLogout}
-                      className="text-[#543A14] w-full flex justify-start items-center gap-5 border-t border-[#D9D9D9] pl-16 pt-4 pb-3"
+                      className="text-[#543A14] w-full flex justify-start items-center gap-5 border-t border-[#D9D9D9] pl-17 pt-4 pb-3"
                     >
                       <div className="w-6.5 h-6.5">
                         <img
@@ -280,15 +280,19 @@ export default function DriverNavbar({ stopGps }: { stopGps?: () => void }) {
                     </button>
                   )}
 
-                  <div className="text-[#543A14] w-full flex flex-col justify-center items-center gap-5 border-t border-[#D9D9D9] py-3">
-                    <h1 className="text-[16px] font-semibold mt-1">
-                      สถานะรถราง
-                    </h1>
+                  <div className="text-[#543A14] w-full flex flex-col justify-center items-start gap-5 border-t border-[#D9D9D9] py-3">
+                    <div className="flex justify-start items-center gap-5">
+                      <div className="w-6.5 h-6.5" />
 
-                    <div className="flex justify-center items-center gap-3">
+                      <h1 className="text-[16px] font-semibold mt-1 pl-17">
+                        สถานะรถราง
+                      </h1>
+                    </div>
+
+                    <div className="flex justify-center items-center gap-3 mx-auto">
                       <button
                         onClick={() => handleChangeStatus("active")}
-                        className={`border-2 font-medium rounded-full whitespace-nowrap px-5 py-1.5 text-center text-[16px] shadow
+                        className={`border-2 font-medium rounded-full whitespace-nowrap px-5 py-1.5 text-center text-[16px] shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]
                                     ${
                                       tramStatus === "active"
                                         ? "bg-[#FF8B2B] text-white border-transparent"
@@ -300,7 +304,7 @@ export default function DriverNavbar({ stopGps }: { stopGps?: () => void }) {
 
                       <button
                         onClick={() => handleChangeStatus("inactive")}
-                        className={`border-2 font-medium whitespace-nowrap rounded-full px-3 py-1.5 text-center text-[16px] shadow
+                        className={`border-2 font-medium whitespace-nowrap rounded-full px-3 py-1.5 text-center text-[16px] shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]
                                     ${
                                       tramStatus === "inactive"
                                         ? "bg-[#FF8B2B] text-white border-transparent"

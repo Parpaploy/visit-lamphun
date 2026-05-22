@@ -9,8 +9,9 @@ export default function DriverLoginPage() {
   const [trams, setTrams] = useState<Tram[]>([]);
   const [selectedTram, setSelectedTram] = useState<Tram | null>(null);
   const [pin, setPin] = useState("");
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [pageLoading, setPageLoading] = useState(true);
+  const [loadingPercent, setLoadingPercent] = useState(0);
 
   useEffect(() => {
     const load = async () => {
@@ -20,11 +21,24 @@ export default function DriverLoginPage() {
       } catch (err) {
         console.error(err);
         setError("โหลดข้อมูลรถรางไม่สำเร็จ");
-      } finally {
-        setLoading(false);
       }
     };
     load();
+  }, []);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setLoadingPercent((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => setPageLoading(false), 300);
+          return 100;
+        }
+        return prev + 5;
+      });
+    }, 50);
+
+    return () => clearInterval(interval);
   }, []);
 
   const checkPin = async (inputPin?: string) => {
@@ -56,7 +70,24 @@ export default function DriverLoginPage() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (pageLoading) {
+    return (
+      <div className="max-w-107.5 mx-auto h-screen w-full flex items-center justify-center bg-linear-to-br from-orange-50 to-white">
+        <div className="w-[60%] flex flex-col items-center z-20">
+          <div className="w-full h-2 bg-gray-200 mt-4 rounded-full relative overflow-hidden shadow-inner">
+            <div
+              style={{ width: `${loadingPercent}%` }}
+              className="h-2 bg-[#BF4B17] absolute left-0 top-0 transition-all duration-150"
+            />
+          </div>
+
+          <p className="text-[#BF4B17] font-medium text-[16px] mt-3">
+            กำลังโหลด . . .
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="w-full max-w-107.5 h-svh mx-auto overflow-hidden">
