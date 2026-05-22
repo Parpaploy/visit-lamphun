@@ -10,7 +10,7 @@ import {
   pageTitleMap,
   subtitleMap,
 } from "../../constant/navbar-menu";
-import { updateTramStatus } from "../../services/tram.services";
+import { fetchTramById, updateTramStatus } from "../../services/tram.services";
 
 export default function DriverNavbar({ stopGps }: { stopGps?: () => void }) {
   const { i18n } = useTranslation();
@@ -45,6 +45,25 @@ export default function DriverNavbar({ stopGps }: { stopGps?: () => void }) {
     localStorage.removeItem("driver_tram_id");
     window.location.href = "/driver/login";
   };
+
+  useEffect(() => {
+    if (openMenu) {
+      const loadStatus = async () => {
+        if (!tramId) return;
+
+        try {
+          const tram = await fetchTramById(tramId);
+          if (tram?.status) {
+            setTramStatus(tram.status);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      loadStatus();
+    }
+  }, [openMenu, tramId]);
 
   useEffect(() => {
     if (!openMenu) return;
