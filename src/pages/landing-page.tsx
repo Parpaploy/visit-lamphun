@@ -125,7 +125,7 @@ export default function LandingPage() {
                 </div>
 
                 <div className="w-full flex flex-col items-center justify-center mt-5 mb-3">
-                  <span className="text-[14px] font-medium mb-1">
+                  <span className="text-[14px] font-medium mb-2">
                     {t("landing.howto")}
                   </span>
 

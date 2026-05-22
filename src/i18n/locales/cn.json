@@ -6,8 +6,7 @@
 
   "landing": {
     "start": "開始",
-
-    "howto": "交通方式",
+    "howto": "选择旅行方式",
     "tram": "電車",
     "other": "其他"
   },

@@ -6,8 +6,7 @@
 
   "landing": {
     "start": "Start",
-
-    "howto": "Modes of Transport",
+    "howto": "Select travel option",
     "tram": "Tram",
     "other": "Other"
   },
