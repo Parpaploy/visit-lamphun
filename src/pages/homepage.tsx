@@ -14,6 +14,7 @@ import TramPin from "../components/homepage/tram-pin";
 import type { Tram } from "../interfaces/tram.interface";
 import { fetchAllTrams } from "../services/tram.services";
 import InactivePopup from "../components/homepage/inactive-popup";
+import { formatCountdown } from "../utils/countdown";
 
 const getActiveBg = (lang: string, station: stationNumber) => {
   if (station !== 0) {
@@ -39,6 +40,9 @@ export default function Homepage() {
   const [trams, setTrams] = useState<Tram[]>([]);
   const [selected, setSelected] = useState<string>("");
   const [isInactivePopup, setIsInactivePopup] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const secondsRef = useRef<number>(600);
 
   const handleBack = () => {
     setIsExiting(true);
@@ -71,6 +75,7 @@ export default function Homepage() {
   const isActive = selectedTram?.status === "active";
   const tram = useTramPosition(selected);
   const tramStationId = tram?.current_station_id ?? null;
+  const tramUpdatedAt = tram?.last_checkin_at ?? null;
 
   const tramStationNumber = Object.entries(STATION_ID_MAP).find(
     ([, id]) => id === tramStationId,
@@ -93,6 +98,33 @@ export default function Homepage() {
   }, []);
 
   const prevTramStationIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!tramStationId || !tramUpdatedAt) return;
+
+    if (countdownRef.current) clearInterval(countdownRef.current);
+
+    const elapsed = Math.floor(
+      (Date.now() - tramUpdatedAt.toDate().getTime()) / 1000,
+    );
+    const remaining = Math.max(600 - elapsed, 0);
+
+    secondsRef.current = remaining;
+
+    countdownRef.current = setInterval(() => {
+      if (secondsRef.current <= 0) {
+        setCountdown(0);
+        clearInterval(countdownRef.current!);
+        return;
+      }
+      secondsRef.current -= 1;
+      setCountdown(secondsRef.current);
+    }, 1000);
+
+    return () => {
+      if (countdownRef.current) clearInterval(countdownRef.current);
+    };
+  }, [tramStationId, tramUpdatedAt]);
 
   useEffect(() => {
     if (!selectedTram) return;
@@ -226,11 +258,15 @@ export default function Homepage() {
 
           <div className="absolute top-2 right-2.5 flex flex-col items-end text-right pointer-events-auto">
             <span className="text-[12px] text-[#8B724E] font-medium">
-              {t("homepage.ready")} | {t("homepage.time")}
+              {countdown === 0 ? t("homepage.ready") : t("homepage.time")}
             </span>
             <div className="text-[12px] font-medium flex items-center gap-1 mt-1">
               <span className="text-[#543A14]">
-                10.00 {t("homepage.minute")} | {t("homepage.wait")}
+                {countdown === null
+                  ? `... ${t("homepage.minute")}`
+                  : countdown === 0
+                    ? t("homepage.wait")
+                    : `${formatCountdown(countdown)} ${t("homepage.minute")}`}
               </span>
               <button onClick={() => setIsPopup(true)} className="w-4 h-4">
                 <img

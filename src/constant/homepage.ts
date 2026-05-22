@@ -369,18 +369,21 @@ export const hitboxData: Record<string, Location[]> = {
   ],
 };
 
-export const STATION_PIN_MAP: Record<string, { x: number; y: number }> = {
-  hariphunchai: { x: 195, y: 82 },
-  community: { x: 92, y: 165 },
-  chamthewi: { x: 300, y: 170 },
+export const STATION_PIN_MAP: Record<
+  string,
+  { x: number; y: number; offsetX?: number; offsetY?: number }
+> = {
+  hariphunchai: { x: 195, y: 82, offsetX: -0.75 },
+  community: { x: 92, y: 165, offsetX: 2, offsetY: 3.5 },
+  chamthewi: { x: 300, y: 170, offsetY: 3 },
   khuang: { x: 197, y: 245 },
   "wat-chamthewi": { x: 115, y: 327 },
-  mahawan: { x: 217, y: 367 },
-  "khong-ruesi": { x: 247, y: 465 },
-  "san-pa-yang": { x: 90, y: 432 },
-  "ku-chang": { x: 110, y: 535 },
-  "muan-chai": { x: 325, y: 537 },
-  "mai-thai": { x: 327, y: 327 },
+  mahawan: { x: 217, y: 367, offsetY: 4 },
+  "khong-ruesi": { x: 247, y: 465, offsetX: -0.75, offsetY: 2.5 },
+  "san-pa-yang": { x: 90, y: 432, offsetX: 1, offsetY: 3.5 },
+  "ku-chang": { x: 110, y: 535, offsetX: 1, offsetY: 1.5 },
+  "muan-chai": { x: 325, y: 537, offsetX: -1, offsetY: 2 },
+  "mai-thai": { x: 327, y: 327, offsetX: -0.5, offsetY: 2 },
 };
 
 export const MAP_WIDTH = 393;

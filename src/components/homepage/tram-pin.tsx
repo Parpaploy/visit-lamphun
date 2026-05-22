@@ -18,8 +18,8 @@ export default function TramPin({
   if (!pin) return null;
   //   const xPct = (pin.x / MAP_WIDTH) * 100;
   //   const yPct = (pin.y / MAP_HEIGHT) * 100;
-  const xPct = (pin.x / MAP_WIDTH) * 100;
-  const yPct = (pin.y / MAP_HEIGHT) * 100 + 5;
+  const xPct = (pin.x / MAP_WIDTH) * 100 + (pin.offsetX ?? 0);
+  const yPct = (pin.y / MAP_HEIGHT) * 100 + (pin.offsetY ?? 5);
 
   return (
     // <div
