@@ -23,6 +23,8 @@ export type EditState = {
 
 export type Tab =
   | "places"
+  | "activities"
+  | "toilets"
   | "recommend"
   | "kome"
   | "travel"

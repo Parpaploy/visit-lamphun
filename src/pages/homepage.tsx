@@ -839,6 +839,8 @@ import { useStationPopup } from "../hooks/useStationPopup";
 import type { MLString } from "../interfaces/content.interface";
 import { subscribeTransportStats } from "../services/stat.services";
 import NewHomepageSkeletonLoader from "../components/skeleton-load/new-homepage-skeleton-loader";
+import { useStationActivities } from "../hooks/useStationActivities";
+import { useStationToilets } from "../hooks/useStationToilets";
 
 const getActiveBg = (lang: string) => {
   // if (station !== 0) {
@@ -894,6 +896,10 @@ export default function Homepage() {
   const activeStationId =
     stationExpanded !== 0 ? STATION_ID_MAP[stationExpanded] : null;
   const { places, loading: placesLoading } = useStationPlaces(activeStationId);
+  const { activities, loading: activitiesLoading } =
+    useStationActivities(activeStationId);
+  const { toilets, loading: toiletsLoading } =
+    useStationToilets(activeStationId);
 
   const selectedTram = trams.find((t) => t.id === selected);
   const tram = useTramPosition(selected);
@@ -1175,7 +1181,8 @@ export default function Homepage() {
         >
           <IoIosArrowDown size={24} />
         </div>
-        <div className="w-full overflow-y-auto h-full py-7">
+
+        <div className="w-full overflow-y-auto flex flex-col flex-1 justify-between items-start py-4">
           {stationExpanded !== 0 && (
             <>
               {!visible ? (
@@ -1183,7 +1190,7 @@ export default function Homepage() {
               ) : (
                 <div className="flex flex-col items-center gap-4 transition-all duration-300 ease-in-out opacity-100 translate-y-0">
                   <div className="px-5 flex flex-col justify-center items-center text-center">
-                    <h1 className="text-[#543A14] text-[16px] font-bold mb-7">
+                    <h1 className="text-[#543A14] text-[16px] font-bold mb-5">
                       {data?.header[i18n.language as keyof MLString] ??
                         data?.header.th}
                     </h1>
@@ -1210,33 +1217,90 @@ export default function Homepage() {
                 </div>
               )}
 
-              {mode === "store" && (
-                <div className="pl-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto px-2 py-2">
-                  {placesLoading && (
-                    <p className="text-[12px] text-[#8B724E]">
-                      {t("homepage.loading")}
-                    </p>
-                  )}
-                  {!placesLoading && places.length === 0 && (
-                    <p className="text-[12px] text-[#C6C6C6]">
-                      {t("homepage.noPlaces")}
-                    </p>
-                  )}
-                  {!placesLoading &&
-                    places.map((place) => (
-                      <StationCard
-                        key={place.id}
-                        name={
-                          place.name[
-                            i18n.language as keyof typeof place.name
-                          ] ?? place.name.th
-                        }
-                        img={place.img}
-                        link={place.link}
-                      />
-                    ))}
-                </div>
-              )}
+              <div className="mt-auto w-full overflow-x-auto">
+                {mode === "store" && (
+                  <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto py-2">
+                    {placesLoading && (
+                      <p className="text-[12px] text-[#8B724E]">
+                        {t("homepage.loading")}
+                      </p>
+                    )}
+                    {!placesLoading && places.length === 0 && (
+                      <p className="text-[12px] text-[#C6C6C6]">
+                        {t("homepage.noPlaces")}
+                      </p>
+                    )}
+                    {!placesLoading &&
+                      places.map((place) => (
+                        <StationCard
+                          key={place.id}
+                          name={
+                            place.name[
+                              i18n.language as keyof typeof place.name
+                            ] ?? place.name.th
+                          }
+                          img={place.img}
+                          link={place.link}
+                        />
+                      ))}
+                  </div>
+                )}
+
+                {mode === "activity" && (
+                  <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto py-2">
+                    {activitiesLoading && (
+                      <p className="text-[12px] text-[#8B724E]">
+                        {t("homepage.loading")}
+                      </p>
+                    )}
+                    {!activitiesLoading && activities.length === 0 && (
+                      <p className="text-[12px] text-[#C6C6C6]">
+                        {t("homepage.noActivities")}
+                      </p>
+                    )}
+                    {!activitiesLoading &&
+                      activities.map((act) => (
+                        <StationCard
+                          key={act.id}
+                          name={
+                            act.name[i18n.language as keyof typeof act.name] ??
+                            act.name.th
+                          }
+                          img={act.img}
+                          link={act.link}
+                        />
+                      ))}
+                  </div>
+                )}
+
+                {mode === "toilet" && (
+                  <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto py-2">
+                    {toiletsLoading && (
+                      <p className="text-[12px] text-[#8B724E]">
+                        {t("homepage.loading")}
+                      </p>
+                    )}
+                    {!toiletsLoading && toilets.length === 0 && (
+                      <p className="text-[12px] text-[#C6C6C6]">
+                        {t("homepage.noToilets")}
+                      </p>
+                    )}
+                    {!toiletsLoading &&
+                      toilets.map((toilet) => (
+                        <StationCard
+                          key={toilet.id}
+                          name={
+                            toilet.name[
+                              i18n.language as keyof typeof toilet.name
+                            ] ?? toilet.name.th
+                          }
+                          img={toilet.img}
+                          link={toilet.link}
+                        />
+                      ))}
+                  </div>
+                )}
+              </div>
             </>
           )}
         </div>

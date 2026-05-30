@@ -13,6 +13,8 @@ import type { Tab } from "../interfaces/admin.interface";
 import { useTabs } from "../constant/admin";
 import { useAuth } from "../hooks/useAuth";
 import AdminLoginPage from "./admin-login-page";
+import ActivitiesPanel from "../components/admin/activities-panel";
+import ToiletsPanel from "../components/admin/toilets-panel";
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
@@ -28,7 +30,6 @@ export default function AdminDashboard() {
         <h1 className="text-[20px] font-bold text-[#543A14] mb-5">
           {t("dashboard.title")}
         </h1>
-
         <div className="flex gap-x-2 mb-5 overflow-x-auto pb-1">
           {tabs.map((item) => (
             <button
@@ -44,8 +45,9 @@ export default function AdminDashboard() {
             </button>
           ))}
         </div>
-
         {tab === "places" && <PlacesPanel />}
+        {tab === "activities" && <ActivitiesPanel />}
+        {tab === "toilets" && <ToiletsPanel />}
         {tab === "recommend" && <AdminRecommend />}
         {tab === "kome" && <AdminKome />}
         {tab === "travel" && <AdminTravel />}

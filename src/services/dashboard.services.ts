@@ -15,7 +15,10 @@ export const uploadImage = async (
 ): Promise<string> => {
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+  formData.append(
+    "upload_preset",
+    import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+  );
   onProgress?.(0);
   const res = await fetch(
     `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -50,4 +53,57 @@ export const updatePlace = async (
   data: { name: StationPlaceName; img: string; link: string },
 ): Promise<void> => {
   await updateDoc(doc(db, "stations", stationId, "places", placeId), data);
+};
+
+export const addActivity = async (
+  stationId: string,
+  activity: { name: StationPlaceName; img: string; link: string },
+): Promise<void> => {
+  await addDoc(collection(db, "stations", stationId, "activities"), {
+    ...activity,
+    createdAt: serverTimestamp(),
+  });
+};
+
+export const deleteActivity = async (
+  stationId: string,
+  activityId: string,
+): Promise<void> => {
+  await deleteDoc(doc(db, "stations", stationId, "activities", activityId));
+};
+
+export const updateActivity = async (
+  stationId: string,
+  activityId: string,
+  data: { name: StationPlaceName; img: string; link: string },
+): Promise<void> => {
+  await updateDoc(
+    doc(db, "stations", stationId, "activities", activityId),
+    data,
+  );
+};
+
+export const addToilet = async (
+  stationId: string,
+  toilet: { name: StationPlaceName; img: string; link: string },
+): Promise<void> => {
+  await addDoc(collection(db, "stations", stationId, "toilets"), {
+    ...toilet,
+    createdAt: serverTimestamp(),
+  });
+};
+
+export const deleteToilet = async (
+  stationId: string,
+  toiletId: string,
+): Promise<void> => {
+  await deleteDoc(doc(db, "stations", stationId, "toilets", toiletId));
+};
+
+export const updateToilet = async (
+  stationId: string,
+  toiletId: string,
+  data: { name: StationPlaceName; img: string; link: string },
+): Promise<void> => {
+  await updateDoc(doc(db, "stations", stationId, "toilets", toiletId), data);
 };

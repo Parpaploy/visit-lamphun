@@ -68,6 +68,8 @@ export function useTabs(): { value: Tab; label: string }[] {
   const { t } = useTranslation();
   return [
     { value: "places", label: t("dashboard.tabs.places") },
+    { value: "activities" as Tab, label: t("dashboard.tabs.activities") },
+    { value: "toilets" as Tab, label: t("dashboard.tabs.toilets") },
     { value: "popup", label: t("dashboard.tabs.popup") },
     { value: "recommend", label: t("dashboard.tabs.recommend") },
     { value: "travel", label: t("dashboard.tabs.travel") },
