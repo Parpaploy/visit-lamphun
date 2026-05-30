@@ -26,7 +26,7 @@ export default function ItemMenu({
         <p className="text-[13px] font-medium text-[#87745A]">{desc}</p>
       </div>
 
-      <div className="absolute bottom-3 right-0 text-[12px] border border-[#BF4B17] rounded-full px-3">
+      <div className="absolute bottom-3 right-0 text-[12px] border border-[#BF4B17] rounded-full px-3 bg-white">
         {t("menu.more")}
       </div>
     </div>

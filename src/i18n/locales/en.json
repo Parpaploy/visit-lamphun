@@ -22,7 +22,13 @@
     "back": "Back to Home",
     "close": "Close",
     "loading": "Loading...",
-    "noPlaces": "No places available"
+    "noPlaces": "No places available",
+    "storeNearMe": "Stores Near Me",
+    "activityNearMe": "Activities Near Me",
+    "toiletNearMe": "Restrooms Near Me",
+    "readMore": "Read more",
+    "readLess": "Show less",
+    "tramUsers": "Currently {{count}} tram users"
   },
 
   "contact": {

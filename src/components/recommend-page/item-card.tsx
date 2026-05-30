@@ -27,7 +27,7 @@ export default function ItemCard({
       </div>
 
       <div className="w-full flex justify-end items-center">
-        <div className="text-[12px] border border-[#BF4B17] rounded-full px-3">
+        <div className="text-[12px] border border-[#BF4B17] rounded-full px-3 bg-white">
           {t("menu.more")}
         </div>
       </div>

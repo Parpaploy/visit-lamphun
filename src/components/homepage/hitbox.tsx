@@ -3,9 +3,11 @@ import { hitboxData } from "../../constant/homepage";
 import type { stationNumber } from "../../interfaces/homepage.interface";
 
 export default function Hitbox({
+  setMode,
   loaded,
   setStationExpanded,
 }: {
+  setMode: (mode: "store" | "activity" | "toilet" | null) => void;
   loaded: boolean;
   setStationExpanded: (stationExpanded: stationNumber) => void;
 }) {
@@ -19,11 +21,14 @@ export default function Hitbox({
       className={`absolute inset-0 w-full h-full z-10 transition-opacity duration-700 ${loaded ? "opacity-100" : "opacity-0"}`}
       preserveAspectRatio="xMidYMid meet"
     >
-      <g fill="rgba(67, 56, 202, 0)">
+      <g fill="rgba(67, 56, 202, 0.7)">
         {currentLangData.map((loc) => (
           <g
             key={loc.id}
-            onClick={() => setStationExpanded(loc.no as stationNumber)}
+            onClick={() => {
+              setStationExpanded(loc.no as stationNumber);
+              setMode("store");
+            }}
           >
             {loc.points.map((point, index) => (
               <rect

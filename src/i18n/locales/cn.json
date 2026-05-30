@@ -22,7 +22,13 @@
     "back": "返回首页",
     "close": "关闭",
     "loading": "加载中...",
-    "noPlaces": "暂无地点"
+    "noPlaces": "暂无地点",
+    "storeNearMe": "附近商店",
+    "activityNearMe": "附近活动",
+    "toiletNearMe": "附近洗手间",
+    "readMore": "阅读更多",
+    "readLess": "收起",
+    "tramUsers": "当前有 {{count}} 位游客乘坐电车"
   },
 
   "contact": {

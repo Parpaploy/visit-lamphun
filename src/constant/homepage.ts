@@ -2,10 +2,34 @@ import type { Location } from "../interfaces/homepage.interface";
 
 export const isSaturday = new Date().getDay() === 6;
 
+// export const BG_MAP: Record<string, string> = {
+//   th: isSaturday
+//     ? "/images/homepage/th-bg.svg"
+//     : "/images/homepage/th-bg-weekend.svg",
+//   en: isSaturday
+//     ? "/images/homepage/en-bg.svg"
+//     : "/images/homepage/en-bg-weekend.svg",
+//   cn: isSaturday
+//     ? "/images/homepage/cn-bg.svg"
+//     : "/images/homepage/cn-bg-weekend.svg",
+// };
+
+// export const BG_MAP: Record<string, string> = {
+//   th: isSaturday
+//     ? "/images/homepage/th-new-bg-weekend.svg"
+//     : "/images/homepage/th-new-bg.svg",
+//   en: isSaturday
+//     ? "/images/homepage/en-bg.svg"
+//     : "/images/homepage/en-bg-weekend.svg",
+//   cn: isSaturday
+//     ? "/images/homepage/cn-bg.svg"
+//     : "/images/homepage/cn-bg-weekend.svg",
+// };
+
 export const BG_MAP: Record<string, string> = {
   th: isSaturday
-    ? "/images/homepage/th-bg.svg"
-    : "/images/homepage/th-bg-weekend.svg",
+    ? "/images/homepage/th-new-bg-no-kuang.svg"
+    : "/images/homepage/th-new-bg-no-kuang.svg",
   en: isSaturday
     ? "/images/homepage/en-bg.svg"
     : "/images/homepage/en-bg-weekend.svg",
@@ -14,18 +38,31 @@ export const BG_MAP: Record<string, string> = {
     : "/images/homepage/cn-bg-weekend.svg",
 };
 
+// export const STATION_ID_MAP: Record<number, string> = {
+//   1: "hariphunchai",
+//   2: "community",
+//   3: "chamthewi",
+//   4: "khuang",
+//   5: "wat-chamthewi",
+//   6: "mahawan",
+//   7: "khong-ruesi",
+//   8: "san-pa-yang",
+//   9: "ku-chang",
+//   10: "muan-chai",
+//   11: "mai-thai",
+// };
+
 export const STATION_ID_MAP: Record<number, string> = {
   1: "hariphunchai",
   2: "community",
   3: "chamthewi",
-  4: "khuang",
-  5: "wat-chamthewi",
-  6: "mahawan",
-  7: "khong-ruesi",
-  8: "san-pa-yang",
-  9: "ku-chang",
-  10: "muan-chai",
-  11: "mai-thai",
+  4: "wat-chamthewi",
+  5: "mahawan",
+  6: "khong-ruesi",
+  7: "san-pa-yang",
+  8: "ku-chang",
+  9: "muan-chai",
+  10: "mai-thai",
 };
 
 export const STATION_NAMES_TH: Record<string, string> = {
@@ -63,6 +100,635 @@ export const STATION_NAMES_ML: Record<
   "mai-thai": { th: "ไหมไทย", en: "Mai Thai", cn: "泰丝学习中心" },
 };
 
+// export const hitboxData: Record<string, Location[]> = {
+//   th: [
+//     {
+//       no: 1,
+//       id: "hariphunchai",
+//       name: "หริภุญชัย",
+//       points: [
+//         { x: 156, y: 45, width: 78, height: 75 },
+//         { x: 125, y: 115, width: 140, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 2,
+//       id: "community",
+//       name: "ชุมชนเมือง",
+//       points: [
+//         { x: 50, y: 140, width: 85, height: 50 },
+//         { x: 25, y: 190, width: 140, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 3,
+//       id: "chamthewi",
+//       name: "จามเทวี",
+//       points: [
+//         { x: 275, y: 135, width: 50, height: 70 },
+//         { x: 230, y: 200, width: 150, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 4,
+//       id: "khuang",
+//       name: "ข่วงพันปี",
+//       points: [
+//         { x: 155, y: 220, width: 85, height: 50 },
+//         { x: 135, y: 270, width: 135, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 5,
+//       id: "wat-chamthewi",
+//       name: "วัดจามเทวี",
+//       points: [
+//         { x: 85, y: 295, width: 60, height: 65 },
+//         { x: 65, y: 360, width: 90, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 6,
+//       id: "mahawan",
+//       name: "วัดมหาวัน",
+//       points: [
+//         { x: 180, y: 340, width: 75, height: 55 },
+//         { x: 175, y: 395, width: 90, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 7,
+//       id: "khong-ruesi",
+//       name: "คงฤาษี",
+//       points: [
+//         { x: 220, y: 430, width: 55, height: 70 },
+//         { x: 185, y: 490, width: 115, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 8,
+//       id: "san-pa-yang",
+//       name: "สันป่ายางหลวง",
+//       points: [
+//         { x: 53, y: 400, width: 75, height: 65 },
+//         { x: 30, y: 460, width: 120, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 9,
+//       id: "ku-chang",
+//       name: "กู่ช้าง กู่ม้า",
+//       points: [
+//         { x: 70, y: 500, width: 80, height: 70 },
+//         { x: 70, y: 565, width: 85, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 10,
+//       id: "muan-chai",
+//       name: "ม่วนใจ๋",
+//       points: [
+//         { x: 285, y: 510, width: 80, height: 55 },
+//         { x: 240, y: 560, width: 150, height: 45 },
+//       ],
+//     },
+//     {
+//       no: 11,
+//       id: "mai-thai",
+//       name: "ไหมไทย",
+//       points: [
+//         { x: 290, y: 300, width: 75, height: 55 },
+//         { x: 275, y: 355, width: 115, height: 30 },
+//       ],
+//     },
+//   ],
+//   en: [
+//     {
+//       no: 1,
+//       id: "hariphunchai",
+//       name: "Hariphunchai",
+//       points: [
+//         { x: 156, y: 45, width: 78, height: 75 },
+//         { x: 110, y: 115, width: 170, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 2,
+//       id: "community",
+//       name: "Community Museum",
+//       points: [
+//         { x: 50, y: 140, width: 85, height: 50 },
+//         { x: 30, y: 190, width: 140, height: 35 },
+//       ],
+//     },
+//     {
+//       no: 3,
+//       id: "chamthewi",
+//       name: "Chamthewi Statue",
+//       points: [
+//         { x: 275, y: 135, width: 50, height: 70 },
+//         { x: 230, y: 200, width: 150, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 4,
+//       id: "khuang",
+//       name: "Khuang Phan Pi",
+//       points: [
+//         { x: 155, y: 220, width: 85, height: 50 },
+//         { x: 135, y: 270, width: 155, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 5,
+//       id: "wat-chamthewi",
+//       name: "Wat Chamthewi",
+//       points: [
+//         { x: 85, y: 295, width: 60, height: 65 },
+//         { x: 60, y: 360, width: 115, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 6,
+//       id: "mahawan",
+//       name: "Wat Mahawan",
+//       points: [
+//         { x: 180, y: 340, width: 75, height: 55 },
+//         { x: 175, y: 395, width: 90, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 7,
+//       id: "khong-ruesi",
+//       name: "Wat Phra Khong Ruesi",
+//       points: [
+//         { x: 220, y: 430, width: 55, height: 70 },
+//         { x: 180, y: 490, width: 110, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 8,
+//       id: "san-pa-yang",
+//       name: "Wat San Pa Yang Luang",
+//       points: [
+//         { x: 53, y: 400, width: 75, height: 65 },
+//         { x: 40, y: 460, width: 145, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 9,
+//       id: "ku-chang",
+//       name: "Ku Chang Ku Ma",
+//       points: [
+//         { x: 70, y: 500, width: 80, height: 70 },
+//         { x: 55, y: 560, width: 115, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 10,
+//       id: "muan-chai",
+//       name: "Muan Jai",
+//       points: [
+//         { x: 285, y: 510, width: 80, height: 55 },
+//         { x: 240, y: 560, width: 150, height: 45 },
+//       ],
+//     },
+//     {
+//       no: 11,
+//       id: "mai-thai",
+//       name: "Mai Thai",
+//       points: [
+//         { x: 290, y: 300, width: 75, height: 55 },
+//         { x: 270, y: 355, width: 120, height: 30 },
+//       ],
+//     },
+//   ],
+//   cn: [
+//     {
+//       no: 1,
+//       id: "hariphunchai",
+//       name: "哈里奔猜",
+//       points: [
+//         { x: 156, y: 45, width: 78, height: 75 },
+//         { x: 135, y: 115, width: 120, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 2,
+//       id: "community",
+//       name: "社区博物馆",
+//       points: [
+//         { x: 50, y: 140, width: 85, height: 50 },
+//         { x: 40, y: 190, width: 110, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 3,
+//       id: "chamthewi",
+//       name: "占玛เทวี",
+//       points: [
+//         { x: 275, y: 135, width: 50, height: 70 },
+//         { x: 235, y: 200, width: 140, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 4,
+//       id: "khuang",
+//       name: "千年庭院",
+//       points: [
+//         { x: 155, y: 220, width: 85, height: 50 },
+//         { x: 135, y: 270, width: 125, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 5,
+//       id: "wat-chamthewi",
+//       name: "扎玛特威寺",
+//       points: [
+//         { x: 85, y: 295, width: 60, height: 65 },
+//         { x: 70, y: 360, width: 80, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 6,
+//       id: "mahawan",
+//       name: "马哈湾寺",
+//       points: [
+//         { x: 180, y: 340, width: 75, height: 55 },
+//         { x: 175, y: 395, width: 90, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 7,
+//       id: "khong-ruesi",
+//       name: "空鲁西寺",
+//       points: [
+//         { x: 220, y: 430, width: 55, height: 70 },
+//         { x: 205, y: 495, width: 80, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 8,
+//       id: "san-pa-yang",
+//       name: "圣巴扬寺",
+//       points: [
+//         { x: 53, y: 400, width: 75, height: 65 },
+//         { x: 50, y: 465, width: 85, height: 25 },
+//       ],
+//     },
+//     {
+//       no: 9,
+//       id: "ku-chang",
+//       name: "库常库玛",
+//       points: [
+//         { x: 70, y: 500, width: 80, height: 70 },
+//         { x: 55, y: 560, width: 110, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 10,
+//       id: "muan-chai",
+//       name: "沐恩猜",
+//       points: [
+//         { x: 285, y: 510, width: 80, height: 55 },
+//         { x: 240, y: 560, width: 140, height: 45 },
+//       ],
+//     },
+//     {
+//       no: 11,
+//       id: "mai-thai",
+//       name: "泰丝学习中心",
+//       points: [
+//         { x: 290, y: 300, width: 75, height: 55 },
+//         { x: 260, y: 350, width: 120, height: 30 },
+//       ],
+//     },
+//   ],
+// };
+
+// export const hitboxData: Record<string, Location[]> = {
+//   th: [
+//     {
+//       no: 1,
+//       id: "hariphunchai",
+//       name: "หริภุญชัย",
+//       points: [
+//         { x: 85, y: -115, width: 80, height: 85 },
+//         { x: 40, y: -30, width: 175, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 2,
+//       id: "community",
+//       name: "ชุมชนเมือง",
+//       points: [
+//         { x: 240, y: -40, width: 110, height: 65 },
+//         { x: 210, y: 22, width: 170, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 3,
+//       id: "chamthewi",
+//       name: "จามเทวี",
+//       points: [
+//         { x: 80, y: 20, width: 80, height: 85 },
+//         { x: 30, y: 105, width: 195, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 4,
+//       id: "khuang",
+//       name: "ข่วงพันปี",
+//       points: [
+//         { x: 245, y: 125, width: 125, height: 60 },
+//         { x: 262, y: 185, width: 90, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 5,
+//       id: "wat-chamthewi",
+//       name: "วัดจามเทวี",
+//       points: [
+//         { x: 90, y: 170, width: 70, height: 85 },
+//         { x: 80, y: 255, width: 92, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 6,
+//       id: "mahawan",
+//       name: "วัดมหาวัน",
+//       points: [
+//         { x: 240, y: 260, width: 100, height: 75 },
+//         { x: 245, y: 335, width: 90, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 7,
+//       id: "khong-ruesi",
+//       name: "คงฤาษี",
+//       points: [
+//         { x: 95, y: 330, width: 55, height: 90 },
+//         { x: 65, y: 415, width: 120, height: 35 },
+//       ],
+//     },
+//     {
+//       no: 8,
+//       id: "san-pa-yang",
+//       name: "สันป่ายางหลวง",
+//       points: [
+//         { x: 240, y: 410, width: 75, height: 75 },
+//         { x: 205, y: 485, width: 145, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 9,
+//       id: "ku-chang",
+//       name: "กู่ช้าง กู่ม้า",
+//       points: [
+//         { x: 85, y: 490, width: 85, height: 80 },
+//         { x: 75, y: 570, width: 105, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 10,
+//       id: "muan-chai",
+//       name: "ม่วนใจ๋",
+//       points: [
+//         { x: 65, y: 640, width: 95, height: 60 },
+//         { x: 57, y: 700, width: 110, height: 32 },
+//       ],
+//     },
+//     {
+//       no: 11,
+//       id: "mai-thai",
+//       name: "ไหมไทย",
+//       points: [
+//         { x: 245, y: 585, width: 85, height: 60 },
+//         { x: 214, y: 645, width: 145, height: 50 },
+//       ],
+//     },
+//   ],
+//   en: [
+//     {
+//       no: 1,
+//       id: "hariphunchai",
+//       name: "Hariphunchai",
+//       points: [
+//         { x: 85, y: -115, width: 80, height: 85 },
+//         { x: 40, y: -30, width: 175, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 2,
+//       id: "community",
+//       name: "Community Museum",
+//       points: [
+//         { x: 240, y: -40, width: 110, height: 65 },
+//         { x: 210, y: 22, width: 170, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 3,
+//       id: "chamthewi",
+//       name: "Chamthewi Statue",
+//       points: [
+//         { x: 80, y: 20, width: 80, height: 85 },
+//         { x: 30, y: 105, width: 195, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 4,
+//       id: "khuang",
+//       name: "Khuang Phan Pi",
+//       points: [
+//         { x: 245, y: 125, width: 125, height: 60 },
+//         { x: 262, y: 185, width: 90, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 5,
+//       id: "wat-chamthewi",
+//       name: "Wat Chamthewi",
+//       points: [
+//         { x: 90, y: 170, width: 70, height: 85 },
+//         { x: 80, y: 255, width: 92, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 6,
+//       id: "mahawan",
+//       name: "Wat Mahawan",
+//       points: [
+//         { x: 240, y: 260, width: 100, height: 75 },
+//         { x: 245, y: 335, width: 90, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 7,
+//       id: "khong-ruesi",
+//       name: "Wat Phra Khong Ruesi",
+//       points: [
+//         { x: 95, y: 330, width: 55, height: 90 },
+//         { x: 65, y: 415, width: 120, height: 35 },
+//       ],
+//     },
+//     {
+//       no: 8,
+//       id: "san-pa-yang",
+//       name: "Wat San Pa Yang Luang",
+//       points: [
+//         { x: 240, y: 410, width: 75, height: 75 },
+//         { x: 205, y: 485, width: 145, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 9,
+//       id: "ku-chang",
+//       name: "Ku Chang Ku Ma",
+//       points: [
+//         { x: 85, y: 490, width: 85, height: 80 },
+//         { x: 75, y: 570, width: 105, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 10,
+//       id: "muan-chai",
+//       name: "Muan Jai",
+//       points: [
+//         { x: 65, y: 640, width: 95, height: 60 },
+//         { x: 57, y: 700, width: 110, height: 32 },
+//       ],
+//     },
+//     {
+//       no: 11,
+//       id: "mai-thai",
+//       name: "Mai Thai",
+//       points: [
+//         { x: 245, y: 585, width: 85, height: 60 },
+//         { x: 214, y: 645, width: 145, height: 50 },
+//       ],
+//     },
+//   ],
+//   cn: [
+//     {
+//       no: 1,
+//       id: "hariphunchai",
+//       name: "哈里奔猜",
+//       points: [
+//         { x: 85, y: -115, width: 80, height: 85 },
+//         { x: 40, y: -30, width: 175, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 2,
+//       id: "community",
+//       name: "社区博物馆",
+//       points: [
+//         { x: 240, y: -40, width: 110, height: 65 },
+//         { x: 210, y: 22, width: 170, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 3,
+//       id: "chamthewi",
+//       name: "占玛เทวี",
+//       points: [
+//         { x: 80, y: 20, width: 80, height: 85 },
+//         { x: 30, y: 105, width: 195, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 4,
+//       id: "khuang",
+//       name: "千年庭院",
+//       points: [
+//         { x: 245, y: 125, width: 125, height: 60 },
+//         { x: 262, y: 185, width: 90, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 5,
+//       id: "wat-chamthewi",
+//       name: "扎玛特威寺",
+//       points: [
+//         { x: 90, y: 170, width: 70, height: 85 },
+//         { x: 80, y: 255, width: 92, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 6,
+//       id: "mahawan",
+//       name: "马哈湾寺",
+//       points: [
+//         { x: 240, y: 260, width: 100, height: 75 },
+//         { x: 245, y: 335, width: 90, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 7,
+//       id: "khong-ruesi",
+//       name: "空鲁西寺",
+//       points: [
+//         { x: 95, y: 330, width: 55, height: 90 },
+//         { x: 65, y: 415, width: 120, height: 35 },
+//       ],
+//     },
+//     {
+//       no: 8,
+//       id: "san-pa-yang",
+//       name: "圣巴扬寺",
+//       points: [
+//         { x: 240, y: 410, width: 75, height: 75 },
+//         { x: 205, y: 485, width: 145, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 9,
+//       id: "ku-chang",
+//       name: "库常库玛",
+//       points: [
+//         { x: 85, y: 490, width: 85, height: 80 },
+//         { x: 75, y: 570, width: 105, height: 30 },
+//       ],
+//     },
+//     {
+//       no: 10,
+//       id: "muan-chai",
+//       name: "沐恩猜",
+//       points: [
+//         { x: 65, y: 640, width: 95, height: 60 },
+//         { x: 57, y: 700, width: 110, height: 32 },
+//       ],
+//     },
+//     {
+//       no: 11,
+//       id: "mai-thai",
+//       name: "泰丝学习中心",
+//       points: [
+//         { x: 245, y: 585, width: 85, height: 60 },
+//         { x: 214, y: 645, width: 145, height: 50 },
+//       ],
+//     },
+//   ],
+// };
+
+// export const STATION_PIN_MAP: Record<
+//   string,
+//   { x: number; y: number; offsetX?: number; offsetY?: number }
+// > = {
+//   hariphunchai: { x: 195, y: 82, offsetX: -0.75, offsetY: 4 },
+//   community: { x: 92, y: 165, offsetX: 2, offsetY: 2 },
+//   chamthewi: { x: 300, y: 170, offsetX: -0.25, offsetY: 2 },
+//   khuang: { x: 197, y: 245, offsetY: 2 },
+//   "wat-chamthewi": { x: 115, y: 327, offsetY: 3 },
+//   mahawan: { x: 217, y: 367, offsetX: 0.5, offsetY: 2.5 },
+//   "khong-ruesi": { x: 247, y: 465, offsetX: -0.75, offsetY: 1 },
+//   "san-pa-yang": { x: 90, y: 432, offsetX: 1, offsetY: 1.5 },
+//   "ku-chang": { x: 110, y: 535, offsetX: 1, offsetY: 0 },
+//   "muan-chai": { x: 325, y: 537, offsetX: -1, offsetY: 0 },
+//   "mai-thai": { x: 327, y: 327, offsetX: -0.5, offsetY: 0 },
+// };
+
 export const hitboxData: Record<string, Location[]> = {
   th: [
     {
@@ -70,8 +736,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "hariphunchai",
       name: "หริภุญชัย",
       points: [
-        { x: 156, y: 45, width: 78, height: 75 },
-        { x: 125, y: 115, width: 140, height: 30 },
+        { x: 85, y: -115, width: 80, height: 85 },
+        { x: 40, y: -30, width: 175, height: 30 },
       ],
     },
     {
@@ -79,8 +745,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "community",
       name: "ชุมชนเมือง",
       points: [
-        { x: 50, y: 140, width: 85, height: 50 },
-        { x: 25, y: 190, width: 140, height: 25 },
+        { x: 240, y: -40, width: 110, height: 65 },
+        { x: 210, y: 22, width: 170, height: 30 },
       ],
     },
     {
@@ -88,26 +754,26 @@ export const hitboxData: Record<string, Location[]> = {
       id: "chamthewi",
       name: "จามเทวี",
       points: [
-        { x: 275, y: 135, width: 50, height: 70 },
-        { x: 230, y: 200, width: 150, height: 25 },
+        { x: 80, y: 20, width: 80, height: 85 },
+        { x: 30, y: 105, width: 195, height: 30 },
       ],
     },
-    {
-      no: 4,
-      id: "khuang",
-      name: "ข่วงพันปี",
-      points: [
-        { x: 155, y: 220, width: 85, height: 50 },
-        { x: 135, y: 270, width: 135, height: 30 },
-      ],
-    },
+    // {
+    //   no: 4,
+    //   id: "khuang",
+    //   name: "ข่วงพันปี",
+    //   points: [
+    //     { x: 245, y: 125, width: 125, height: 60 },
+    //     { x: 262, y: 185, width: 90, height: 30 },
+    //   ],
+    // },
     {
       no: 5,
       id: "wat-chamthewi",
       name: "วัดจามเทวี",
       points: [
-        { x: 85, y: 295, width: 60, height: 65 },
-        { x: 65, y: 360, width: 90, height: 25 },
+        { x: 256, y: 108, width: 70, height: 85 },
+        { x: 247, y: 191, width: 92, height: 30 },
       ],
     },
     {
@@ -115,8 +781,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "mahawan",
       name: "วัดมหาวัน",
       points: [
-        { x: 180, y: 340, width: 75, height: 55 },
-        { x: 175, y: 395, width: 90, height: 25 },
+        { x: 66, y: 190, width: 100, height: 75 },
+        { x: 71, y: 265, width: 90, height: 31 },
       ],
     },
     {
@@ -124,8 +790,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "khong-ruesi",
       name: "คงฤาษี",
       points: [
-        { x: 220, y: 430, width: 55, height: 70 },
-        { x: 185, y: 490, width: 115, height: 30 },
+        { x: 265, y: 254, width: 55, height: 90 },
+        { x: 233, y: 340, width: 120, height: 35 },
       ],
     },
     {
@@ -133,8 +799,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "san-pa-yang",
       name: "สันป่ายางหลวง",
       points: [
-        { x: 53, y: 400, width: 75, height: 65 },
-        { x: 30, y: 460, width: 120, height: 25 },
+        { x: 92, y: 340, width: 75, height: 75 },
+        { x: 58, y: 415, width: 145, height: 30 },
       ],
     },
     {
@@ -142,8 +808,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "ku-chang",
       name: "กู่ช้าง กู่ม้า",
       points: [
-        { x: 70, y: 500, width: 80, height: 70 },
-        { x: 70, y: 565, width: 85, height: 25 },
+        { x: 240, y: 415, width: 85, height: 80 },
+        { x: 232, y: 495, width: 105, height: 30 },
       ],
     },
     {
@@ -151,8 +817,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "muan-chai",
       name: "ม่วนใจ๋",
       points: [
-        { x: 285, y: 510, width: 80, height: 55 },
-        { x: 240, y: 560, width: 150, height: 45 },
+        { x: 233, y: 620, width: 95, height: 60 },
+        { x: 225, y: 680, width: 110, height: 32 },
       ],
     },
     {
@@ -160,8 +826,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "mai-thai",
       name: "ไหมไทย",
       points: [
-        { x: 290, y: 300, width: 75, height: 55 },
-        { x: 275, y: 355, width: 115, height: 30 },
+        { x: 90, y: 498, width: 85, height: 60 },
+        { x: 60, y: 557, width: 145, height: 50 },
       ],
     },
   ],
@@ -171,8 +837,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "hariphunchai",
       name: "Hariphunchai",
       points: [
-        { x: 156, y: 45, width: 78, height: 75 },
-        { x: 110, y: 115, width: 170, height: 25 },
+        { x: 85, y: -115, width: 80, height: 85 },
+        { x: 40, y: -30, width: 175, height: 30 },
       ],
     },
     {
@@ -180,8 +846,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "community",
       name: "Community Museum",
       points: [
-        { x: 50, y: 140, width: 85, height: 50 },
-        { x: 30, y: 190, width: 140, height: 35 },
+        { x: 240, y: -40, width: 110, height: 65 },
+        { x: 210, y: 22, width: 170, height: 30 },
       ],
     },
     {
@@ -189,26 +855,26 @@ export const hitboxData: Record<string, Location[]> = {
       id: "chamthewi",
       name: "Chamthewi Statue",
       points: [
-        { x: 275, y: 135, width: 50, height: 70 },
-        { x: 230, y: 200, width: 150, height: 30 },
+        { x: 80, y: 20, width: 80, height: 85 },
+        { x: 30, y: 105, width: 195, height: 30 },
       ],
     },
-    {
-      no: 4,
-      id: "khuang",
-      name: "Khuang Phan Pi",
-      points: [
-        { x: 155, y: 220, width: 85, height: 50 },
-        { x: 135, y: 270, width: 155, height: 30 },
-      ],
-    },
+    // {
+    //   no: 4,
+    //   id: "khuang",
+    //   name: "Khuang Phan Pi",
+    //   points: [
+    //     { x: 245, y: 125, width: 125, height: 60 },
+    //     { x: 262, y: 185, width: 90, height: 30 },
+    //   ],
+    // },
     {
       no: 5,
       id: "wat-chamthewi",
       name: "Wat Chamthewi",
       points: [
-        { x: 85, y: 295, width: 60, height: 65 },
-        { x: 60, y: 360, width: 115, height: 25 },
+        { x: 256, y: 108, width: 70, height: 85 },
+        { x: 247, y: 191, width: 92, height: 30 },
       ],
     },
     {
@@ -216,8 +882,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "mahawan",
       name: "Wat Mahawan",
       points: [
-        { x: 180, y: 340, width: 75, height: 55 },
-        { x: 175, y: 395, width: 90, height: 25 },
+        { x: 66, y: 190, width: 100, height: 75 },
+        { x: 71, y: 265, width: 90, height: 31 },
       ],
     },
     {
@@ -225,8 +891,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "khong-ruesi",
       name: "Wat Phra Khong Ruesi",
       points: [
-        { x: 220, y: 430, width: 55, height: 70 },
-        { x: 180, y: 490, width: 110, height: 30 },
+        { x: 265, y: 254, width: 55, height: 90 },
+        { x: 233, y: 340, width: 120, height: 35 },
       ],
     },
     {
@@ -234,8 +900,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "san-pa-yang",
       name: "Wat San Pa Yang Luang",
       points: [
-        { x: 53, y: 400, width: 75, height: 65 },
-        { x: 40, y: 460, width: 145, height: 25 },
+        { x: 92, y: 340, width: 75, height: 75 },
+        { x: 58, y: 415, width: 145, height: 30 },
       ],
     },
     {
@@ -243,8 +909,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "ku-chang",
       name: "Ku Chang Ku Ma",
       points: [
-        { x: 70, y: 500, width: 80, height: 70 },
-        { x: 55, y: 560, width: 115, height: 30 },
+        { x: 240, y: 415, width: 85, height: 80 },
+        { x: 232, y: 495, width: 105, height: 30 },
       ],
     },
     {
@@ -252,8 +918,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "muan-chai",
       name: "Muan Jai",
       points: [
-        { x: 285, y: 510, width: 80, height: 55 },
-        { x: 240, y: 560, width: 150, height: 45 },
+        { x: 233, y: 620, width: 95, height: 60 },
+        { x: 225, y: 680, width: 110, height: 32 },
       ],
     },
     {
@@ -261,8 +927,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "mai-thai",
       name: "Mai Thai",
       points: [
-        { x: 290, y: 300, width: 75, height: 55 },
-        { x: 270, y: 355, width: 120, height: 30 },
+        { x: 90, y: 498, width: 85, height: 60 },
+        { x: 60, y: 557, width: 145, height: 50 },
       ],
     },
   ],
@@ -272,8 +938,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "hariphunchai",
       name: "哈里奔猜",
       points: [
-        { x: 156, y: 45, width: 78, height: 75 },
-        { x: 135, y: 115, width: 120, height: 25 },
+        { x: 85, y: -115, width: 80, height: 85 },
+        { x: 40, y: -30, width: 175, height: 30 },
       ],
     },
     {
@@ -281,8 +947,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "community",
       name: "社区博物馆",
       points: [
-        { x: 50, y: 140, width: 85, height: 50 },
-        { x: 40, y: 190, width: 110, height: 30 },
+        { x: 240, y: -40, width: 110, height: 65 },
+        { x: 210, y: 22, width: 170, height: 30 },
       ],
     },
     {
@@ -290,26 +956,26 @@ export const hitboxData: Record<string, Location[]> = {
       id: "chamthewi",
       name: "占玛เทวี",
       points: [
-        { x: 275, y: 135, width: 50, height: 70 },
-        { x: 235, y: 200, width: 140, height: 30 },
+        { x: 80, y: 20, width: 80, height: 85 },
+        { x: 30, y: 105, width: 195, height: 30 },
       ],
     },
-    {
-      no: 4,
-      id: "khuang",
-      name: "千年庭院",
-      points: [
-        { x: 155, y: 220, width: 85, height: 50 },
-        { x: 135, y: 270, width: 125, height: 30 },
-      ],
-    },
+    // {
+    //   no: 4,
+    //   id: "khuang",
+    //   name: "千年庭院",
+    //   points: [
+    //     { x: 245, y: 125, width: 125, height: 60 },
+    //     { x: 262, y: 185, width: 90, height: 30 },
+    //   ],
+    // },
     {
       no: 5,
       id: "wat-chamthewi",
       name: "扎玛特威寺",
       points: [
-        { x: 85, y: 295, width: 60, height: 65 },
-        { x: 70, y: 360, width: 80, height: 25 },
+        { x: 256, y: 108, width: 70, height: 85 },
+        { x: 247, y: 191, width: 92, height: 30 },
       ],
     },
     {
@@ -317,8 +983,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "mahawan",
       name: "马哈湾寺",
       points: [
-        { x: 180, y: 340, width: 75, height: 55 },
-        { x: 175, y: 395, width: 90, height: 25 },
+        { x: 66, y: 190, width: 100, height: 75 },
+        { x: 71, y: 265, width: 90, height: 31 },
       ],
     },
     {
@@ -326,8 +992,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "khong-ruesi",
       name: "空鲁西寺",
       points: [
-        { x: 220, y: 430, width: 55, height: 70 },
-        { x: 205, y: 495, width: 80, height: 30 },
+        { x: 265, y: 254, width: 55, height: 90 },
+        { x: 233, y: 340, width: 120, height: 35 },
       ],
     },
     {
@@ -335,8 +1001,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "san-pa-yang",
       name: "圣巴扬寺",
       points: [
-        { x: 53, y: 400, width: 75, height: 65 },
-        { x: 50, y: 465, width: 85, height: 25 },
+        { x: 92, y: 340, width: 75, height: 75 },
+        { x: 58, y: 415, width: 145, height: 30 },
       ],
     },
     {
@@ -344,8 +1010,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "ku-chang",
       name: "库常库玛",
       points: [
-        { x: 70, y: 500, width: 80, height: 70 },
-        { x: 55, y: 560, width: 110, height: 30 },
+        { x: 240, y: 415, width: 85, height: 80 },
+        { x: 232, y: 495, width: 105, height: 30 },
       ],
     },
     {
@@ -353,8 +1019,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "muan-chai",
       name: "沐恩猜",
       points: [
-        { x: 285, y: 510, width: 80, height: 55 },
-        { x: 240, y: 560, width: 140, height: 45 },
+        { x: 233, y: 620, width: 95, height: 60 },
+        { x: 225, y: 680, width: 110, height: 32 },
       ],
     },
     {
@@ -362,28 +1028,62 @@ export const hitboxData: Record<string, Location[]> = {
       id: "mai-thai",
       name: "泰丝学习中心",
       points: [
-        { x: 290, y: 300, width: 75, height: 55 },
-        { x: 260, y: 350, width: 120, height: 30 },
+        { x: 90, y: 498, width: 85, height: 60 },
+        { x: 60, y: 557, width: 145, height: 50 },
       ],
     },
   ],
 };
 
+// export const STATION_PIN_MAP: Record<
+//   string,
+//   { x: number; y: number; offsetX?: number; offsetY?: number }
+// > = {
+//   hariphunchai: { x: 195, y: 82, offsetX: -0.75, offsetY: 4 },
+//   community: { x: 92, y: 165, offsetX: 2, offsetY: 2 },
+//   chamthewi: { x: 300, y: 170, offsetX: -0.25, offsetY: 2 },
+//   khuang: { x: 197, y: 245, offsetY: 2 },
+//   "wat-chamthewi": { x: 115, y: 327, offsetY: 3 },
+//   mahawan: { x: 217, y: 367, offsetX: 0.5, offsetY: 2.5 },
+//   "khong-ruesi": { x: 247, y: 465, offsetX: -0.75, offsetY: 1 },
+//   "san-pa-yang": { x: 90, y: 432, offsetX: 1, offsetY: 1.5 },
+//   "ku-chang": { x: 110, y: 535, offsetX: 1, offsetY: 0 },
+//   "muan-chai": { x: 325, y: 537, offsetX: -1, offsetY: 0 },
+//   "mai-thai": { x: 327, y: 327, offsetX: -0.5, offsetY: 0 },
+// };
+
+// export const STATION_PIN_MAP: Record<
+//   string,
+//   { x: number; y: number; offsetX?: number; offsetY?: number }
+// > = {
+//   hariphunchai: { x: 118, y: 35, offsetX: -0.75, offsetY: 4 },
+//   community: { x: 290, y: 80, offsetX: 1.5, offsetY: 2 },
+//   chamthewi: { x: 130, y: 120, offsetX: -1.5, offsetY: 2 },
+//   khuang: { x: 300, y: 195, offsetX: -1, offsetY: 2 },
+//   "wat-chamthewi": { x: 125, y: 230, offsetX: -0.25, offsetY: 3 },
+//   mahawan: { x: 290, y: 290, offsetX: -0.25, offsetY: 2.5 },
+//   "khong-ruesi": { x: 130, y: 355, offsetX: -1.5, offsetY: 1 },
+//   "san-pa-yang": { x: 275, y: 405, offsetX: 0.5, offsetY: 1.5 },
+//   "ku-chang": { x: 120, y: 465, offsetX: 1.25, offsetY: 0 },
+//   "muan-chai": { x: 120, y: 560, offsetX: -1.75, offsetY: 0 },
+//   "mai-thai": { x: 295, y: 525, offsetY: 0 },
+// };
+
 export const STATION_PIN_MAP: Record<
   string,
   { x: number; y: number; offsetX?: number; offsetY?: number }
 > = {
-  hariphunchai: { x: 195, y: 82, offsetX: -0.75, offsetY: 4 },
-  community: { x: 92, y: 165, offsetX: 2, offsetY: 2 },
-  chamthewi: { x: 300, y: 170, offsetX: -0.25, offsetY: 2 },
-  khuang: { x: 197, y: 245, offsetY: 2 },
-  "wat-chamthewi": { x: 115, y: 327, offsetY: 3 },
-  mahawan: { x: 217, y: 367, offsetX: 0.5, offsetY: 2.5 },
-  "khong-ruesi": { x: 247, y: 465, offsetX: -0.75, offsetY: 1 },
-  "san-pa-yang": { x: 90, y: 432, offsetX: 1, offsetY: 1.5 },
-  "ku-chang": { x: 110, y: 535, offsetX: 1, offsetY: 0 },
-  "muan-chai": { x: 325, y: 537, offsetX: -1, offsetY: 0 },
-  "mai-thai": { x: 327, y: 327, offsetX: -0.5, offsetY: 0 },
+  hariphunchai: { x: 118, y: 35, offsetX: -0.75, offsetY: 4 },
+  community: { x: 290, y: 80, offsetX: 1.5, offsetY: 2 },
+  chamthewi: { x: 130, y: 120, offsetX: -1.5, offsetY: 2 },
+  // khuang: { x: 300, y: 195, offsetX: -1, offsetY: 2 },
+  "wat-chamthewi": { x: 295, y: 190, offsetX: -0.75, offsetY: 3 },
+  mahawan: { x: 115, y: 250, offsetX: -0.25, offsetY: 1 },
+  "khong-ruesi": { x: 290, y: 290, offsetX: 0.25, offsetY: 2.5 },
+  "san-pa-yang": { x: 123, y: 360, offsetX: 1.5, offsetY: 0 },
+  "ku-chang": { x: 280, y: 405, offsetX: 0.5, offsetY: 1.5 },
+  "muan-chai": { x: 280, y: 545, offsetX: 0.25, offsetY: 0 },
+  "mai-thai": { x: 138, y: 465, offsetY: 0 },
 };
 
 export const MAP_WIDTH = 393;

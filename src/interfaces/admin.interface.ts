@@ -49,6 +49,7 @@ export type OtherEdit = OtherItem & { saving: boolean };
 export interface CellData {
   count: number;
   lastTime: string;
+  lastTimestamp?: number;
 }
 
 export interface HeatmapRecord {

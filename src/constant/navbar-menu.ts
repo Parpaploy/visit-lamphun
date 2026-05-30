@@ -27,6 +27,12 @@ export const menuList: NavbarMenuRecord = {
       img: "/icons/navbar/kome.svg",
       sf: "kome",
     },
+    {
+      title: "วารสารท่องเที่ยวลำพูน",
+      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+      img: "/icons/navbar/shop.svg",
+      sf: "tbook",
+    },
     // {
     //   title: "วารสารท่องเที่ยวลำพูน",
     //   path: "https://drive.google.com/drive/mobile/folders/18mEFDvtKv33Fc6bNdzOOTjiBmdGSbcbH?usp=share_link",
@@ -66,6 +72,12 @@ export const menuList: NavbarMenuRecord = {
     //   img: "/icons/navbar/shop.svg",
     //   sf: "tbook",
     // },
+    {
+      title: "Lamphun Travel Magazine",
+      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+      img: "/icons/navbar/shop.svg",
+      sf: "tbook",
+    },
   ],
   cn: [
     {
@@ -99,16 +111,22 @@ export const menuList: NavbarMenuRecord = {
     //   img: "/icons/navbar/shop.svg",
     //   sf: "tbook",
     // },
+    {
+      title: "南奔府旅游杂志",
+      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+      img: "/icons/navbar/shop.svg",
+      sf: "tbook",
+    },
   ],
 };
 
 export const footerList: NavbarMenuRecord = {
   th: [
-    {
-      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
-      img: "/icons/navbar/download.svg",
-      title: "ดาวน์โหลดเอกสารท่องเที่ยว",
-    },
+    // {
+    //   path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+    //   img: "/icons/navbar/download.svg",
+    //   title: "ดาวน์โหลดเอกสารท่องเที่ยว",
+    // },
     {
       path: "/app/contact",
       img: "/icons/navbar/phone.svg",
@@ -121,11 +139,11 @@ export const footerList: NavbarMenuRecord = {
     },
   ],
   en: [
-    {
-      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
-      img: "/icons/navbar/download.svg",
-      title: "4-Hour Lamphun Travel Guide",
-    },
+    // {
+    //   path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+    //   img: "/icons/navbar/download.svg",
+    //   title: "4-Hour Lamphun Travel Guide",
+    // },
     {
       path: "/app/contact",
       img: "/icons/navbar/phone.svg",
@@ -138,11 +156,11 @@ export const footerList: NavbarMenuRecord = {
     },
   ],
   cn: [
-    {
-      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
-      img: "/icons/navbar/download.svg",
-      title: "旅游指南南奔下载",
-    },
+    // {
+    //   path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+    //   img: "/icons/navbar/download.svg",
+    //   title: "旅游指南南奔下载",
+    // },
     {
       path: "/app/contact",
       img: "/icons/navbar/phone.svg",

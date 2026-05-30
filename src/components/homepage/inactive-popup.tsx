@@ -16,7 +16,7 @@ export default function InactivePopup({
 
   return (
     <div className="max-w-107.5 mx-auto fixed inset-0 backdrop-blur-[5px] flex items-center justify-center z-50">
-      <div className="relative border border-black/30 bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] rounded-[42px] px-8 py-15 w-[85%] text-center">
+      <div className="relative border border-black/30 bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] rounded-[42px] px-8 py-15 w-[95%] text-center">
         <button
           onClick={() => setIsInactivePopup(false)}
           className="rounded-full border border-[#D9D9D9] p-1 absolute top-4 right-4 text-[#543A14]"

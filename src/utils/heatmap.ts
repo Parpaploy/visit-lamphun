@@ -31,11 +31,11 @@ export const STATION_COORDS = {
     lat: 18.5747234,
     lng: 99.0042447,
   },
-  khuang: {
-    name: { th: "ข่วงพันปี", en: "Millennium Square", cn: "千年广场" },
-    lat: 18.5779793,
-    lng: 99.0063329,
-  },
+  // khuang: {
+  //   name: { th: "ข่วงพันปี", en: "Millennium Square", cn: "千年广场" },
+  //   lat: 18.5779793,
+  //   lng: 99.0063329,
+  // },
   "wat-chamthewi": {
     name: { th: "วัดจามเทวี", en: "Wat Chama Thewi", cn: "乍玛黛维寺" },
     lat: 18.5815502,

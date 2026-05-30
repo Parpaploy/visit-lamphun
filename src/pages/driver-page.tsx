@@ -19,21 +19,30 @@ export default function DriverPage() {
   const [step, setStep] = useState<"mode" | "manual" | "gps">("mode");
   const [gpsPosition, setGpsPosition] = useState<GpsPosition | null>(null);
   const [gpsError, setGpsError] = useState<string | null>(null);
-  const [loadingManual, setLoadingManual] = useState<boolean>(false);
-  const [pendingFinish, setPendingFinish] = useState<boolean>(false);
+  const [loadingManual, setLoadingManual] = useState(false);
+  const [pendingFinish, setPendingFinish] = useState(false);
 
   const [nextIndex, setNextIndex] = useState(0);
   const [pendingStation, setPendingStation] = useState<{
     station: Station;
     index: number;
   } | null>(null);
+
   const [pendingUndo, setPendingUndo] = useState<{
     station: Station;
     index: number;
   } | null>(null);
 
+  const nextIndexRef = useRef(0);
   const watchIdRef = useRef<number | null>(null);
   const lastAutoCheckinRef = useRef<string | null>(null);
+
+  const lastPositionRef = useRef<{ lat: number; lng: number } | null>(null);
+
+  const updateNextIndex = (val: number) => {
+    nextIndexRef.current = val;
+    setNextIndex(val);
+  };
 
   const stopGps = useCallback(() => {
     if (watchIdRef.current !== null) {
@@ -43,7 +52,7 @@ export default function DriverPage() {
   }, []);
 
   const writeCheckin = useCallback(
-    async (station: Station, mode: "manual" | "auto") => {
+    async (station: Station, mode: "manual" | "gps") => {
       if (!tramId) return;
       try {
         await updateTramCheckin(tramId, station, mode);
@@ -56,6 +65,18 @@ export default function DriverPage() {
 
   const updateNearestStation = useCallback(
     async (lat: number, lng: number) => {
+      if (lastPositionRef.current) {
+        const d = haversineDistance(
+          lat,
+          lng,
+          lastPositionRef.current.lat,
+          lastPositionRef.current.lng,
+        );
+        if (d < 2) return;
+      }
+
+      lastPositionRef.current = { lat, lng };
+
       let nearest: Station | null = null;
       let minDist = Infinity;
       let nearestIdx = -1;
@@ -78,39 +99,62 @@ export default function DriverPage() {
 
       await updateTramPosition(tramId, nearest, lat, lng);
 
-      if (minDist <= 5 && nearestIdx === nextIndex) {
+      if (minDist <= 5) {
         if (lastAutoCheckinRef.current === nearest.id) return;
-        lastAutoCheckinRef.current = nearest.id;
 
-        await updateTramCheckin(tramId, nearest, "gps");
-        setNextIndex(nearestIdx + 1);
+        if (
+          nearestIdx === nextIndexRef.current ||
+          nearestIdx === nextIndexRef.current - 1
+        ) {
+          lastAutoCheckinRef.current = nearest.id;
+
+          await writeCheckin(nearest, "gps");
+
+          if (nearestIdx >= nextIndexRef.current) {
+            updateNextIndex(nearestIdx + 1);
+          }
+        }
       }
     },
-    [tramId, nextIndex],
+    [tramId, writeCheckin],
   );
+
+  const updateNearestStationRef = useRef(updateNearestStation);
+
+  useEffect(() => {
+    updateNearestStationRef.current = updateNearestStation;
+  }, [updateNearestStation]);
 
   const handleFinishConfirm = async () => {
     if (tramId) await clearTramStation(tramId);
     setPendingFinish(false);
-    setNextIndex(0);
+    updateNextIndex(0);
     setStep("mode");
   };
 
   useEffect(() => {
     stopGps();
     if (step !== "gps") return;
+
     watchIdRef.current = navigator.geolocation.watchPosition(
       (pos) => {
-        if (step !== "gps") return;
         const { latitude, longitude, accuracy } = pos.coords;
+
         setGpsPosition({ lat: latitude, lng: longitude, accuracy });
-        updateNearestStation(latitude, longitude);
+
+        updateNearestStationRef.current(latitude, longitude);
       },
       (err) => setGpsError(err.message),
       { enableHighAccuracy: true },
     );
+
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const { latitude, longitude } = pos.coords;
+      updateNearestStationRef.current(latitude, longitude);
+    });
+
     return () => stopGps();
-  }, [step, updateNearestStation, stopGps]);
+  }, [step, stopGps]);
 
   const enterManual = async () => {
     setLoadingManual(true);
@@ -120,12 +164,10 @@ export default function DriverPage() {
         const currentIdx = STATIONS.findIndex(
           (s) => s.id === tram.current_station_id,
         );
-        setNextIndex(currentIdx >= 0 ? currentIdx + 1 : 0);
+        updateNextIndex(currentIdx >= 0 ? currentIdx + 1 : 0);
       } else {
-        setNextIndex(0);
+        updateNextIndex(0);
       }
-    } catch {
-      setNextIndex(0);
     } finally {
       setLoadingManual(false);
       setStep("manual");
@@ -135,24 +177,79 @@ export default function DriverPage() {
   const enterGps = async () => {
     try {
       const tram = await fetchTramById(tramId);
+
       if (tram?.current_station_id) {
         const currentIdx = STATIONS.findIndex(
           (s) => s.id === tram.current_station_id,
         );
-        setNextIndex(currentIdx >= 0 ? currentIdx + 1 : 0);
+        const newIndex = currentIdx >= 0 ? currentIdx + 1 : 0;
+
+        nextIndexRef.current = newIndex;
+        setNextIndex(newIndex);
       } else {
+        nextIndexRef.current = 0;
         setNextIndex(0);
       }
     } catch {
+      nextIndexRef.current = 0;
       setNextIndex(0);
     }
+
+    lastAutoCheckinRef.current = null;
+    lastPositionRef.current = null;
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+
+        setGpsPosition({
+          lat,
+          lng,
+          accuracy: pos.coords.accuracy,
+        });
+
+        let nearestIdx = 0;
+        let minDist = Infinity;
+
+        for (let i = 0; i < STATIONS.length; i++) {
+          const dist = haversineDistance(
+            lat,
+            lng,
+            STATIONS[i].lat,
+            STATIONS[i].lng,
+          );
+
+          if (dist < minDist) {
+            minDist = dist;
+            nearestIdx = i;
+          }
+        }
+
+        nextIndexRef.current = nearestIdx + 1;
+        setNextIndex(nearestIdx + 1);
+
+        lastAutoCheckinRef.current = null;
+      },
+      (err) => {
+        console.error(err);
+        setGpsError(err.message);
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+      },
+    );
+
     setStep("gps");
   };
 
   const handleConfirmCheckin = async () => {
     if (!pendingStation) return;
+
     await writeCheckin(pendingStation.station, "manual");
-    setNextIndex(pendingStation.index + 1);
+
+    updateNextIndex(pendingStation.index + 1);
     setPendingStation(null);
   };
 
@@ -164,11 +261,15 @@ export default function DriverPage() {
 
   const handleUndoConfirm = async () => {
     if (!pendingUndo) return;
+
     const prevIndex = pendingUndo.index - 1;
-    setNextIndex(pendingUndo.index);
+
+    updateNextIndex(pendingUndo.index);
+
     if (prevIndex >= 0) {
       await writeCheckin(STATIONS[prevIndex], "manual");
     }
+
     setPendingUndo(null);
   };
 
@@ -177,7 +278,6 @@ export default function DriverPage() {
       className={`h-full flex flex-col items-center ${step === "mode" ? "bg-[linear-gradient(161deg,#FFE2A5_0%,#FBFCF0_22%,#FFFFFF_62%,#E6EFD8_100%)]" : "bg-white"}`}
     >
       <div className="w-full p-4">
-        {/* Mode Selection */}
         {step === "mode" && (
           <div className="w-full h-[80svh] flex justify-center items-start pt-10 px-3">
             <div className="w-full bg-white rounded-[18px] shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-5 px-7 flex flex-col justify-center items-center">
@@ -187,7 +287,6 @@ export default function DriverPage() {
               <p className="text-[14px] font-normal text-[#543A14] mb-4 text-center">
                 กรุณาเลือก เช็คอินด้วยตนเอง หรือ เช็คอินด้วย GPS
               </p>
-
               <div className="w-full flex flex-col justify-center items-center gap-2">
                 <button
                   onClick={enterManual}
@@ -207,7 +306,6 @@ export default function DriverPage() {
           </div>
         )}
 
-        {/* Manual */}
         {step === "manual" && (
           <div className="space-y-1.5">
             <button
@@ -224,8 +322,7 @@ export default function DriverPage() {
               return (
                 <div
                   key={s.id}
-                  className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center
-                    ${done ? "bg-[#FEEABB]" : "bg-white"}`}
+                  className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center ${done ? "bg-[#FEEABB]" : "bg-white"}`}
                 >
                   <span className="flex items-center gap-2">
                     <span className="w-7 h-7 rounded-full flex items-center justify-center font-medium text-[20px]">
@@ -248,12 +345,7 @@ export default function DriverPage() {
                     <button
                       onClick={() => handleUndoRequest(i)}
                       disabled={i !== nextIndex - 1}
-                      className={`px-4 py-px rounded-full text-[14px] font-medium
-                        ${
-                          i === nextIndex - 1
-                            ? "bg-[#FFFFFF] text-[#B9B9B9] block"
-                            : "hidden"
-                        }`}
+                      className={`px-4 py-px rounded-full text-[14px] font-medium ${i === nextIndex - 1 ? "bg-[#FFFFFF] text-[#B9B9B9] block" : "hidden"}`}
                     >
                       ยกเลิก
                     </button>
@@ -281,9 +373,7 @@ export default function DriverPage() {
             <div className="w-full justify-center items-center flex">
               <button
                 onClick={() => {
-                  if (nextIndex >= STATIONS.length) {
-                    setPendingFinish(true);
-                  }
+                  if (nextIndex >= STATIONS.length) setPendingFinish(true);
                 }}
                 className={`${nextIndex >= STATIONS.length ? "bg-[#FF8B2B]" : "bg-[#B9B9B9]"} text-white rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-10 py-2 font-medium text-[24px] mt-2`}
               >
@@ -293,7 +383,6 @@ export default function DriverPage() {
           </div>
         )}
 
-        {/* GPS */}
         {step === "gps" && (
           <div className="w-full h-full flex flex-col gap-3">
             <button
@@ -348,23 +437,7 @@ export default function DriverPage() {
                 return (
                   <div
                     key={s.id}
-                    className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center
-                    ${
-                      isDone
-                        ? "bg-[#FEEABB]"
-                        : isCurrent
-                          ? "bg-white"
-                          : "bg-white"
-                    }`}
-
-                    //       className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl border
-                    // ${
-                    //   isDone
-                    //     ? "bg-[#FEEABB] border-[#F5C47560]"
-                    //     : isCurrent
-                    //       ? "bg-white border-[#FF8B2B] border-2"
-                    //       : "bg-white border-gray-100"
-                    // }`}
+                    className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center ${isDone ? "bg-[#FEEABB]" : "bg-white"}`}
                   >
                     <span className="flex items-center gap-2">
                       <span className="w-7 h-7 rounded-full flex items-center justify-center font-medium text-[20px]">
@@ -417,9 +490,6 @@ export default function DriverPage() {
         <UndoCheckinPopup
           station={pendingUndo.station}
           index={pendingUndo.index}
-          // prevStation={
-          //   pendingUndo.index > 0 ? STATIONS[pendingUndo.index - 1] : null
-          // }
           onConfirm={handleUndoConfirm}
           onClose={() => setPendingUndo(null)}
         />
