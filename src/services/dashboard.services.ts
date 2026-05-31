@@ -7,7 +7,10 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import type { StationPlaceName } from "../interfaces/homepage.interface";
+import type {
+  PlaceData,
+  StationPlaceName,
+} from "../interfaces/homepage.interface";
 
 export const uploadImage = async (
   file: File,
@@ -32,7 +35,7 @@ export const uploadImage = async (
 
 export const addPlace = async (
   stationId: string,
-  place: { name: StationPlaceName; img: string; link: string },
+  place: PlaceData,
 ): Promise<void> => {
   await addDoc(collection(db, "stations", stationId, "places"), {
     ...place,
@@ -40,19 +43,19 @@ export const addPlace = async (
   });
 };
 
+export const updatePlace = async (
+  stationId: string,
+  placeId: string,
+  data: PlaceData,
+): Promise<void> => {
+  await updateDoc(doc(db, "stations", stationId, "places", placeId), data);
+};
+
 export const deletePlace = async (
   stationId: string,
   placeId: string,
 ): Promise<void> => {
   await deleteDoc(doc(db, "stations", stationId, "places", placeId));
-};
-
-export const updatePlace = async (
-  stationId: string,
-  placeId: string,
-  data: { name: StationPlaceName; img: string; link: string },
-): Promise<void> => {
-  await updateDoc(doc(db, "stations", stationId, "places", placeId), data);
 };
 
 export const addActivity = async (

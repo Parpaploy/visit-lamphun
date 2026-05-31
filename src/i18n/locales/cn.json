@@ -108,7 +108,8 @@
     "tricycle": "三轮车",
     "songthaew": "双条车",
     "lineLink": "LINE link（加好友）",
-    "extension": "分机号"
+    "extension": "分机号",
+    "selectTag": "选择地点类别"
   },
 
   "dashboard": {
@@ -123,6 +124,12 @@
       "travel": "旅行",
       "contact": "联系方式/提出意见",
       "heatmap": "各地点用户数量"
+    },
+    "placeCategory": {
+      "cafe": "咖啡厅",
+      "restaurant": "餐厅",
+      "market": "市场",
+      "other": "其他"
     },
 
     "loading": "加载中...",

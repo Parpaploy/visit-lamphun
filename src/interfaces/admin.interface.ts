@@ -9,6 +9,19 @@ import type {
 } from "./content.interface";
 import type { TransportType } from "./stat.interface";
 
+export type PlaceEditState = {
+  id: string;
+  nameTh: string;
+  nameEn: string;
+  nameCn: string;
+  link: string;
+  tag: string;
+  img: string;
+  newFile: File | null;
+  previewUrl: string | null;
+  saving: boolean;
+};
+
 export type EditState = {
   id: string;
   nameTh: string;

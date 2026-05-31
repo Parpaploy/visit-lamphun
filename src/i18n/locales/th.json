@@ -108,7 +108,8 @@
     "tricycle": "สามล้อ",
     "songthaew": "สองแถว",
     "lineLink": "LINE link (เพิ่มเพื่อน)",
-    "extension": "เบอร์ต่อ"
+    "extension": "เบอร์ต่อ",
+    "selectTag": "เลือกหมวดหมู่ของสถานที่"
   },
 
   "dashboard": {
@@ -123,6 +124,12 @@
       "travel": "การเดินทาง",
       "contact": "ติดต่อเรา / ข้อเสนอแนะ",
       "heatmap": "จำนวนผู้ใช้แต่ละจุด"
+    },
+    "placeCategory": {
+      "cafe": "คาเฟ่",
+      "restaurant": "ร้านอาหาร",
+      "market": "ตลาด",
+      "other": "อื่นๆ"
     },
 
     "loading": "กำลังโหลด...",

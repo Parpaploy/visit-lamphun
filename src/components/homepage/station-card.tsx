@@ -3,15 +3,18 @@ import { useTranslation } from "react-i18next";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosMore } from "react-icons/io";
 import { SKELETON } from "../skeleton-load/station-card-loader";
+import { PLACE_TAGS } from "../../constant/admin";
 
 export default function StationCard({
   name,
   link,
   img,
+  tag,
 }: {
   name: string;
   link: string;
   img: string;
+  tag?: string;
 }) {
   const { t } = useTranslation();
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -37,6 +40,12 @@ export default function StationCard({
           onLoad={() => setImageLoaded(true)}
           alt={name}
         />
+
+        {tag && (
+          <span className="z-10 absolute top-2 left-2.5 text-[11px] font-medium bg-white/50 backdrop-blur-sm text-white rounded-full px-3 py-1">
+            {t(PLACE_TAGS.find((tg) => tg.value === tag)?.label ?? tag)}
+          </span>
+        )}
       </div>
 
       <div className="relative w-full h-[40%] px-3 py-2 text-[12px] font-medium">

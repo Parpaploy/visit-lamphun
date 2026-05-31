@@ -1167,7 +1167,7 @@ export default function Homepage() {
       </div>
 
       <div
-        className={`z-5 max-h-[85svh] shadow-[0_0px_12.3px_0_rgba(50,33,21,0.15)] flex-col absolute bottom-0 rounded-t-[15px] w-[95%] h-full flex items-center justify-start overflow-hidden bg-white transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        className={`z-5 max-h-[85.5svh] shadow-[0_0px_12.3px_0_rgba(50,33,21,0.15)] flex-col absolute bottom-0 rounded-t-[15px] w-[95%] h-full flex items-center justify-start overflow-hidden bg-white transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           mode !== null ? "translate-y-0" : "translate-y-full"
         }`}
         style={{ pointerEvents: mode !== null ? "auto" : "none" }}
@@ -1184,7 +1184,9 @@ export default function Homepage() {
 
         <div className="w-full overflow-y-auto flex flex-col flex-1 justify-between items-start py-4">
           {stationExpanded !== 0 && (
-            <>
+            <div
+              className={`${showFullDesc ? "" : "h-full"} w-full flex flex-col`}
+            >
               {!visible ? (
                 <NewHomepageSkeletonLoader />
               ) : (
@@ -1217,7 +1219,7 @@ export default function Homepage() {
                 </div>
               )}
 
-              <div className="mt-auto w-full overflow-x-auto">
+              <div className="mt-auto w-full overflow-x-auto overflow-y-hidden">
                 {mode === "store" && (
                   <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto py-2">
                     {placesLoading && (
@@ -1241,6 +1243,7 @@ export default function Homepage() {
                           }
                           img={place.img}
                           link={place.link}
+                          tag={place.tag}
                         />
                       ))}
                   </div>
@@ -1301,7 +1304,7 @@ export default function Homepage() {
                   </div>
                 )}
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

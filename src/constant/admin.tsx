@@ -79,7 +79,20 @@ export function useTabs(): { value: Tab; label: string }[] {
   ];
 }
 
-export const EMPTY_FORM = { nameTh: "", nameEn: "", nameCn: "", link: "" };
+export const EMPTY_FORM = {
+  nameTh: "",
+  nameEn: "",
+  nameCn: "",
+  link: "",
+  tag: "",
+};
+
+export const PLACE_TAGS = [
+  { value: "cafe", label: "dashboard.placeCategory.cafe" },
+  { value: "restaurant", label: "dashboard.placeCategory.restaurant" },
+  { value: "market", label: "dashboard.placeCategory.market" },
+  { value: "other", label: "dashboard.placeCategory.other" },
+];
 
 export const STATION_IDS = Object.values(STATION_ID_MAP);
 

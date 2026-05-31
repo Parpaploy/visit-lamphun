@@ -1,8 +1,13 @@
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EMPTY_FORM, inputCls, STATION_IDS } from "../../constant/admin";
+import {
+  EMPTY_FORM,
+  inputCls,
+  PLACE_TAGS,
+  STATION_IDS,
+} from "../../constant/admin";
 import { useStationPlaces } from "../../hooks/useStationPlaces";
-import type { EditState } from "../../interfaces/admin.interface";
+import type { PlaceEditState } from "../../interfaces/admin.interface";
 import {
   addPlace,
   deletePlace,
@@ -33,7 +38,7 @@ export default function PlacesPanel() {
   const [formError, setFormError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [editing, setEditing] = useState<EditState | null>(null);
+  const [editing, setEditing] = useState<PlaceEditState | null>(null);
   const editFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +71,7 @@ export default function PlacesPanel() {
         },
         img: imgUrl,
         link: form.link.trim(),
+        tag: form.tag || undefined,
       });
       setForm(EMPTY_FORM);
       setImageFile(null);
@@ -98,6 +104,7 @@ export default function PlacesPanel() {
       nameEn: place.name.en,
       nameCn: place.name.cn,
       link: place.link,
+      tag: place.tag ?? "",
       img: place.img,
       newFile: null,
       previewUrl: null,
@@ -138,6 +145,7 @@ export default function PlacesPanel() {
         },
         img: imgUrl,
         link: editing.link.trim(),
+        tag: editing.tag || undefined,
       });
       setEditing(null);
       setUploadProgress(null);
@@ -195,6 +203,20 @@ export default function PlacesPanel() {
             onChange={(e) => setForm((f) => ({ ...f, nameCn: e.target.value }))}
             className={inputCls}
           />
+
+          <select
+            value={form.tag}
+            onChange={(e) => setForm((f) => ({ ...f, tag: e.target.value }))}
+            className={inputCls}
+          >
+            <option value="">{t("form.selectTag")}</option>
+            {PLACE_TAGS.map((tag) => (
+              <option key={tag.value} value={tag.value}>
+                {t(tag.label)}
+              </option>
+            ))}
+          </select>
+
           <input
             placeholder={`${t("form.link")} *`}
             value={form.link}
@@ -209,6 +231,7 @@ export default function PlacesPanel() {
             onChange={handleImageChange}
             className="hidden"
           />
+
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
@@ -295,6 +318,22 @@ export default function PlacesPanel() {
                     }
                     className={inputCls}
                   />
+
+                  <select
+                    value={editing.tag}
+                    onChange={(e) =>
+                      setEditing((s) => s && { ...s, tag: e.target.value })
+                    }
+                    className={inputCls}
+                  >
+                    <option value="">{t("form.selectTag")}</option>
+                    {PLACE_TAGS.map((tag) => (
+                      <option key={tag.value} value={tag.value}>
+                        {t(tag.label)}
+                      </option>
+                    ))}
+                  </select>
+
                   <input
                     placeholder={t("form.link")}
                     value={editing.link}
@@ -372,9 +411,17 @@ export default function PlacesPanel() {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold text-[#543A14] truncate">
+                    <div className="flex justify-start items-center gap-1 text-[13px] font-semibold text-[#543A14] truncate">
                       {place.name.th}
-                    </p>
+                      {place.tag && (
+                        <span className="inline-block text-[11px] font-medium bg-[#FFF3E8] text-[#BF4B17] border border-[#F4C5A0] rounded-full px-3 py-px">
+                          {t(
+                            PLACE_TAGS.find((tg) => tg.value === place.tag)
+                              ?.label ?? place.tag,
+                          )}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-[11px] text-[#8B724E] truncate">
                       {place.name.en}
                     </p>

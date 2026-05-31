@@ -108,7 +108,8 @@
     "tricycle": "Tricycle",
     "songthaew": "Songthaew",
     "lineLink": "LINE link (Add Friend)",
-    "extension": "Extension"
+    "extension": "Extension",
+    "selectTag": "Select place category"
   },
 
   "dashboard": {
@@ -123,6 +124,12 @@
       "travel": "Lamphun Travel",
       "contact": "Contact / Feedback",
       "heatmap": "Users by Location"
+    },
+    "placeCategory": {
+      "cafe": "Cafe",
+      "restaurant": "Restaurant",
+      "market": "Market",
+      "other": "Other"
     },
 
     "loading": "Loading...",
