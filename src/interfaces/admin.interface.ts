@@ -35,15 +35,10 @@ export type EditState = {
 };
 
 export type Tab =
-  | "places"
-  | "activities"
-  | "toilets"
-  | "recommend"
-  | "kome"
-  | "travel"
-  | "contact"
-  | "popup"
-  | "heatmap";
+  // | "places"
+  // | "activities"
+  // | "toilets"
+  "station" | "recommend" | "kome" | "travel" | "contact" | "heatmap";
 
 export type ContactEditState = EmergencyItem & { saving: boolean };
 

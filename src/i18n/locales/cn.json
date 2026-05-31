@@ -58,6 +58,13 @@
     "story": "名人"
   },
 
+  "station": {
+    "history": "历史",
+    "places": "商店",
+    "activities": "活动",
+    "toilets": "洗手间"
+  },
+
   "travel": {
     "train": "火车 ",
     "tram": "观光电车",
@@ -118,6 +125,7 @@
       "places": "地点",
       "activities": "活动",
       "toilets": "厕所",
+      "station": "站点",
       "popup": "弹窗",
       "recommend": "精品，著名景点，名人",
       "kome": "灯笼制作群体",

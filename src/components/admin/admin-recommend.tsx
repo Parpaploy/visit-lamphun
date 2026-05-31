@@ -140,90 +140,146 @@ export default function AdminRecommend() {
         <h3 className="text-[14px] font-semibold text-[#543A14] mb-3">
           {t("dashboard.addNew")}
         </h3>
-        <div className="flex flex-col gap-y-2">
-          <input
-            placeholder={p("form.title", "inTh", true)}
-            value={form.titleTh}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, titleTh: e.target.value }))
-            }
-            className={inputCls}
-          />
-          <input
-            placeholder={p("form.title", "inEn", true)}
-            value={form.titleEn}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, titleEn: e.target.value }))
-            }
-            className={inputCls}
-          />
-          <input
-            placeholder={p("form.title", "inCn", true)}
-            value={form.titleCn}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, titleCn: e.target.value }))
-            }
-            className={inputCls}
-          />
+
+        <div className="w-full flex justify-center items-center gap-x-3">
+          <div>
+            <div className="w-full flex justify-center items-center">
+              <div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`relative aspect-square w-auto h-60 mx-auto rounded-2xl overflow-hidden cursor-pointer border-2 border-dashed transition-all duration-200
+        ${
+          previewUrl
+            ? "border-[#BF4B17]"
+            : "border-[#D9C5AE] hover:border-[#BF4B17] flex flex-col items-center justify-center gap-1 bg-[#FDF8F3] hover:bg-[#FFF1E8]"
+        }`}
+                >
+                  {previewUrl ? (
+                    <>
+                      <img
+                        src={previewUrl}
+                        className="w-full h-full object-cover"
+                      />
+
+                      <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span className="text-white text-[13px] font-medium">
+                          {t("dashboard.changeImage")}
+                        </span>
+                      </div>
+
+                      <div className="absolute bottom-2 left-2 right-2">
+                        <span className="inline-block bg-black/50 backdrop-blur-sm text-white text-[11px] rounded-lg px-2.5 py-1 truncate max-w-full">
+                          {imageFile?.name}
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        width="28"
+                        height="28"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="#BF4B17"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="3" y="3" width="18" height="18" rx="4" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <path d="M21 15l-5-5L5 21" />
+                      </svg>
+
+                      <p className="text-[13px] font-semibold text-[#BF4B17]">
+                        {t("dashboard.selectImage")}
+                      </p>
+
+                      <p className="text-[11px] text-[#C4A882]">
+                        JPG, PNG, WEBP
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full flex flex-col gap-y-3">
+            <input
+              placeholder={p("form.title", "inTh", true)}
+              value={form.titleTh}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, titleTh: e.target.value }))
+              }
+              className={inputCls}
+            />
+            <input
+              placeholder={p("form.title", "inEn", true)}
+              value={form.titleEn}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, titleEn: e.target.value }))
+              }
+              className={inputCls}
+            />
+            <input
+              placeholder={p("form.title", "inCn", true)}
+              value={form.titleCn}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, titleCn: e.target.value }))
+              }
+              className={inputCls}
+            />
+          </div>
+        </div>
+
+        <div className="w-full flex justify-center items-center gap-x-3 my-3">
           <textarea
             placeholder={p("form.descFull", "inTh", true)}
             value={form.descTh}
             onChange={(e) => setForm((f) => ({ ...f, descTh: e.target.value }))}
-            rows={2}
+            rows={15}
             className={`${inputCls} resize-none`}
           />
           <textarea
             placeholder={p("form.descFull", "inEn", true)}
             value={form.descEn}
             onChange={(e) => setForm((f) => ({ ...f, descEn: e.target.value }))}
-            rows={2}
+            rows={15}
             className={`${inputCls} resize-none`}
           />
           <textarea
             placeholder={p("form.descFull", "inCn", true)}
             value={form.descCn}
             onChange={(e) => setForm((f) => ({ ...f, descCn: e.target.value }))}
-            rows={2}
+            rows={15}
             className={`${inputCls} resize-none`}
           />
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="border border-dashed border-[#C6C6C6] rounded-xl py-2.5 text-[13px] text-[#8B724E] hover:border-[#BF4B17] transition-colors"
-          >
-            {imageFile ? imageFile.name : t("dashboard.selectImage")}
-          </button>
-          {previewUrl && (
-            <div className="w-full h-32 rounded-xl overflow-hidden">
-              <img src={previewUrl} className="w-full h-full object-cover" />
-            </div>
-          )}
-          {uploadProgress !== null && !editing && (
-            <div className="w-full bg-[#F5F5F5] rounded-full h-1.5">
-              <div
-                className="bg-[#BF4B17] h-1.5 rounded-full"
-                style={{ width: `${uploadProgress}%` }}
-              />
-            </div>
-          )}
-          {formError && (
-            <p className="text-[#FF0000] text-[12px]">{formError}</p>
-          )}
-          <button
-            onClick={handleAdd}
-            disabled={saving}
-            className="bg-[#BF4B17] text-white text-[13px] font-semibold rounded-full py-2 disabled:opacity-60"
-          >
-            {saving ? t("dashboard.saving") : t("dashboard.addItem")}
-          </button>
         </div>
+
+        {uploadProgress !== null && !editing && (
+          <div className="w-full bg-[#F5F5F5] rounded-full h-1.5">
+            <div
+              className="bg-[#BF4B17] h-1.5 rounded-full"
+              style={{ width: `${uploadProgress}%` }}
+            />
+          </div>
+        )}
+        {formError && <p className="text-[#FF0000] text-[12px]">{formError}</p>}
+        <button
+          onClick={handleAdd}
+          disabled={saving}
+          className="w-full bg-[#BF4B17] text-white text-[13px] font-semibold rounded-full py-2 disabled:opacity-60"
+        >
+          {saving ? t("dashboard.saving") : t("dashboard.addItem")}
+        </button>
       </div>
 
       {loading ? (
@@ -235,103 +291,133 @@ export default function AdminRecommend() {
           editing?.id === item.id ? (
             <div
               key={item.id}
-              className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-2"
+              className="bg-white rounded-2xl border border-[#BF4B17] p-4 flex flex-col gap-y-3"
             >
               <p className="text-[12px] font-semibold text-[#BF4B17]">
                 {t("dashboard.edit")}
               </p>
-              <input
-                value={editing.title.th}
-                onChange={(e) =>
-                  setEditing(
-                    (s) =>
-                      s && { ...s, title: { ...s.title, th: e.target.value } },
-                  )
-                }
-                placeholder={p("form.title", "inTh")}
-                className={inputCls}
-              />
-              <input
-                value={editing.title.en}
-                onChange={(e) =>
-                  setEditing(
-                    (s) =>
-                      s && { ...s, title: { ...s.title, en: e.target.value } },
-                  )
-                }
-                placeholder={p("form.title", "inEn")}
-                className={inputCls}
-              />
-              <input
-                value={editing.title.cn}
-                onChange={(e) =>
-                  setEditing(
-                    (s) =>
-                      s && { ...s, title: { ...s.title, cn: e.target.value } },
-                  )
-                }
-                placeholder={p("form.title", "inCn")}
-                className={inputCls}
-              />
-              <textarea
-                value={editing.desc.th}
-                onChange={(e) =>
-                  setEditing(
-                    (s) =>
-                      s && { ...s, desc: { ...s.desc, th: e.target.value } },
-                  )
-                }
-                placeholder={p("form.descFull", "inTh")}
-                rows={2}
-                className={`${inputCls} resize-none`}
-              />
-              <textarea
-                value={editing.desc.en}
-                onChange={(e) =>
-                  setEditing(
-                    (s) =>
-                      s && { ...s, desc: { ...s.desc, en: e.target.value } },
-                  )
-                }
-                placeholder={p("form.descFull", "inEn")}
-                rows={2}
-                className={`${inputCls} resize-none`}
-              />
-              <textarea
-                value={editing.desc.cn}
-                onChange={(e) =>
-                  setEditing(
-                    (s) =>
-                      s && { ...s, desc: { ...s.desc, cn: e.target.value } },
-                  )
-                }
-                placeholder={p("form.descFull", "inCn")}
-                rows={2}
-                className={`${inputCls} resize-none`}
-              />
-              <input
-                ref={editFileRef}
-                type="file"
-                accept="image/*"
-                onChange={handleEditImageChange}
-                className="hidden"
-              />
-              <button
-                type="button"
-                onClick={() => editFileRef.current?.click()}
-                className="border border-dashed border-[#C6C6C6] rounded-xl py-2 text-[12px] text-[#8B724E]"
-              >
-                {editing.newFile
-                  ? editing.newFile.name
-                  : t("dashboard.changeImage")}
-              </button>
-              <div className="w-full h-24 rounded-xl overflow-hidden">
-                <img
-                  src={editing.previewUrl ?? editing.img}
-                  className="w-full h-full object-cover"
+
+              <div className="w-full flex justify-center items-center gap-x-3">
+                <div>
+                  <input
+                    ref={editFileRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleEditImageChange}
+                    className="hidden"
+                  />
+
+                  <div
+                    onClick={() => editFileRef.current?.click()}
+                    className={`relative aspect-square w-auto h-60 mx-auto rounded-2xl overflow-hidden cursor-pointer border-2 border-dashed transition-all duration-200 border-[#BF4B17]`}
+                  >
+                    <img
+                      src={editing.previewUrl ?? editing.img}
+                      className="w-full h-full object-cover"
+                    />
+
+                    <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <span className="text-white text-[13px] font-medium">
+                        {t("dashboard.changeImage")}
+                      </span>
+                    </div>
+
+                    {editing.newFile && (
+                      <div className="absolute bottom-2 left-2 right-2">
+                        <span className="inline-block bg-black/50 backdrop-blur-sm text-white text-[11px] rounded-lg px-2.5 py-1 truncate max-w-full">
+                          {editing.newFile.name}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="w-full flex flex-col gap-y-3">
+                  <input
+                    value={editing.title.th}
+                    onChange={(e) =>
+                      setEditing(
+                        (s) =>
+                          s && {
+                            ...s,
+                            title: { ...s.title, th: e.target.value },
+                          },
+                      )
+                    }
+                    placeholder={p("form.title", "inTh")}
+                    className={inputCls}
+                  />
+                  <input
+                    value={editing.title.en}
+                    onChange={(e) =>
+                      setEditing(
+                        (s) =>
+                          s && {
+                            ...s,
+                            title: { ...s.title, en: e.target.value },
+                          },
+                      )
+                    }
+                    placeholder={p("form.title", "inEn")}
+                    className={inputCls}
+                  />
+                  <input
+                    value={editing.title.cn}
+                    onChange={(e) =>
+                      setEditing(
+                        (s) =>
+                          s && {
+                            ...s,
+                            title: { ...s.title, cn: e.target.value },
+                          },
+                      )
+                    }
+                    placeholder={p("form.title", "inCn")}
+                    className={inputCls}
+                  />
+                </div>
+              </div>
+
+              <div className="w-full flex justify-center items-center gap-x-3">
+                <textarea
+                  value={editing.desc.th}
+                  onChange={(e) =>
+                    setEditing(
+                      (s) =>
+                        s && { ...s, desc: { ...s.desc, th: e.target.value } },
+                    )
+                  }
+                  placeholder={p("form.descFull", "inTh")}
+                  rows={15}
+                  className={`${inputCls} resize-none`}
+                />
+                <textarea
+                  value={editing.desc.en}
+                  onChange={(e) =>
+                    setEditing(
+                      (s) =>
+                        s && { ...s, desc: { ...s.desc, en: e.target.value } },
+                    )
+                  }
+                  placeholder={p("form.descFull", "inEn")}
+                  rows={15}
+                  className={`${inputCls} resize-none`}
+                />
+                <textarea
+                  value={editing.desc.cn}
+                  onChange={(e) =>
+                    setEditing(
+                      (s) =>
+                        s && { ...s, desc: { ...s.desc, cn: e.target.value } },
+                    )
+                  }
+                  placeholder={p("form.descFull", "inCn")}
+                  rows={15}
+                  className={`${inputCls} resize-none`}
                 />
               </div>
-              {uploadProgress !== null && editing && (
+
+              {uploadProgress !== null && (
                 <div className="w-full bg-[#F5F5F5] rounded-full h-1.5">
                   <div
                     className="bg-[#BF4B17] h-1.5 rounded-full"
@@ -339,6 +425,7 @@ export default function AdminRecommend() {
                   />
                 </div>
               )}
+
               <div className="flex gap-x-2">
                 <button
                   onClick={handleSaveEdit}

@@ -58,6 +58,13 @@
     "story": "เรื่องดัง"
   },
 
+  "station": {
+    "history": "ประวัติสถานที่",
+    "places": "ร้านค้า",
+    "activities": "กิจกรรม",
+    "toilets": "ห้องน้ำ"
+  },
+
   "travel": {
     "train": "รถไฟ",
     "tram": "รถรางนำเที่ยว",
@@ -118,6 +125,7 @@
       "places": "สถานที่",
       "activities": "กิจกรรม",
       "toilets": "ห้องน้ำ",
+      "station": "สถานี",
       "popup": "Popup",
       "recommend": "ของดี ที่เด่น เรื่องดัง",
       "kome": "กลุ่มผลิตโคม",

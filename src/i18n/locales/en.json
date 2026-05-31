@@ -58,6 +58,13 @@
     "story": "Famous"
   },
 
+  "station": {
+    "history": "History",
+    "places": "Shops",
+    "activities": "Activities",
+    "toilets": "Toilets"
+  },
+
   "travel": {
     "train": "Train",
     "tram": "Tram Tours",
@@ -118,6 +125,7 @@
       "places": "Places",
       "activities": "Activities",
       "toilets": "Toilets",
+      "station": "Stations",
       "popup": "Popup",
       "recommend": "Best of the best, outstanding, and famous",
       "kome": "Lantern Production Groups",

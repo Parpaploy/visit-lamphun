@@ -19,3 +19,5 @@ export type IContactMode = "emergency" | "news" | "line";
 export type ITravelMode = "train" | "tram" | "other";
 
 export type IRecommendMode = "goods" | "places" | "story";
+
+export type IStationMode = "history" | "places" | "activities" | "toilets";

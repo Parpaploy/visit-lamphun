@@ -7,6 +7,7 @@ import type {
 } from "../interfaces/content.interface";
 import type {
   IRecommendMode,
+  IStationMode,
   ITravelMode,
 } from "../interfaces/navbar.interface";
 import { STATION_ID_MAP } from "./homepage";
@@ -20,6 +21,19 @@ export function useRecommendModes(): {
     { value: "goods", label: t("recommend.goods") },
     { value: "places", label: t("recommend.places") },
     { value: "story", label: t("recommend.story") },
+  ];
+}
+
+export function useStationModes(): {
+  value: IStationMode;
+  label: string;
+}[] {
+  const { t } = useTranslation();
+  return [
+    { value: "history", label: t("station.history") },
+    { value: "places", label: t("station.places") },
+    { value: "activities", label: t("station.activities") },
+    { value: "toilets", label: t("station.toilets") },
   ];
 }
 
@@ -67,10 +81,11 @@ export const EMPTY_CONTACT = {
 export function useTabs(): { value: Tab; label: string }[] {
   const { t } = useTranslation();
   return [
-    { value: "places", label: t("dashboard.tabs.places") },
-    { value: "activities" as Tab, label: t("dashboard.tabs.activities") },
-    { value: "toilets" as Tab, label: t("dashboard.tabs.toilets") },
-    { value: "popup", label: t("dashboard.tabs.popup") },
+    // { value: "places", label: t("dashboard.tabs.places") },
+    // { value: "activities" as Tab, label: t("dashboard.tabs.activities") },
+    // { value: "toilets" as Tab, label: t("dashboard.tabs.toilets") },
+    { value: "station", label: t("dashboard.tabs.station") },
+    // { value: "popup", label: t("dashboard.tabs.popup") },
     { value: "recommend", label: t("dashboard.tabs.recommend") },
     { value: "travel", label: t("dashboard.tabs.travel") },
     { value: "kome", label: t("dashboard.tabs.kome") },
