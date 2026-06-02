@@ -51,3 +51,9 @@ export type PlaceData = {
   link: string;
   tag?: string;
 };
+
+export type SelectedCard = {
+  name: string;
+  img: string;
+  link: string;
+} | null;

@@ -30,7 +30,10 @@
     "toiletNearMe": "附近洗手间",
     "readMore": "阅读更多",
     "readLess": "收起",
-    "tramUsers": "当前有 {{count}} 位游客乘坐电车"
+    "tramUsers": "当前有 {{count}} 位游客乘坐电车",
+    "goToStore": "Go to store",
+    "goToActivity": "Go to activity",
+    "goToToilet": "Go to restroom"
   },
 
   "contact": {

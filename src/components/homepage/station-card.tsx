@@ -10,11 +10,15 @@ export default function StationCard({
   link,
   img,
   tag,
+  onSelect,
+  setShowFullDesc,
 }: {
   name: string;
   link: string;
   img: string;
   tag?: string;
+  onSelect?: (name: string) => void;
+  setShowFullDesc: (showFullDesc: boolean) => void;
 }) {
   const { t } = useTranslation();
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -22,7 +26,8 @@ export default function StationCard({
   return (
     <div
       onClick={() => {
-        window.open(link, "_blank", "noopener,noreferrer");
+        onSelect?.(name);
+        setShowFullDesc(false);
       }}
       className="bg-white h-full min-w-50 w-50 max-w-50 rounded-xl overflow-hidden shadow-[0_4px_10px_0_rgba(0,0,0,0.125)]"
     >
@@ -67,7 +72,12 @@ export default function StationCard({
             <p className="truncate min-w-0 flex-1 mr-1">{name}</p>
             <IoIosMore size={16} />
           </div>
-          <div className="w-full flex justify-start items-center gap-x-1">
+          <div
+            onClick={() => {
+              window.open(link, "_blank", "noopener,noreferrer");
+            }}
+            className="w-fit flex justify-start items-center gap-x-1"
+          >
             <p className="text-[#F48B3C]">{t("homepage.more")}</p>
             <IoIosArrowForward className="text-[#F48B3C]" />
           </div>

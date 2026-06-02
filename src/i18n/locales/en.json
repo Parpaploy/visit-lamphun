@@ -30,7 +30,10 @@
     "toiletNearMe": "Restrooms Near Me",
     "readMore": "Read more",
     "readLess": "Show less",
-    "tramUsers": "Currently {{count}} tram users"
+    "tramUsers": "Currently {{count}} tram users",
+    "goToStore": "Go to store",
+    "goToActivity": "Go to activity",
+    "goToToilet": "Go to toilet"
   },
 
   "contact": {

@@ -823,11 +823,18 @@
 
 import { useState, useEffect, useRef, startTransition } from "react";
 import { useTranslation } from "react-i18next";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { BG_MAP, STATION_ID_MAP } from "../constant/homepage";
+import {
+  IoIosArrowDown,
+  IoIosArrowUp,
+  IoIosArrowForward,
+} from "react-icons/io";
+import { BG_MAP, moreKeyMap, STATION_ID_MAP } from "../constant/homepage";
 import HomepageLoader from "../components/skeleton-load/homepage-loader";
 import Hitbox from "../components/homepage/hitbox";
-import type { stationNumber } from "../interfaces/homepage.interface";
+import type {
+  SelectedCard,
+  stationNumber,
+} from "../interfaces/homepage.interface";
 import StationCard from "../components/homepage/station-card";
 import { useStationPlaces } from "../hooks/useStationPlaces";
 import { useTramPosition } from "../hooks/useTramPosition";
@@ -873,6 +880,10 @@ export default function Homepage() {
   const [visible, setVisible] = useState<boolean>(false);
 
   const [showScrollBtn, setShowScrollBtn] = useState(true);
+  const [selectedCard, setSelectedCard] = useState<SelectedCard>(null);
+
+  const descRef = useRef<HTMLDivElement>(null);
+  const detailScrollRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () => {
     const el = scrollRef.current;
@@ -888,6 +899,33 @@ export default function Homepage() {
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
+  };
+
+  const smoothScrollTo = (
+    container: HTMLElement,
+    target: number,
+    duration = 400,
+  ) => {
+    const start = container.scrollTop;
+    const change = target - start;
+    const startTime = performance.now();
+
+    const easeInOut = (t: number) =>
+      t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = easeInOut(progress);
+
+      container.scrollTop = start + change * eased;
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
   };
 
   const lang = i18n.language;
@@ -1037,6 +1075,7 @@ export default function Homepage() {
         <div
           onClick={() => {
             setMode("store");
+            setSelectedCard(null);
             if (tramStationId && stationExpanded === 0) {
               const stationNum = Object.entries(STATION_ID_MAP).find(
                 ([, id]) => id === tramStationId,
@@ -1058,6 +1097,7 @@ export default function Homepage() {
         <div
           onClick={() => {
             setMode("activity");
+            setSelectedCard(null);
             if (tramStationId && stationExpanded === 0) {
               const stationNum = Object.entries(STATION_ID_MAP).find(
                 ([, id]) => id === tramStationId,
@@ -1079,6 +1119,7 @@ export default function Homepage() {
         <div
           onClick={() => {
             setMode("toilet");
+            setSelectedCard(null);
             if (tramStationId && stationExpanded === 0) {
               const stationNum = Object.entries(STATION_ID_MAP).find(
                 ([, id]) => id === tramStationId,
@@ -1176,13 +1217,18 @@ export default function Homepage() {
           onClick={() => {
             setMode(null);
             setStationExpanded(0);
+            setSelectedCard(null);
+            setShowFullDesc(false);
           }}
           className="w-full bg-[#BF4B17] flex justify-center items-center text-white py-1"
         >
           <IoIosArrowDown size={24} />
         </div>
 
-        <div className="w-full overflow-y-auto flex flex-col flex-1 justify-between items-start py-4">
+        <div
+          ref={detailScrollRef}
+          className="w-full overflow-y-auto flex flex-col flex-1 justify-between items-start pt-4"
+        >
           {stationExpanded !== 0 && (
             <div
               className={`${showFullDesc ? "" : "h-full"} w-full flex flex-col`}
@@ -1190,38 +1236,124 @@ export default function Homepage() {
               {!visible ? (
                 <NewHomepageSkeletonLoader />
               ) : (
-                <div className="flex flex-col items-center gap-4 transition-all duration-300 ease-in-out opacity-100 translate-y-0">
-                  <div className="px-5 flex flex-col justify-center items-center text-center">
-                    <h1 className="text-[#543A14] text-[16px] font-bold mb-5">
-                      {data?.header[i18n.language as keyof MLString] ??
-                        data?.header.th}
-                    </h1>
-                    <img
-                      className="min-w-full w-full min-h-42 aspect-video object-cover rounded-xl"
-                      src={data?.img}
-                    />
-                    <div className="text-[#543A14] text-[16px] font-normal mt-4">
-                      <p className={`${showFullDesc ? "" : "line-clamp-3"}`}>
-                        {data?.desc[i18n.language as keyof MLString] ??
-                          data?.desc.th}
-                      </p>
-                      <button
-                        onClick={() => setShowFullDesc(!showFullDesc)}
-                        className="mx-auto text-[#F48B3C] text-[14px] mt-1 flex justify-center items-center gap-1"
-                      >
-                        {showFullDesc
-                          ? t("homepage.readLess")
-                          : t("homepage.readMore")}
-                        {showFullDesc ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                      </button>
+                <div className="h-[65%] flex flex-col items-center gap-4 transition-all duration-300 ease-in-out opacity-100 translate-y-0">
+                  <div
+                    className={`px-5 h-full flex flex-col ${selectedCard ? "justify-between" : "justify-start"} items-center text-center`}
+                  >
+                    <div className="flex flex-col justify-center items-center text-center">
+                      <h1 className="text-[#543A14] text-[16px] font-bold mb-5 text-center">
+                        {selectedCard?.name ??
+                          data?.header[i18n.language as keyof MLString] ??
+                          data?.header.th}
+                      </h1>
+                      <img
+                        className="min-w-full w-full min-h-42 aspect-video object-cover rounded-xl"
+                        src={selectedCard?.img ?? data?.img}
+                      />
                     </div>
+                    {selectedCard?.link ? (
+                      <button
+                        onClick={() =>
+                          window.open(
+                            selectedCard.link,
+                            "_blank",
+                            "noopener,noreferrer",
+                          )
+                        }
+                        className="mt-3 bg-[#BF4B17] text-white flex items-center p-1 px-5 rounded-full gap-1"
+                      >
+                        {t(moreKeyMap[mode as keyof typeof moreKeyMap])}
+                        <IoIosArrowForward />
+                      </button>
+                    ) : (
+                      <div
+                        ref={descRef}
+                        className="text-[#543A14] text-[16px] font-normal mt-4"
+                      >
+                        <p className={`${showFullDesc ? "" : "line-clamp-3"}`}>
+                          {data?.desc[i18n.language as keyof MLString] ??
+                            data?.desc.th}
+                        </p>
+                        <button
+                          onClick={() => {
+                            setShowFullDesc((prev) => {
+                              const next = !prev;
+
+                              // if (!prev) {
+                              //   setTimeout(() => {
+                              //     const container = detailScrollRef.current;
+                              //     const el = descRef.current;
+
+                              //     if (container && el) {
+                              //       const containerRect =
+                              //         container.getBoundingClientRect();
+                              //       const elRect = el.getBoundingClientRect();
+
+                              //       const offset =
+                              //         elRect.top -
+                              //         containerRect.top +
+                              //         container.scrollTop;
+
+                              //       const target =
+                              //         offset -
+                              //         container.clientHeight / 2 +
+                              //         el.clientHeight / 2;
+
+                              //       smoothScrollTo(container, target, 250);
+                              //     }
+                              //   }, 50);
+                              // }
+
+                              if (!prev) {
+                                requestAnimationFrame(() => {
+                                  requestAnimationFrame(() => {
+                                    const container = detailScrollRef.current;
+                                    const el = descRef.current;
+
+                                    if (container && el) {
+                                      const containerRect =
+                                        container.getBoundingClientRect();
+                                      const elRect = el.getBoundingClientRect();
+
+                                      const offset =
+                                        elRect.top -
+                                        containerRect.top +
+                                        container.scrollTop;
+
+                                      const maxScroll =
+                                        container.scrollHeight -
+                                        container.clientHeight;
+
+                                      const target = Math.max(
+                                        0,
+                                        Math.min(offset, maxScroll),
+                                      );
+
+                                      smoothScrollTo(container, target, 220);
+                                    }
+                                  });
+                                });
+                              }
+
+                              return next;
+                            });
+                          }}
+                          className="mx-auto text-[#F48B3C] text-[14px] mt-1 flex justify-center items-center gap-1"
+                        >
+                          {showFullDesc
+                            ? t("homepage.readLess")
+                            : t("homepage.readMore")}
+                          {showFullDesc ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
 
-              <div className="mt-auto w-full overflow-x-auto overflow-y-hidden">
+              <div className="h-[35%] mt-auto flex justify-center items-end w-full overflow-x-auto overflow-y-hidden">
                 {mode === "store" && (
-                  <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto py-2">
+                  <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto pt-2 pb-4">
                     {placesLoading && (
                       <p className="text-[12px] text-[#8B724E]">
                         {t("homepage.loading")}
@@ -1244,13 +1376,24 @@ export default function Homepage() {
                           img={place.img}
                           link={place.link}
                           tag={place.tag}
+                          onSelect={() =>
+                            setSelectedCard({
+                              name:
+                                place.name[
+                                  i18n.language as keyof typeof place.name
+                                ] ?? place.name.th,
+                              img: place.img,
+                              link: place.link,
+                            })
+                          }
+                          setShowFullDesc={setShowFullDesc}
                         />
                       ))}
                   </div>
                 )}
 
                 {mode === "activity" && (
-                  <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto py-2">
+                  <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto pt-2 pb-4">
                     {activitiesLoading && (
                       <p className="text-[12px] text-[#8B724E]">
                         {t("homepage.loading")}
@@ -1271,13 +1414,24 @@ export default function Homepage() {
                           }
                           img={act.img}
                           link={act.link}
+                          onSelect={() =>
+                            setSelectedCard({
+                              name:
+                                act.name[
+                                  i18n.language as keyof typeof act.name
+                                ] ?? act.name.th,
+                              img: act.img,
+                              link: act.link,
+                            })
+                          }
+                          setShowFullDesc={setShowFullDesc}
                         />
                       ))}
                   </div>
                 )}
 
                 {mode === "toilet" && (
-                  <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto py-2">
+                  <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto pt-2 pb-4">
                     {toiletsLoading && (
                       <p className="text-[12px] text-[#8B724E]">
                         {t("homepage.loading")}
@@ -1299,6 +1453,17 @@ export default function Homepage() {
                           }
                           img={toilet.img}
                           link={toilet.link}
+                          onSelect={() =>
+                            setSelectedCard({
+                              name:
+                                toilet.name[
+                                  i18n.language as keyof typeof toilet.name
+                                ] ?? toilet.name.th,
+                              img: toilet.img,
+                              link: toilet.link,
+                            })
+                          }
+                          setShowFullDesc={setShowFullDesc}
                         />
                       ))}
                   </div>
