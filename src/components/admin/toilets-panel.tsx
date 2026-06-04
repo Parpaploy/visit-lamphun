@@ -70,6 +70,8 @@ export default function ToiletsPanel({
         },
         img: imgUrl,
         link: form.link.trim(),
+        location: form.location.trim() || undefined,
+        phone: form.phone.trim() || undefined,
       });
       setForm(EMPTY_FORM);
       setImageFile(null);
@@ -103,6 +105,10 @@ export default function ToiletsPanel({
       nameCn: toilet.name.cn,
       link: toilet.link,
       img: toilet.img,
+      openTime: "",
+      closeTime: "",
+      phone: toilet.phone ?? "",
+      location: toilet.location ?? "",
       newFile: null,
       previewUrl: null,
       saving: false,
@@ -142,6 +148,8 @@ export default function ToiletsPanel({
         },
         img: imgUrl,
         link: editing.link.trim(),
+        location: editing.location.trim() || undefined,
+        phone: editing.phone.trim() || undefined,
       });
       setEditing(null);
       setUploadProgress(null);
@@ -278,6 +286,21 @@ export default function ToiletsPanel({
             </div>
           </div>
 
+          <input
+            placeholder={t("form.location")}
+            value={form.location}
+            onChange={(e) =>
+              setForm((f) => ({ ...f, location: e.target.value }))
+            }
+            className={inputCls}
+          />
+          <input
+            placeholder={t("form.phone")}
+            value={form.phone}
+            onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+            className={inputCls}
+          />
+
           {uploadProgress !== null && !editing && (
             <div className="w-full bg-[#F5F5F5] rounded-full h-2">
               <div
@@ -398,6 +421,23 @@ export default function ToiletsPanel({
                     </div>
                   </div>
 
+                  <input
+                    placeholder={t("form.location")}
+                    value={editing.location}
+                    onChange={(e) =>
+                      setEditing((s) => s && { ...s, location: e.target.value })
+                    }
+                    className={inputCls}
+                  />
+                  <input
+                    placeholder={t("form.phone")}
+                    value={editing.phone}
+                    onChange={(e) =>
+                      setEditing((s) => s && { ...s, phone: e.target.value })
+                    }
+                    className={inputCls}
+                  />
+
                   {uploadProgress !== null && editing && (
                     <div className="w-full bg-[#F5F5F5] rounded-full h-2">
                       <div
@@ -450,6 +490,17 @@ export default function ToiletsPanel({
                     <p className="text-[11px] text-[#8B724E] truncate">
                       {toilet.name.cn}
                     </p>
+
+                    {toilet.location && (
+                      <p className="text-[11px] text-[#8B724E]">
+                        {toilet.location}
+                      </p>
+                    )}
+                    {toilet.phone && (
+                      <p className="text-[11px] text-[#8B724E]">
+                        {toilet.phone}
+                      </p>
+                    )}
                   </div>
                   <div className="flex flex-col gap-y-1 shrink-0">
                     <button

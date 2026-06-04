@@ -60,7 +60,8 @@ export interface EmergencyItem {
   id: string;
   header: MLString;
   address: MLString;
-  hours: MLString;
+  openTime?: string;
+  closeTime?: string;
   phones: PhoneEntry[];
 }
 
@@ -68,4 +69,8 @@ export interface StationPopupData {
   header: MLString;
   desc: MLString;
   img: string;
+  openTime?: string;
+  closeTime?: string;
+  phone?: string;
+  location?: string;
 }

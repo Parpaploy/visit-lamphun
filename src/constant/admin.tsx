@@ -74,7 +74,8 @@ export const EMPTY_KOME = { name: { ...EMPTY_ML }, phone: "" };
 export const EMPTY_CONTACT = {
   header: { ...EMPTY_ML },
   address: { ...EMPTY_ML },
-  hours: { ...EMPTY_ML },
+  openTime: "",
+  closeTime: "",
   phones: [{ label: { ...EMPTY_ML }, number: "", ext: "" }],
 };
 
@@ -100,6 +101,10 @@ export const EMPTY_FORM = {
   nameCn: "",
   link: "",
   tag: "",
+  openTime: "",
+  closeTime: "",
+  phone: "",
+  location: "",
 };
 
 export const PLACE_TAGS = [

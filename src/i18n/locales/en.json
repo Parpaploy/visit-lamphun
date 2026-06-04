@@ -32,8 +32,11 @@
     "readLess": "Show less",
     "tramUsers": "Currently {{count}} tram users",
     "goToStore": "Go to store",
-    "goToActivity": "Go to activity",
-    "goToToilet": "Go to toilet"
+    "goToActivity": " Tap to Navigate",
+    "goToToilet": " Tap to Navigate",
+    "recommendStore": "Nearby Recommended Stores",
+    "recommendActivity": "Nearby Recommended Activities",
+    "recommendToilet": "Nearby Toilets"
   },
 
   "contact": {

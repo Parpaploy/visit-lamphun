@@ -53,7 +53,7 @@ export default function StationCard({
         )}
       </div>
 
-      <div className="relative w-full h-[40%] px-3 py-2 text-[12px] font-medium">
+      <div className="relative w-full h-[40%] px-3 pt-2 pb-1 text-[12px] font-medium">
         <div
           className={`absolute inset-0 flex flex-col gap-y-2 px-3 py-2 transition-opacity duration-500 ${
             imageLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
@@ -64,12 +64,12 @@ export default function StationCard({
         </div>
 
         <div
-          className={`flex flex-col gap-y-1 transition-opacity duration-500 ${
+          className={`flex flex-col gap-y-1 h-full transition-opacity duration-500 ${
             imageLoaded ? "opacity-100" : "opacity-0"
           }`}
         >
           <div className="w-full flex justify-between items-center">
-            <p className="truncate min-w-0 flex-1 mr-1">{name}</p>
+            <p className="pt-0.5 truncate min-w-0 flex-1 mr-1">{name}</p>
             <IoIosMore size={16} />
           </div>
           <div

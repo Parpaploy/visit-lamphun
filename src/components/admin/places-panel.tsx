@@ -11,6 +11,7 @@ import {
 } from "../../services/dashboard.services";
 import type { StationPlace } from "../../interfaces/homepage.interface";
 import { STATION_NAMES_ML } from "../../constant/homepage";
+import { formatTime12h } from "../../utils/ml";
 
 export default function PlacesPanel({
   selectedStation,
@@ -24,9 +25,6 @@ export default function PlacesPanel({
   const p = (key: string, lang: "inTh" | "inEn" | "inCn", req = false) =>
     `${t(key)} ${t(`form.${lang}`)}${req ? " *" : ""}`;
 
-  // const [selectedStation, setSelectedStation] = useState<string>(
-  //   STATION_IDS[0],
-  // );
   const { places, loading, refetch } = useStationPlaces(selectedStation);
 
   const [saving, setSaving] = useState<boolean>(false);
@@ -71,6 +69,9 @@ export default function PlacesPanel({
         img: imgUrl,
         link: form.link.trim(),
         tag: form.tag || undefined,
+        openTime: form.openTime.trim() || undefined,
+        closeTime: form.closeTime.trim() || undefined,
+        phone: form.phone.trim() || undefined,
       });
       setForm(EMPTY_FORM);
       setImageFile(null);
@@ -105,6 +106,9 @@ export default function PlacesPanel({
       link: place.link,
       tag: place.tag ?? "",
       img: place.img,
+      openTime: place.openTime ?? "",
+      closeTime: place.closeTime ?? "",
+      phone: place.phone ?? "",
       newFile: null,
       previewUrl: null,
       saving: false,
@@ -145,6 +149,9 @@ export default function PlacesPanel({
         img: imgUrl,
         link: editing.link.trim(),
         tag: editing.tag || undefined,
+        openTime: editing.openTime.trim() || undefined,
+        closeTime: editing.closeTime.trim() || undefined,
+        phone: editing.phone.trim() || undefined,
       });
       setEditing(null);
       setUploadProgress(null);
@@ -159,26 +166,6 @@ export default function PlacesPanel({
 
   return (
     <div className="flex flex-col gap-y-4">
-      {/* <div>
-        <label className="block text-[13px] text-[#8B724E] font-medium mb-1">
-          {t("dashboard.selectStation")}
-        </label>
-        <select
-          value={selectedStation}
-          onChange={(e) => {
-            setSelectedStation(e.target.value);
-            setEditing(null);
-          }}
-          className="w-full border border-[#C6C6C6] bg-white rounded-xl px-4 py-2.5 text-[14px] text-[#543A14] outline-none"
-        >
-          {STATION_IDS.map((id) => (
-            <option key={id} value={id}>
-              {stationName(id)}
-            </option>
-          ))}
-        </select>
-      </div> */}
-
       <div className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-4">
         <h2 className="text-[14px] font-semibold text-[#543A14] mb-3">
           {t("dashboard.addNew")}
@@ -294,6 +281,34 @@ export default function PlacesPanel({
               />
             </div>
           </div>
+
+          <div className="flex gap-x-2">
+            <input
+              type="time"
+              placeholder={t("form.openTime")}
+              value={form.openTime}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, openTime: e.target.value }))
+              }
+              className={`${inputCls} flex-1`}
+            />
+            <input
+              type="time"
+              placeholder={t("form.closeTime")}
+              value={form.closeTime}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, closeTime: e.target.value }))
+              }
+              className={`${inputCls} flex-1`}
+            />
+          </div>
+
+          <input
+            placeholder={t("form.phone")}
+            value={form.phone}
+            onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+            className={inputCls}
+          />
 
           {uploadProgress !== null && !editing && (
             <div className="w-full bg-[#F5F5F5] rounded-full h-2">
@@ -429,6 +444,38 @@ export default function PlacesPanel({
                     </div>
                   </div>
 
+                  <div className="flex gap-x-2">
+                    <input
+                      type="time"
+                      placeholder={t("form.openTime")}
+                      value={editing.openTime}
+                      onChange={(e) =>
+                        setEditing(
+                          (s) => s && { ...s, openTime: e.target.value },
+                        )
+                      }
+                      className={`${inputCls} flex-1`}
+                    />
+                    <input
+                      type="time"
+                      placeholder={t("form.closeTime")}
+                      value={editing.closeTime}
+                      onChange={(e) =>
+                        setEditing(
+                          (s) => s && { ...s, closeTime: e.target.value },
+                        )
+                      }
+                      className={`${inputCls} flex-1`}
+                    />
+                  </div>
+                  <input
+                    placeholder={t("form.phone")}
+                    value={editing.phone}
+                    onChange={(e) =>
+                      setEditing((s) => s && { ...s, phone: e.target.value })
+                    }
+                    className={inputCls}
+                  />
                   {uploadProgress !== null && editing && (
                     <div className="w-full bg-[#F5F5F5] rounded-full h-2">
                       <div
@@ -489,6 +536,18 @@ export default function PlacesPanel({
                     <p className="text-[11px] text-[#8B724E] truncate">
                       {place.name.cn}
                     </p>
+
+                    {(place.openTime || place.closeTime) && (
+                      <p className="text-[11px] text-[#8B724E]">
+                        {formatTime12h(place.openTime)} –{" "}
+                        {formatTime12h(place.closeTime)}
+                      </p>
+                    )}
+                    {place.phone && (
+                      <p className="text-[11px] text-[#8B724E]">
+                        {place.phone}
+                      </p>
+                    )}
                   </div>
                   <div className="flex flex-col gap-y-1 shrink-0">
                     <button

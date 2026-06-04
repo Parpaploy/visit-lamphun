@@ -124,6 +124,7 @@ export default function TramPanel() {
             </select>
             <input
               placeholder={`${t("form.time")} *`}
+              type="time"
               value={form.time}
               onChange={(e) => setForm((f) => ({ ...f, time: e.target.value }))}
               className={inputCls}
@@ -202,6 +203,7 @@ export default function TramPanel() {
               <input
                 placeholder={t("form.time")}
                 value={editing.time}
+                type="time"
                 onChange={(e) =>
                   setEditing((s) => s && { ...s, time: e.target.value })
                 }

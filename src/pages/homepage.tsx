@@ -848,6 +848,7 @@ import { subscribeTransportStats } from "../services/stat.services";
 import NewHomepageSkeletonLoader from "../components/skeleton-load/new-homepage-skeleton-loader";
 import { useStationActivities } from "../hooks/useStationActivities";
 import { useStationToilets } from "../hooks/useStationToilets";
+import { formatTime12h, formatTime12hCn } from "../utils/ml";
 
 const getActiveBg = (lang: string) => {
   // if (station !== 0) {
@@ -1236,12 +1237,12 @@ export default function Homepage() {
               {!visible ? (
                 <NewHomepageSkeletonLoader />
               ) : (
-                <div className="h-[65%] flex flex-col items-center gap-4 transition-all duration-300 ease-in-out opacity-100 translate-y-0">
+                <div className="mb-3 h-[60%] flex flex-col items-center gap-4 transition-all duration-300 ease-in-out opacity-100 translate-y-0">
                   <div
                     className={`px-5 h-full flex flex-col ${selectedCard ? "justify-between" : "justify-start"} items-center text-center`}
                   >
                     <div className="flex flex-col justify-center items-center text-center">
-                      <h1 className="text-[#543A14] text-[16px] font-bold mb-5 text-center">
+                      <h1 className="text-[#543A14] text-[16px] font-bold mb-3 text-center">
                         {selectedCard?.name ??
                           data?.header[i18n.language as keyof MLString] ??
                           data?.header.th}
@@ -1250,7 +1251,33 @@ export default function Homepage() {
                         className="min-w-full w-full min-h-42 aspect-video object-cover rounded-xl"
                         src={selectedCard?.img ?? data?.img}
                       />
+
+                      <div className="text-start w-full px-5 mt-4 flex flex-col justify-center items-start gap-y-1">
+                        {selectedCard?.location && (
+                          <p className="text-[16px] text-[#543A14]">
+                            สถานที่ตั้ง:
+                            {selectedCard?.location}
+                          </p>
+                        )}
+
+                        {selectedCard &&
+                          (selectedCard.openTime || selectedCard.closeTime) && (
+                            <p className="text-[16px] text-[#543A14]">
+                              {i18n.language === "th"
+                                ? `เปิด ${selectedCard.openTime ?? "?"} – ${selectedCard.closeTime ?? "?"} น.`
+                                : i18n.language === "en"
+                                  ? `Open ${formatTime12h(selectedCard.openTime)} – ${formatTime12h(selectedCard.closeTime)}`
+                                  : `开放 ${formatTime12hCn(selectedCard.openTime)} – ${formatTime12hCn(selectedCard.closeTime)}`}
+                            </p>
+                          )}
+                        {selectedCard?.phone && (
+                          <p className="text-[16px] text-[#543A14]">
+                            {t("contact.phone")} {selectedCard.phone}
+                          </p>
+                        )}
+                      </div>
                     </div>
+
                     {selectedCard?.link ? (
                       <button
                         onClick={() =>
@@ -1268,7 +1295,7 @@ export default function Homepage() {
                     ) : (
                       <div
                         ref={descRef}
-                        className="text-[#543A14] text-[16px] font-normal mt-4"
+                        className="text-[#543A14] text-[16px] font-normal mt-1"
                       >
                         <p className={`${showFullDesc ? "" : "line-clamp-3"}`}>
                           {data?.desc[i18n.language as keyof MLString] ??
@@ -1351,7 +1378,17 @@ export default function Homepage() {
                 </div>
               )}
 
-              <div className="h-[35%] mt-auto flex justify-center items-end w-full overflow-x-auto overflow-y-hidden">
+              <div className="h-[40%] mt-auto flex flex-col justify-end items-start w-full overflow-x-auto overflow-y-hidden">
+                <h1 className="px-5 pt-3 -mb-1 text-[#543A14] font-bold text-[16px]">
+                  {mode === "store"
+                    ? t("homepage.recommendStore")
+                    : mode === "activity"
+                      ? t("homepage.recommendActivity")
+                      : mode === "toilet"
+                        ? t("homepage.recommendToilet")
+                        : ""}
+                </h1>
+
                 {mode === "store" && (
                   <div className="px-5 flex justify-start items-center gap-x-3 w-full overflow-x-auto pt-2 pb-4">
                     {placesLoading && (
@@ -1384,6 +1421,9 @@ export default function Homepage() {
                                 ] ?? place.name.th,
                               img: place.img,
                               link: place.link,
+                              openTime: place.openTime,
+                              closeTime: place.closeTime,
+                              phone: place.phone,
                             })
                           }
                           setShowFullDesc={setShowFullDesc}
@@ -1422,6 +1462,9 @@ export default function Homepage() {
                                 ] ?? act.name.th,
                               img: act.img,
                               link: act.link,
+                              openTime: act.openTime,
+                              closeTime: act.closeTime,
+                              phone: act.phone,
                             })
                           }
                           setShowFullDesc={setShowFullDesc}
@@ -1461,6 +1504,10 @@ export default function Homepage() {
                                 ] ?? toilet.name.th,
                               img: toilet.img,
                               link: toilet.link,
+                              openTime: toilet.openTime,
+                              closeTime: toilet.closeTime,
+                              phone: toilet.phone,
+                              location: toilet.location,
                             })
                           }
                           setShowFullDesc={setShowFullDesc}

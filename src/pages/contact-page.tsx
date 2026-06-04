@@ -6,6 +6,7 @@ import EmergencyCard from "../components/contact-page/emergency-card";
 import ContactLoader from "../components/skeleton-load/contact-loader";
 import { useEmergencyItems } from "../hooks/useEmergencyItems";
 import LazyImage from "../components/skeleton-load/image-loader";
+import { formatTime12h, formatTime12hCn } from "../utils/ml";
 
 export default function ContactPage() {
   const { t, i18n } = useTranslation();
@@ -64,8 +65,18 @@ export default function ContactPage() {
                     ...(item.address[lang]
                       ? [{ type: "address" as const, text: item.address[lang] }]
                       : []),
-                    ...(item.hours[lang]
-                      ? [{ type: "hours" as const, text: item.hours[lang] }]
+                    ...(item.openTime || item.closeTime
+                      ? [
+                          {
+                            type: "hours" as const,
+                            text:
+                              lang === "th"
+                                ? `${item.openTime ?? "?"} – ${item.closeTime ?? "?"} น.`
+                                : lang === "en"
+                                  ? `${formatTime12h(item.openTime)} – ${formatTime12h(item.closeTime)}`
+                                  : `${formatTime12hCn(item.openTime)} – ${formatTime12hCn(item.closeTime)}`,
+                          },
+                        ]
                       : []),
                     ...item.phones.map((ph) => ({
                       type: "phone" as const,

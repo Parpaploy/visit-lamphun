@@ -60,7 +60,14 @@ export const deletePlace = async (
 
 export const addActivity = async (
   stationId: string,
-  activity: { name: StationPlaceName; img: string; link: string },
+  activity: {
+    name: StationPlaceName;
+    img: string;
+    link: string;
+    openTime?: string;
+    closeTime?: string;
+    phone?: string;
+  },
 ): Promise<void> => {
   await addDoc(collection(db, "stations", stationId, "activities"), {
     ...activity,
@@ -78,7 +85,14 @@ export const deleteActivity = async (
 export const updateActivity = async (
   stationId: string,
   activityId: string,
-  data: { name: StationPlaceName; img: string; link: string },
+  data: {
+    name: StationPlaceName;
+    img: string;
+    link: string;
+    openTime?: string;
+    closeTime?: string;
+    phone?: string;
+  },
 ): Promise<void> => {
   await updateDoc(
     doc(db, "stations", stationId, "activities", activityId),
@@ -88,7 +102,13 @@ export const updateActivity = async (
 
 export const addToilet = async (
   stationId: string,
-  toilet: { name: StationPlaceName; img: string; link: string },
+  toilet: {
+    name: StationPlaceName;
+    img: string;
+    link: string;
+    location?: string;
+    phone?: string;
+  },
 ): Promise<void> => {
   await addDoc(collection(db, "stations", stationId, "toilets"), {
     ...toilet,
@@ -106,7 +126,13 @@ export const deleteToilet = async (
 export const updateToilet = async (
   stationId: string,
   toiletId: string,
-  data: { name: StationPlaceName; img: string; link: string },
+  data: {
+    name: StationPlaceName;
+    img: string;
+    link: string;
+    location?: string;
+    phone?: string;
+  },
 ): Promise<void> => {
   await updateDoc(doc(db, "stations", stationId, "toilets", toiletId), data);
 };

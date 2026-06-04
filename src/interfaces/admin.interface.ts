@@ -16,6 +16,9 @@ export type PlaceEditState = {
   nameCn: string;
   link: string;
   tag: string;
+  openTime: string;
+  closeTime: string;
+  phone: string;
   img: string;
   newFile: File | null;
   previewUrl: string | null;
@@ -32,6 +35,10 @@ export type EditState = {
   newFile: File | null;
   previewUrl: string | null;
   saving: boolean;
+  openTime: string;
+  closeTime: string;
+  phone: string;
+  location: string;
 };
 
 export type Tab =
@@ -40,7 +47,11 @@ export type Tab =
   // | "toilets"
   "station" | "recommend" | "kome" | "travel" | "contact" | "heatmap";
 
-export type ContactEditState = EmergencyItem & { saving: boolean };
+export interface ContactEditState extends EmergencyItem {
+  saving: boolean;
+  openTime: string;
+  closeTime: string;
+}
 
 export type KomeEditState = KomeItem & { saving: boolean };
 

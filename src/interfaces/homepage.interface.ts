@@ -43,6 +43,10 @@ export type StationPlace = {
   img: string;
   link: string;
   tag?: PlaceTag;
+  openTime?: string;
+  closeTime?: string;
+  phone?: string;
+  location?: string;
 };
 
 export type PlaceData = {
@@ -50,10 +54,17 @@ export type PlaceData = {
   img: string;
   link: string;
   tag?: string;
+  openTime?: string;
+  closeTime?: string;
+  phone?: string;
 };
 
 export type SelectedCard = {
   name: string;
   img: string;
   link: string;
+  openTime?: string;
+  closeTime?: string;
+  phone?: string;
+  location?: string;
 } | null;

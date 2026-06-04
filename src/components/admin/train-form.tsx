@@ -97,12 +97,14 @@ export default function TrainForm({
 
       <input
         placeholder={`${t("form.originTime")} *`}
+        type="time"
         value={v.originTime}
         onChange={setStr("originTime")}
         className={inputCls}
       />
       <input
         placeholder={`${t("form.destinationTime")} *`}
+        type="time"
         value={v.destinationTime}
         onChange={setStr("destinationTime")}
         className={inputCls}

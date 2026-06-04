@@ -11,6 +11,7 @@ import {
 } from "../../services/dashboard.services";
 import type { StationPlace } from "../../interfaces/homepage.interface";
 import { STATION_NAMES_ML } from "../../constant/homepage";
+import { formatTime12h } from "../../utils/ml";
 
 export default function ActivitiesPanel({
   selectedStation,
@@ -71,6 +72,9 @@ export default function ActivitiesPanel({
         },
         img: imgUrl,
         link: form.link.trim(),
+        openTime: form.openTime.trim() || undefined,
+        closeTime: form.closeTime.trim() || undefined,
+        phone: form.phone.trim() || undefined,
       });
       setForm(EMPTY_FORM);
       setImageFile(null);
@@ -96,14 +100,18 @@ export default function ActivitiesPanel({
     }
   };
 
-  const startEdit = (activity: StationPlace) => {
+  const startEdit = (toilet: StationPlace) => {
     setEditing({
-      id: activity.id,
-      nameTh: activity.name.th,
-      nameEn: activity.name.en,
-      nameCn: activity.name.cn,
-      link: activity.link,
-      img: activity.img,
+      id: toilet.id,
+      nameTh: toilet.name.th,
+      nameEn: toilet.name.en,
+      nameCn: toilet.name.cn,
+      link: toilet.link,
+      img: toilet.img,
+      openTime: "",
+      closeTime: "",
+      phone: toilet.phone ?? "",
+      location: toilet.location ?? "",
       newFile: null,
       previewUrl: null,
       saving: false,
@@ -143,6 +151,9 @@ export default function ActivitiesPanel({
         },
         img: imgUrl,
         link: editing.link.trim(),
+        openTime: editing.openTime.trim() || undefined,
+        closeTime: editing.closeTime.trim() || undefined,
+        phone: editing.phone.trim() || undefined,
       });
       setEditing(null);
       setUploadProgress(null);
@@ -279,6 +290,33 @@ export default function ActivitiesPanel({
             </div>
           </div>
 
+          <div className="flex gap-x-2">
+            <input
+              type="time"
+              placeholder={t("form.openTime")}
+              value={form.openTime}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, openTime: e.target.value }))
+              }
+              className={`${inputCls} flex-1`}
+            />
+            <input
+              type="time"
+              placeholder={t("form.closeTime")}
+              value={form.closeTime}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, closeTime: e.target.value }))
+              }
+              className={`${inputCls} flex-1`}
+            />
+          </div>
+          <input
+            placeholder={t("form.phone")}
+            value={form.phone}
+            onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+            className={inputCls}
+          />
+
           {uploadProgress !== null && !editing && (
             <div className="w-full bg-[#F5F5F5] rounded-full h-2">
               <div
@@ -399,6 +437,39 @@ export default function ActivitiesPanel({
                     </div>
                   </div>
 
+                  <div className="flex gap-x-2">
+                    <input
+                      type="time"
+                      placeholder={t("form.openTime")}
+                      value={editing.openTime}
+                      onChange={(e) =>
+                        setEditing(
+                          (s) => s && { ...s, openTime: e.target.value },
+                        )
+                      }
+                      className={`${inputCls} flex-1`}
+                    />
+                    <input
+                      type="time"
+                      placeholder={t("form.closeTime")}
+                      value={editing.closeTime}
+                      onChange={(e) =>
+                        setEditing(
+                          (s) => s && { ...s, closeTime: e.target.value },
+                        )
+                      }
+                      className={`${inputCls} flex-1`}
+                    />
+                  </div>
+                  <input
+                    placeholder={t("form.phone")}
+                    value={editing.phone}
+                    onChange={(e) =>
+                      setEditing((s) => s && { ...s, phone: e.target.value })
+                    }
+                    className={inputCls}
+                  />
+
                   {uploadProgress !== null && editing && (
                     <div className="w-full bg-[#F5F5F5] rounded-full h-2">
                       <div
@@ -451,7 +522,20 @@ export default function ActivitiesPanel({
                     <p className="text-[11px] text-[#8B724E] truncate">
                       {activity.name.cn}
                     </p>
+
+                    {(activity.openTime || activity.closeTime) && (
+                      <p className="text-[11px] text-[#8B724E]">
+                        {formatTime12h(activity.openTime)} –{" "}
+                        {formatTime12h(activity.closeTime)}
+                      </p>
+                    )}
+                    {activity.phone && (
+                      <p className="text-[11px] text-[#8B724E]">
+                        {activity.phone}
+                      </p>
+                    )}
                   </div>
+
                   <div className="flex flex-col gap-y-1 shrink-0">
                     <button
                       onClick={() => startEdit(activity)}
