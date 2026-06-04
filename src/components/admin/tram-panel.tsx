@@ -108,20 +108,22 @@ export default function TramPanel() {
             onChange={setPlace("cn")}
             className={inputCls}
           />
-          <div className="flex justify-center items-center gap-2">
-            <select
-              value={form.round}
-              onChange={(e) =>
-                setForm((f) => ({
-                  ...f,
-                  round: e.target.value as "morning" | "afternoon",
-                }))
-              }
-              className={`${inputCls} bg-white`}
-            >
-              <option value="morning">{t("form.morning")}</option>
-              <option value="afternoon">{t("form.afternoon")}</option>
-            </select>
+
+          <select
+            value={form.round}
+            onChange={(e) =>
+              setForm((f) => ({
+                ...f,
+                round: e.target.value as "morning" | "afternoon",
+              }))
+            }
+            className={`${inputCls} bg-white`}
+          >
+            <option value="morning">{t("form.morning")}</option>
+            <option value="afternoon">{t("form.afternoon")}</option>
+          </select>
+          <div className="w-full flex flex-col justify-start items-start">
+            <p className="text-[13px] text-[#543A14]">{t("form.originTime")}</p>
             <input
               placeholder={`${t("form.time")} *`}
               type="time"
@@ -130,6 +132,7 @@ export default function TramPanel() {
               className={inputCls}
             />
           </div>
+
           <input
             placeholder={t("form.price")}
             type="number"
@@ -200,15 +203,20 @@ export default function TramPanel() {
                 <option value="morning">{t("form.morning")}</option>
                 <option value="afternoon">{t("form.afternoon")}</option>
               </select>
-              <input
-                placeholder={t("form.time")}
-                value={editing.time}
-                type="time"
-                onChange={(e) =>
-                  setEditing((s) => s && { ...s, time: e.target.value })
-                }
-                className={inputCls}
-              />
+              <div className="w-full flex flex-col justify-start items-start">
+                <p className="text-[13px] text-[#543A14]">
+                  {t("form.originTime")}
+                </p>
+                <input
+                  placeholder={t("form.time")}
+                  value={editing.time}
+                  type="time"
+                  onChange={(e) =>
+                    setEditing((s) => s && { ...s, time: e.target.value })
+                  }
+                  className={inputCls}
+                />
+              </div>
               <input
                 type="number"
                 value={editing.price === 0 ? "" : editing.price}

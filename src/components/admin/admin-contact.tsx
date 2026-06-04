@@ -208,24 +208,32 @@ export default function AdminContact() {
           />
 
           <div className="flex gap-x-2">
-            <input
-              type="time"
-              placeholder={t("form.openTime")}
-              value={form.openTime}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, openTime: e.target.value }))
-              }
-              className={`${inputCls} flex-1`}
-            />
-            <input
-              type="time"
-              placeholder={t("form.closeTime")}
-              value={form.closeTime}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, closeTime: e.target.value }))
-              }
-              className={`${inputCls} flex-1`}
-            />
+            <div className="w-full flex flex-col justify-start items-start">
+              <p className="text-[13px] text-[#543A14]">{t("form.openTime")}</p>
+              <input
+                type="time"
+                placeholder={t("form.openTime")}
+                value={form.openTime}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, openTime: e.target.value }))
+                }
+                className={`${inputCls} flex-1`}
+              />
+            </div>
+            <div className="w-full flex flex-col justify-start items-start">
+              <p className="text-[13px] text-[#543A14]">
+                {t("form.closeTime")}
+              </p>
+              <input
+                type="time"
+                placeholder={t("form.closeTime")}
+                value={form.closeTime}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, closeTime: e.target.value }))
+                }
+                className={`${inputCls} flex-1`}
+              />
+            </div>
           </div>
 
           <p className="text-[12px] text-[#8B724E] font-medium">
@@ -353,24 +361,36 @@ export default function AdminContact() {
               />
 
               <div className="flex gap-x-2">
-                <input
-                  type="time"
-                  placeholder={t("form.openTime")}
-                  value={editing.openTime}
-                  onChange={(e) =>
-                    setEditing((s) => s && { ...s, openTime: e.target.value })
-                  }
-                  className={`${inputCls} flex-1`}
-                />
-                <input
-                  type="time"
-                  placeholder={t("form.closeTime")}
-                  value={editing.closeTime}
-                  onChange={(e) =>
-                    setEditing((s) => s && { ...s, closeTime: e.target.value })
-                  }
-                  className={`${inputCls} flex-1`}
-                />
+                <div className="w-full flex flex-col justify-start items-start">
+                  <p className="text-[13px] text-[#543A14]">
+                    {t("form.openTime")}
+                  </p>
+                  <input
+                    type="time"
+                    placeholder={t("form.openTime")}
+                    value={editing.openTime}
+                    onChange={(e) =>
+                      setEditing((s) => s && { ...s, openTime: e.target.value })
+                    }
+                    className={`${inputCls} flex-1`}
+                  />
+                </div>
+                <div className="w-full flex flex-col justify-start items-start">
+                  <p className="text-[13px] text-[#543A14]">
+                    {t("form.closeTime")}
+                  </p>
+                  <input
+                    type="time"
+                    placeholder={t("form.closeTime")}
+                    value={editing.closeTime}
+                    onChange={(e) =>
+                      setEditing(
+                        (s) => s && { ...s, closeTime: e.target.value },
+                      )
+                    }
+                    className={`${inputCls} flex-1`}
+                  />
+                </div>
               </div>
 
               <p className="text-[12px] text-[#8B724E] font-medium">

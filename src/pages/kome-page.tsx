@@ -5,7 +5,7 @@ import { useKomeItems } from "../hooks/useKomeItems";
 
 export default function KomePage() {
   const { items, loading } = useKomeItems();
-  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState<boolean>(false);
 
   return (
     <main className="w-full h-full flex flex-col overflow-hidden">

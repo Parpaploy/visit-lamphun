@@ -283,24 +283,32 @@ export default function PlacesPanel({
           </div>
 
           <div className="flex gap-x-2">
-            <input
-              type="time"
-              placeholder={t("form.openTime")}
-              value={form.openTime}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, openTime: e.target.value }))
-              }
-              className={`${inputCls} flex-1`}
-            />
-            <input
-              type="time"
-              placeholder={t("form.closeTime")}
-              value={form.closeTime}
-              onChange={(e) =>
-                setForm((f) => ({ ...f, closeTime: e.target.value }))
-              }
-              className={`${inputCls} flex-1`}
-            />
+            <div className="w-full flex flex-col justify-start items-start">
+              <p className="text-[13px] text-[#543A14]">{t("form.openTime")}</p>
+              <input
+                type="time"
+                placeholder={t("form.openTime")}
+                value={form.openTime}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, openTime: e.target.value }))
+                }
+                className={`${inputCls} flex-1`}
+              />
+            </div>
+            <div className="w-full flex flex-col justify-start items-start">
+              <p className="text-[13px] text-[#543A14]">
+                {t("form.closeTime")}
+              </p>
+              <input
+                type="time"
+                placeholder={t("form.closeTime")}
+                value={form.closeTime}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, closeTime: e.target.value }))
+                }
+                className={`${inputCls} flex-1`}
+              />
+            </div>
           </div>
 
           <input
@@ -445,28 +453,38 @@ export default function PlacesPanel({
                   </div>
 
                   <div className="flex gap-x-2">
-                    <input
-                      type="time"
-                      placeholder={t("form.openTime")}
-                      value={editing.openTime}
-                      onChange={(e) =>
-                        setEditing(
-                          (s) => s && { ...s, openTime: e.target.value },
-                        )
-                      }
-                      className={`${inputCls} flex-1`}
-                    />
-                    <input
-                      type="time"
-                      placeholder={t("form.closeTime")}
-                      value={editing.closeTime}
-                      onChange={(e) =>
-                        setEditing(
-                          (s) => s && { ...s, closeTime: e.target.value },
-                        )
-                      }
-                      className={`${inputCls} flex-1`}
-                    />
+                    <div className="w-full flex flex-col justify-start items-start">
+                      <p className="text-[13px] text-[#543A14]">
+                        {t("form.openTime")}
+                      </p>
+                      <input
+                        type="time"
+                        placeholder={t("form.openTime")}
+                        value={editing.openTime}
+                        onChange={(e) =>
+                          setEditing(
+                            (s) => s && { ...s, openTime: e.target.value },
+                          )
+                        }
+                        className={`${inputCls} flex-1`}
+                      />
+                    </div>
+                    <div className="w-full flex flex-col justify-start items-start">
+                      <p className="text-[13px] text-[#543A14]">
+                        {t("form.closeTime")}
+                      </p>
+                      <input
+                        type="time"
+                        placeholder={t("form.closeTime")}
+                        value={editing.closeTime}
+                        onChange={(e) =>
+                          setEditing(
+                            (s) => s && { ...s, closeTime: e.target.value },
+                          )
+                        }
+                        className={`${inputCls} flex-1`}
+                      />
+                    </div>
                   </div>
                   <input
                     placeholder={t("form.phone")}
@@ -522,7 +540,9 @@ export default function PlacesPanel({
                     <div className="flex justify-start items-center gap-1 text-[13px] font-semibold text-[#543A14] truncate">
                       {place.name.th}
                       {place.tag && (
-                        <span className="inline-block text-[11px] font-medium bg-[#BF4B17] text-white rounded-full px-2">
+                        <span
+                          className={`inline-block text-[11px] font-medium bg-[#BF4B17] text-white rounded-full px-2 ${i18n.language === "th" ? "pt-0.5" : i18n.language === "en" ? "pt-px" : ""} mb-1`}
+                        >
                           {t(
                             PLACE_TAGS.find((tg) => tg.value === place.tag)
                               ?.label ?? place.tag,

@@ -95,20 +95,30 @@ export default function TrainForm({
         </div>
       </div>
 
-      <input
-        placeholder={`${t("form.originTime")} *`}
-        type="time"
-        value={v.originTime}
-        onChange={setStr("originTime")}
-        className={inputCls}
-      />
-      <input
-        placeholder={`${t("form.destinationTime")} *`}
-        type="time"
-        value={v.destinationTime}
-        onChange={setStr("destinationTime")}
-        className={inputCls}
-      />
+      <div className="w-full flex justify-center items-center gap-2">
+        <div className="w-full flex flex-col justify-start items-start">
+          <p className="text-[13px] text-[#543A14]">{t("form.originTime")}</p>
+          <input
+            placeholder={`${t("form.originTime")} *`}
+            type="time"
+            value={v.originTime}
+            onChange={setStr("originTime")}
+            className={inputCls}
+          />
+        </div>
+        <div className="w-full flex flex-col justify-start items-start">
+          <p className="text-[13px] text-[#543A14]">
+            {t("form.destinationTime")}
+          </p>
+          <input
+            placeholder={`${t("form.destinationTime")} *`}
+            type="time"
+            value={v.destinationTime}
+            onChange={setStr("destinationTime")}
+            className={inputCls}
+          />
+        </div>
+      </div>
 
       <div className="w-full flex justify-center items-center gap-2">
         <div className="w-full flex flex-col justify-center items-center gap-2">

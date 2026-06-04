@@ -122,7 +122,10 @@
     "songthaew": "双条车",
     "lineLink": "LINE link（加好友）",
     "extension": "分机号",
-    "selectTag": "选择地点类别"
+    "selectTag": "选择地点类别",
+    "openTime": "开放时间",
+    "closeTime": "关闭时间",
+    "location": "位置"
   },
 
   "dashboard": {

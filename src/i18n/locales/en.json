@@ -122,7 +122,10 @@
     "songthaew": "Songthaew",
     "lineLink": "LINE link (Add Friend)",
     "extension": "Extension",
-    "selectTag": "Select place category"
+    "selectTag": "Select place category",
+    "openTime": "Opening Time",
+    "closeTime": "Closing Time",
+    "location": "Location"
   },
 
   "dashboard": {

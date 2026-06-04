@@ -122,7 +122,10 @@
     "songthaew": "สองแถว",
     "lineLink": "LINE link (เพิ่มเพื่อน)",
     "extension": "เบอร์ต่อ",
-    "selectTag": "เลือกหมวดหมู่ของสถานที่"
+    "selectTag": "เลือกหมวดหมู่ของสถานที่",
+    "openTime": "เวลาเปิดทำการ",
+    "closeTime": "เวลาปิดทำการ",
+    "location": "สถานที่ตั้ง"
   },
 
   "dashboard": {
