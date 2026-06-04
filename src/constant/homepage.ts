@@ -1,4 +1,4 @@
-import type { Location } from "../interfaces/homepage.interface";
+import type { Location, PlaceTag } from "../interfaces/homepage.interface";
 
 export const isSaturday = new Date().getDay() === 6;
 
@@ -1400,3 +1400,5 @@ export const moreKeyMap = {
   activity: "homepage.goToActivity",
   toilet: "homepage.goToToilet",
 };
+
+export const ALL_TAGS: PlaceTag[] = ["cafe", "restaurant", "market", "other"];

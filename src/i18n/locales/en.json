@@ -24,7 +24,7 @@
     "loading": "Loading...",
     "noPlaces": "No places available",
     "noActivities": "No activities available",
-    "noToilets": "No toilets available",
+    "noToilets": "No Restrooms available",
     "storeNearMe": "Stores Near Me",
     "activityNearMe": "Activities Near Me",
     "toiletNearMe": "Restrooms Near Me",
@@ -36,7 +36,7 @@
     "goToToilet": " Tap to Navigate",
     "recommendStore": "Nearby Recommended Stores",
     "recommendActivity": "Nearby Recommended Activities",
-    "recommendToilet": "Nearby Toilets"
+    "recommendToilet": "Nearby Restrooms"
   },
 
   "contact": {
@@ -68,7 +68,7 @@
     "history": "History",
     "places": "Shops",
     "activities": "Activities",
-    "toilets": "Toilets"
+    "toilets": "Restrooms"
   },
 
   "travel": {
@@ -103,7 +103,7 @@
     "weekend": "Weekends",
     "place": "Place",
     "activity": "Acitvity",
-    "toilet": "Toilet",
+    "toilet": "Restroom",
     "descFull": "Description",
     "desc2": "Additional Info",
     "groupName": "Group Name",
@@ -133,7 +133,7 @@
     "tabs": {
       "places": "Places",
       "activities": "Activities",
-      "toilets": "Toilets",
+      "toilets": "Restrooms",
       "station": "Stations",
       "popup": "Popup",
       "recommend": "Best of the best, outstanding, and famous",
@@ -169,12 +169,12 @@
     "image": "Image",
     "addPlace": "+ Add Place",
     "addActivity": "+ Add Activity",
-    "addToilet": "+ Add Toilet",
+    "addToilet": "+ Add Restroom",
     "addTravel": "Add Other Travel",
     "selectStation": "Select Station",
     "placesIn": "Places in",
     "activitiesIn": "Activities in",
-    "toiletsIn": "Toilets in",
+    "toiletsIn": "Restrooms in",
     "editPlace": "Edit Place",
     "uploading": "Uploading",
     "confirmDelete": "Delete this item?",
