@@ -1072,7 +1072,7 @@ export default function Homepage() {
         <div className="w-full min-h-[10svh] bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)]" />
       </div>
 
-      <div className="z-5 w-[90%] -mb-2 items-end flex justify-center gap-1 pt-3">
+      <div className="z-0 w-[90%] -mb-2 items-end flex justify-center gap-1 pt-3">
         <div
           onClick={() => {
             setMode("store");
@@ -1086,7 +1086,7 @@ export default function Homepage() {
               }
             }
           }}
-          className={`transition-all duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
+          className={`transition-all min-h-27 duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
             mode === "store"
               ? "shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
               : "py-2 bg-white/80 text-black font-normal"
@@ -1108,7 +1108,7 @@ export default function Homepage() {
               }
             }
           }}
-          className={`transition-all duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
+          className={`transition-all min-h-27 duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
             mode === "activity"
               ? "shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
               : "py-2 bg-white/80 text-black font-normal"
@@ -1130,7 +1130,7 @@ export default function Homepage() {
               }
             }
           }}
-          className={`transition-all duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
+          className={`transition-all min-h-27 duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
             mode === "toilet"
               ? "shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
               : "py-2 bg-white/80 text-black font-normal"
@@ -1143,13 +1143,15 @@ export default function Homepage() {
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className={`z-5 mt-1 overflow-y-auto rounded-t-[15px] relative w-full h-full flex flex-col items-center justify-start bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_22%,#FBFCF0_62%,#E6EFD8_100%)] transition-opacity duration-350 ease-in-out ${
+        className={`max-h-[86svh] transition-all absolute top-12.5 z-5 mt-1 overflow-y-auto rounded-t-[25px] w-full h-full flex flex-col items-center justify-start bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_22%,#FBFCF0_62%,#E6EFD8_100%)] duration-350 ease-in-out ${
           mode === null
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-100 translate-y-10 pointer-events-auto"
         }`}
       >
-        <div className="z-5 w-full relative pt-4 bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_36%,#FBFCF0_62%,#E6EFD8_100%)]">
+        <div
+          className={`z-5 w-full relative pt-4 transition-all duration-300 ${mode === null ? "bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_36%,#FBFCF0_62%,#E6EFD8_100%)]" : "bg-transparent"}`}
+        >
           {stationExpanded === 0 && (
             <>
               <div className="z-20 relative flex flex-col justify-center items-center text-[16px] font-medium">
@@ -1209,7 +1211,7 @@ export default function Homepage() {
       </div>
 
       <div
-        className={`z-5 max-h-[85.5svh] shadow-[0_0px_12.3px_0_rgba(50,33,21,0.15)] flex-col absolute bottom-0 rounded-t-[15px] w-[95%] h-full flex items-center justify-start overflow-hidden bg-white transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        className={`z-5 max-h-[85.5svh] shadow-[0_0px_12.3px_0_rgba(50,33,21,0.15)] flex-col absolute bottom-0 rounded-t-[25px] w-[95%] h-full flex items-center justify-start overflow-hidden bg-white transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           mode !== null ? "translate-y-0" : "translate-y-full"
         }`}
         style={{ pointerEvents: mode !== null ? "auto" : "none" }}
@@ -1237,7 +1239,7 @@ export default function Homepage() {
               {!visible ? (
                 <NewHomepageSkeletonLoader />
               ) : (
-                <div className="mb-3 h-[60%] flex flex-col items-center gap-4 transition-all duration-300 ease-in-out opacity-100 translate-y-0">
+                <div className="mb-3 h-[60%] flex flex-col items-center gap-4 transition-all duration-300 ease-in-out opacity-100">
                   <div
                     className={`px-5 h-full flex flex-col ${selectedCard ? "justify-between" : "justify-start"} items-center text-center`}
                   >
@@ -1351,9 +1353,11 @@ export default function Homepage() {
                                         container.scrollHeight -
                                         container.clientHeight;
 
+                                      const OFFSET = 20;
+
                                       const target = Math.max(
                                         0,
-                                        Math.min(offset, maxScroll),
+                                        Math.min(offset - OFFSET, maxScroll),
                                       );
 
                                       smoothScrollTo(container, target, 220);
@@ -1532,7 +1536,7 @@ export default function Homepage() {
         <IoIosArrowDown size={24} />
       </button>
 
-      <div className="min-h-[77svh] fixed bottom-0 left-0 w-full bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_36%,#FBFCF0_62%,#E6EFD8_100%)] z-0" />
+      {/* <div className="min-h-[77svh] max-w-107.5 mx-auto fixed bottom-0 w-full bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_36%,#FBFCF0_62%,#E6EFD8_100%)] z-1" /> */}
     </main>
   );
 }

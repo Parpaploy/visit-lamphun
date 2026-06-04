@@ -35,7 +35,9 @@ export default function RecommendedPage() {
           mode === "story" ? (
             Array.from({ length: 2 }).map((_, i) => <RecommendLoader key={i} />)
           ) : (
-            Array.from({ length: 3 }).map((_, i) => <RecommendLoader2 key={i} />)
+            Array.from({ length: 3 }).map((_, i) => (
+              <RecommendLoader2 key={i} />
+            ))
           )
         ) : items.length === 0 ? (
           <p className="text-center text-[13px] text-[#C6C6C6] mt-10">
