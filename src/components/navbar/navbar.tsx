@@ -299,6 +299,7 @@ import type {
 import NavbarFooterMenu from "./navbar-footer-menu";
 import { footerList, menuList, pageTitleMap } from "../../constant/navbar-menu";
 import { subscribeTransportStats } from "../../services/stat.services";
+import { useNavbarTitle } from "../../hooks/useNavbar";
 
 export default function Navbar() {
   const { i18n, t } = useTranslation();
@@ -364,7 +365,10 @@ export default function Navbar() {
     matched?.sf ??
     (location.pathname.includes("contact") ? "contact" : "homepage");
 
-  const pageTitle = pageTitleMap[lang]?.[sf] ?? pageTitleMap.th[sf];
+  // const pageTitle = pageTitleMap[lang]?.[sf] ?? pageTitleMap.th[sf];
+  const { overrideTitle } = useNavbarTitle();
+  const pageTitle =
+    overrideTitle ?? pageTitleMap[lang]?.[sf] ?? pageTitleMap.th[sf];
 
   return (
     <div className="w-full max-w-107.5 mx-auto fixed top-0 z-999">

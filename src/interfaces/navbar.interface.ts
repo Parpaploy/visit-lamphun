@@ -21,3 +21,8 @@ export type ITravelMode = "train" | "tram" | "other";
 export type IRecommendMode = "goods" | "places" | "story";
 
 export type IStationMode = "history" | "places" | "activities" | "toilets";
+
+export interface NavbarTitleContextType {
+  overrideTitle: string | null;
+  setOverrideTitle: (t: string | null) => void;
+}

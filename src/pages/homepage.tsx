@@ -1575,6 +1575,7 @@ import NewHomepageSkeletonLoader from "../components/skeleton-load/new-homepage-
 import { useStationActivities } from "../hooks/useStationActivities";
 import { useStationToilets } from "../hooks/useStationToilets";
 import { formatTime12h, formatTime12hCn } from "../utils/ml";
+import { useNavbarTitle } from "../hooks/useNavbar";
 
 const getActiveBg = (lang: string) => {
   // if (station !== 0) {
@@ -1589,6 +1590,8 @@ const getActiveBg = (lang: string) => {
 
 export default function Homepage() {
   const { i18n, t } = useTranslation();
+
+  const { setOverrideTitle } = useNavbarTitle();
 
   const loadedRef = useRef<string>("");
   const [loadedBg, setLoadedBg] = useState<string>("");
@@ -1753,8 +1756,9 @@ export default function Homepage() {
       setStationExpanded(Number(tramStationNumber) as stationNumber);
       setMode("store");
       setSelectedTag(null);
+      setOverrideTitle(t("homepage.storeNearMe"));
     });
-  }, [tramStationNumber]);
+  }, [tramStationNumber, t, setOverrideTitle]);
 
   useEffect(() => {
     fetchAllTrams().then((data) => {
@@ -1827,6 +1831,7 @@ export default function Homepage() {
             setMode("store");
             setSelectedCard(null);
             setSelectedTag(null);
+            setOverrideTitle(t("homepage.storeNearMe"));
             if (tramStationId && stationExpanded === 0) {
               const stationNum = Object.entries(STATION_ID_MAP).find(
                 ([, id]) => id === tramStationId,
@@ -1836,10 +1841,10 @@ export default function Homepage() {
               }
             }
           }}
-          className={`transition-all min-h-27 duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
+          className={`transition-all duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
             mode === "store"
-              ? "shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
-              : "py-2 bg-white/80 text-black font-normal"
+              ? "min-h-27 shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
+              : "min-h-25 py-2 bg-white/80 text-black font-normal"
           } w-full text-[16px] rounded-t-[15px] text-center px-1`}
         >
           {t("homepage.storeNearMe")}
@@ -1850,6 +1855,7 @@ export default function Homepage() {
             setMode("activity");
             setSelectedCard(null);
             setSelectedTag(null);
+            setOverrideTitle(t("homepage.activityNearMe"));
             if (tramStationId && stationExpanded === 0) {
               const stationNum = Object.entries(STATION_ID_MAP).find(
                 ([, id]) => id === tramStationId,
@@ -1859,10 +1865,10 @@ export default function Homepage() {
               }
             }
           }}
-          className={`transition-all min-h-27 duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
+          className={`transition-all duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
             mode === "activity"
-              ? "shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
-              : "py-2 bg-white/80 text-black font-normal"
+              ? "min-h-27 shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
+              : "min-h-25 py-2 bg-white/80 text-black font-normal"
           } w-full text-[16px] rounded-t-[15px] text-center px-1`}
         >
           {t("homepage.activityNearMe")}
@@ -1873,6 +1879,7 @@ export default function Homepage() {
             setMode("toilet");
             setSelectedCard(null);
             setSelectedTag(null);
+            setOverrideTitle(t("homepage.toiletNearMe"));
             if (tramStationId && stationExpanded === 0) {
               const stationNum = Object.entries(STATION_ID_MAP).find(
                 ([, id]) => id === tramStationId,
@@ -1882,10 +1889,10 @@ export default function Homepage() {
               }
             }
           }}
-          className={`transition-all min-h-27 duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
+          className={`transition-all duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
             mode === "toilet"
-              ? "shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
-              : "py-2 bg-white/80 text-black font-normal"
+              ? "min-h-27 shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
+              : "min-h-25 py-2 bg-white/80 text-black font-normal"
           } w-full text-[16px] rounded-t-[15px] text-center px-1`}
         >
           {t("homepage.toiletNearMe")}
@@ -1973,6 +1980,7 @@ export default function Homepage() {
             setMode(null);
             setStationExpanded(0);
             setSelectedCard(null);
+            setOverrideTitle(null);
             setShowFullDesc(false);
             setSelectedTag(null);
           }}
@@ -1987,7 +1995,7 @@ export default function Homepage() {
         >
           {stationExpanded !== 0 && (
             <div
-              className={`${showFullDesc ? "" : "h-full"} w-full flex flex-col`}
+              className={`${showFullDesc ? "" : "h-full"} w-full flex flex-col gap-2`}
             >
               {!visible ? (
                 <NewHomepageSkeletonLoader />
@@ -2011,7 +2019,7 @@ export default function Homepage() {
                         src={selectedCard?.img ?? data?.img}
                       />
 
-                      <div className="text-start w-full px-5 mt-4 flex flex-col justify-center items-start gap-y-1">
+                      <div className="text-start w-full px-5 mt-3 flex flex-col justify-center items-start gap-y-1">
                         {selectedCard?.location && (
                           <p className="text-[16px] text-[#543A14]">
                             สถานที่ตั้ง:
@@ -2140,7 +2148,7 @@ export default function Homepage() {
               )}
 
               <div className="h-[40%] mt-auto flex flex-col justify-end items-start w-full overflow-x-auto overflow-y-hidden">
-                <div className="w-full pl-5 pt-2 -mb-2 flex justify-between items-center">
+                <div className="w-full pl-5 pt-2 -mb-1 flex justify-between items-center">
                   <h1 className="text-[#543A14] font-bold text-[16px]">
                     {mode === "store"
                       ? t("homepage.recommendStore")
@@ -2169,7 +2177,7 @@ export default function Homepage() {
                           );
                         }}
                         style={{ width }}
-                        className="mx-5 mt-2 text-[12px] px-2 py-px mb-2 rounded-full border-2 border-[#543A14] bg-white text-[#543A14] outline-none"
+                        className="mx-5 text-[12px] px-2 py-px rounded-full border-2 border-[#543A14] bg-white text-[#543A14] outline-none"
                       >
                         <option value="">{t("heatmap.all")}</option>
                         {ALL_TAGS.map((tag) => (
@@ -2227,6 +2235,7 @@ export default function Homepage() {
                                 closeTime: place.closeTime,
                                 phone: place.phone,
                               });
+                              setOverrideTitle(t("homepage.storeNearMe"));
                               setIsCardTransitioning(false);
                             }, 150);
                           }}
@@ -2272,6 +2281,7 @@ export default function Homepage() {
                                 closeTime: act.closeTime,
                                 phone: act.phone,
                               });
+                              setOverrideTitle(t("homepage.activityNearMe"));
                               setIsCardTransitioning(false);
                             }, 150);
                           }}
@@ -2319,6 +2329,7 @@ export default function Homepage() {
                                 phone: toilet.phone,
                                 location: toilet.location,
                               });
+                              setOverrideTitle(t("homepage.toiletNearMe"));
                               setIsCardTransitioning(false);
                             }, 150);
                           }}

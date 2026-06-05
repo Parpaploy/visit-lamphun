@@ -3,7 +3,7 @@ import type { NavbarMenuRecord } from "../interfaces/navbar.interface";
 export const menuList: NavbarMenuRecord = {
   th: [
     {
-      title: "หน้าหลัก",
+      title: "แผนที่เส้นทางรถราง",
       path: "/app",
       img: "/icons/navbar/homepage.svg",
       sf: "homepage",
@@ -42,7 +42,7 @@ export const menuList: NavbarMenuRecord = {
   ],
   en: [
     {
-      title: "Homepage",
+      title: "Tram Route Map",
       path: "/app/homepage",
       img: "/icons/navbar/homepage.svg",
       sf: "homepage",
@@ -81,7 +81,7 @@ export const menuList: NavbarMenuRecord = {
   ],
   cn: [
     {
-      title: "首页",
+      title: "电车路线图",
       path: "/app/homepage",
       img: "/icons/navbar/homepage.svg",
       sf: "homepage",
@@ -224,7 +224,7 @@ export const pageTitleMap: Record<
   Record<string, string>
 > = {
   th: {
-    homepage: "หน้าหลัก",
+    homepage: "แผนที่เส้นทางรถราง",
     goods: "ของดี ที่เด่น เรื่องดัง",
     travel: "การเดินทาง",
     kome: "กลุ่มผลิตโคม",
@@ -234,7 +234,7 @@ export const pageTitleMap: Record<
     roadmap: "ติดตามรถราง",
   },
   en: {
-    homepage: "Homepage",
+    homepage: "Tram Route Map",
     goods: "Best of Lamphun",
     travel: "Travel",
     kome: "Lantern Groups",
@@ -244,7 +244,7 @@ export const pageTitleMap: Record<
     roadmap: "ติดตามรถราง",
   },
   cn: {
-    homepage: "首页",
+    homepage: "电车路线图",
     goods: "精品景点",
     travel: "旅行",
     kome: "灯笼制作",
