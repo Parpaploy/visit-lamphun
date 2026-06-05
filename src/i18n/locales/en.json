@@ -55,7 +55,9 @@
 
   "navbar": {
     "stat": "There are",
-    "unit": "users"
+    "unit": "users",
+    "changeLanguage": "Change Language",
+    "menu": "Menu"
   },
 
   "recommend": {

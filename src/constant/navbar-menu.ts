@@ -5,21 +5,21 @@ export const menuList: NavbarMenuRecord = {
     {
       title: "แผนที่เส้นทางรถราง",
       path: "/app",
-      img: "/icons/navbar/homepage.svg",
+      img: "/icons/navbar/map-icon.svg",
       sf: "homepage",
+    },
+    {
+      title: "การเดินทาง",
+      path: "/app/travel",
+      img: "/icons/navbar/travel.svg",
+      // desc: "เดินทางจากเชียงใหม่ - ลำพูน",
+      sf: "travel",
     },
     {
       title: "ของดี ที่เด่น เรื่องดัง",
       path: "/app/recommend",
       img: "/icons/navbar/recommend.svg",
       sf: "goods",
-    },
-    {
-      title: "การเดินทาง",
-      path: "/app/travel",
-      img: "/icons/navbar/travel.svg",
-      desc: "เดินทางจากเชียงใหม่ - ลำพูน",
-      sf: "travel",
     },
     {
       title: "กลุ่มผลิตโคม",
@@ -43,8 +43,8 @@ export const menuList: NavbarMenuRecord = {
   en: [
     {
       title: "Tram Route Map",
-      path: "/app/homepage",
-      img: "/icons/navbar/homepage.svg",
+      path: "/app",
+      img: "/icons/navbar/map-icon.svg",
       sf: "homepage",
     },
     {
@@ -57,7 +57,7 @@ export const menuList: NavbarMenuRecord = {
       title: "Lamphun Travel",
       path: "/app/travel",
       img: "/icons/navbar/travel.svg",
-      desc: "Travel from Chiang Mai to Lamphun",
+      // desc: "Travel from Chiang Mai to Lamphun",
       sf: "travel",
     },
     {
@@ -82,8 +82,8 @@ export const menuList: NavbarMenuRecord = {
   cn: [
     {
       title: "电车路线图",
-      path: "/app/homepage",
-      img: "/icons/navbar/homepage.svg",
+      path: "/app",
+      img: "/icons/navbar/map-icon.svg",
       sf: "homepage",
     },
     {
@@ -96,7 +96,7 @@ export const menuList: NavbarMenuRecord = {
       title: "旅行",
       path: "/app/travel",
       img: "/icons/navbar/travel.svg",
-      desc: "线路",
+      // desc: "线路",
       sf: "travel",
     },
     {
@@ -130,12 +130,12 @@ export const footerList: NavbarMenuRecord = {
     {
       path: "/app/contact",
       img: "/icons/navbar/phone.svg",
-      title: "ติดต่อเรา / ข้อเสนอแนะ",
+      title: "ช่องทางติดต่อฉุกเฉิน",
     },
     {
       path: "https://ruamkhai.com/",
       img: "/icons/navbar/ruamkhai-icon.svg",
-      title: "ไปยัง Platform Ruamkhai",
+      title: "Platform Ruamkhai",
     },
   ],
   en: [
@@ -147,12 +147,12 @@ export const footerList: NavbarMenuRecord = {
     {
       path: "/app/contact",
       img: "/icons/navbar/phone.svg",
-      title: "Contact / Feedback",
+      title: "Emergency Contact",
     },
     {
       path: "https://ruamkhai.com/",
       img: "/icons/navbar/ruamkhai-icon.svg",
-      title: "Go to Ruamkhai Platform",
+      title: "Platform Ruamkhai",
     },
   ],
   cn: [
@@ -164,12 +164,12 @@ export const footerList: NavbarMenuRecord = {
     {
       path: "/app/contact",
       img: "/icons/navbar/phone.svg",
-      title: "联系方式/提出意见",
+      title: "紧急联系方式",
     },
     {
       path: "https://ruamkhai.com/",
       img: "/icons/navbar/ruamkhai-icon.svg",
-      title: "进入 Ruankhai",
+      title: "Platform Ruamkhai",
     },
   ],
 };

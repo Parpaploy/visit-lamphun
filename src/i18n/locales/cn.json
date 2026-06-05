@@ -54,8 +54,10 @@
   },
 
   "navbar": {
-    "stat": "用户数",
-    "unit": "人"
+    "stat": "用户数量",
+    "unit": "人",
+    "changeLanguage": "切换语言",
+    "menu": "菜单"
   },
 
   "recommend": {
