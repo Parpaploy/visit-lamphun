@@ -664,7 +664,7 @@ export default function Navbar() {
   return (
     <div className="w-full max-w-107.5 mx-auto fixed top-0 z-999">
       <div
-        className={`${location.pathname !== "/app" ? "bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)]" : ""} w-full h-[9svh] px-3.75 pt-1.25 flex justify-between items-center`}
+        className={`${location.pathname !== "/app" && location.pathname !== "/app/recommend" && location.pathname !== "/app/travel" && location.pathname !== "/app/contact" ? "bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)]" : ""} w-full h-[9svh] px-3.75 pt-1.25 flex justify-between items-center`}
       >
         <h1 className="text-[#543A14] text-[20px] font-bold leading-7">
           {pageTitle}

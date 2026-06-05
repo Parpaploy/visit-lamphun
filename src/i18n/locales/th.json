@@ -36,7 +36,8 @@
     "goToToilet": "กดเพื่อนำทาง",
     "recommendStore": "ร้านค้าแนะนำใกล้เคียง",
     "recommendActivity": "กิจกรรมแนะนำใกล้เคียง",
-    "recommendToilet": "ห้องน้ำใกล้เคียง"
+    "recommendToilet": "ห้องน้ำใกล้เคียง",
+    "tramTime": "รถรางจะออกเวลา {{time}} น."
   },
 
   "contact": {

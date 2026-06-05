@@ -36,7 +36,8 @@
     "goToToilet": "点击导航",
     "recommendStore": "附近推荐商店",
     "recommendActivity": "附近推荐活动",
-    "recommendToilet": "附近洗手间"
+    "recommendToilet": "附近洗手间",
+    "tramTime": "电车将于 {{time}} 发车"
   },
 
   "contact": {

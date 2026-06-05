@@ -1554,7 +1554,6 @@ import {
   moreKeyMap,
   STATION_ID_MAP,
 } from "../constant/homepage";
-import HomepageLoader from "../components/skeleton-load/homepage-loader";
 import Hitbox from "../components/homepage/hitbox";
 import type {
   PlaceTag,
@@ -1576,6 +1575,8 @@ import { useStationActivities } from "../hooks/useStationActivities";
 import { useStationToilets } from "../hooks/useStationToilets";
 import { formatTime12h, formatTime12hCn } from "../utils/ml";
 import { useNavbarTitle } from "../hooks/useNavbar";
+import SubNavbar from "../components/navbar/sub-navbar";
+import { getNextTramTime } from "../utils/stat";
 
 const getActiveBg = (lang: string) => {
   // if (station !== 0) {
@@ -1619,6 +1620,13 @@ export default function Homepage() {
 
   const spanRef = useRef<HTMLSpanElement>(null);
   const [width, setWidth] = useState(0);
+
+  const [entering, setEntering] = useState<boolean>(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setEntering(false), 10);
+    return () => clearTimeout(timer);
+  }, []);
 
   const getLabel = (value: string | null) => {
     if (!value) return t("heatmap.all") || t("heatmap.all");
@@ -1701,6 +1709,16 @@ export default function Homepage() {
     ? places.filter((p) => p.tag === selectedTag)
     : places;
 
+  const nextTime = getNextTramTime();
+
+  let formattedTime = nextTime;
+
+  if (i18n.language === "en") {
+    formattedTime = formatTime12h(nextTime);
+  } else if (i18n.language === "zh") {
+    formattedTime = formatTime12hCn(nextTime);
+  }
+
   const { data } = useStationPopup(activeStationId);
 
   useEffect(() => {
@@ -1734,6 +1752,27 @@ export default function Homepage() {
       img.onerror = null;
     };
   }, [currentBg]);
+
+  const handleSetMode = (newMode: typeof mode) => {
+    setMode(newMode);
+    setSelectedCard(null);
+    setSelectedTag(null);
+    setOverrideTitle(
+      newMode === "store"
+        ? t("homepage.storeNearMe")
+        : newMode === "activity"
+          ? t("homepage.activityNearMe")
+          : t("homepage.toiletNearMe"),
+    );
+    if (tramStationId && stationExpanded === 0) {
+      const stationNum = Object.entries(STATION_ID_MAP).find(
+        ([, id]) => id === tramStationId,
+      )?.[0];
+      if (stationNum) {
+        setStationExpanded(Number(stationNum) as stationNumber);
+      }
+    }
+  };
 
   useEffect(() => {
     const unsub = subscribeTransportStats((stats) => {
@@ -1819,93 +1858,33 @@ export default function Homepage() {
 
   return (
     <main className="relative w-full h-full overflow-hidden flex flex-col items-center justify-start">
-      {!loaded && !prevBg && <HomepageLoader />}
-
       <div className="absolute top-0 left-0">
         <div className="w-full min-h-[10svh] bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)]" />
       </div>
 
-      <div className="z-0 w-[90%] -mb-2 items-end flex justify-center gap-1 pt-3">
-        <div
-          onClick={() => {
-            setMode("store");
-            setSelectedCard(null);
-            setSelectedTag(null);
-            setOverrideTitle(t("homepage.storeNearMe"));
-            if (tramStationId && stationExpanded === 0) {
-              const stationNum = Object.entries(STATION_ID_MAP).find(
-                ([, id]) => id === tramStationId,
-              )?.[0];
-              if (stationNum) {
-                setStationExpanded(Number(stationNum) as stationNumber);
-              }
-            }
-          }}
-          className={`transition-all duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
-            mode === "store"
-              ? "min-h-27 shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
-              : "min-h-25 py-2 bg-white/80 text-black font-normal"
-          } w-full text-[16px] rounded-t-[15px] text-center px-1`}
-        >
-          {t("homepage.storeNearMe")}
-        </div>
-
-        <div
-          onClick={() => {
-            setMode("activity");
-            setSelectedCard(null);
-            setSelectedTag(null);
-            setOverrideTitle(t("homepage.activityNearMe"));
-            if (tramStationId && stationExpanded === 0) {
-              const stationNum = Object.entries(STATION_ID_MAP).find(
-                ([, id]) => id === tramStationId,
-              )?.[0];
-              if (stationNum) {
-                setStationExpanded(Number(stationNum) as stationNumber);
-              }
-            }
-          }}
-          className={`transition-all duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
-            mode === "activity"
-              ? "min-h-27 shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
-              : "min-h-25 py-2 bg-white/80 text-black font-normal"
-          } w-full text-[16px] rounded-t-[15px] text-center px-1`}
-        >
-          {t("homepage.activityNearMe")}
-        </div>
-
-        <div
-          onClick={() => {
-            setMode("toilet");
-            setSelectedCard(null);
-            setSelectedTag(null);
-            setOverrideTitle(t("homepage.toiletNearMe"));
-            if (tramStationId && stationExpanded === 0) {
-              const stationNum = Object.entries(STATION_ID_MAP).find(
-                ([, id]) => id === tramStationId,
-              )?.[0];
-              if (stationNum) {
-                setStationExpanded(Number(stationNum) as stationNumber);
-              }
-            }
-          }}
-          className={`transition-all duration-200 ${i18n.language === "th" ? "whitespace-nowrap" : "whitespace-normal wrap-break-word"} ${
-            mode === "toilet"
-              ? "min-h-27 shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
-              : "min-h-25 py-2 bg-white/80 text-black font-normal"
-          } w-full text-[16px] rounded-t-[15px] text-center px-1`}
-        >
-          {t("homepage.toiletNearMe")}
-        </div>
-      </div>
+      <SubNavbar
+        mode={mode}
+        setMode={handleSetMode}
+        mode1="store"
+        mode2="activity"
+        mode3="toilet"
+        mode1Name={t("homepage.storeNearMe")}
+        mode2Name={t("homepage.activityNearMe")}
+        mode3Name={t("homepage.toiletNearMe")}
+        isTabStyle={true}
+        leaving={false}
+        entering={entering}
+      />
 
       <div
         ref={scrollRef}
         onScroll={handleScroll}
         className={`${i18n.language === "en" ? "max-h-[83svh]" : "max-h-[86svh]"} transition-all absolute bottom-0 z-5 mt-1 overflow-y-auto rounded-t-[25px] w-full h-full flex flex-col items-center justify-start bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_22%,#FBFCF0_62%,#E6EFD8_100%)] duration-350 ease-in-out ${
-          mode === null
-            ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-100 translate-y-10 pointer-events-auto"
+          entering
+            ? "translate-y-full"
+            : mode === null
+              ? "opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-100 translate-y-10 pointer-events-auto"
         }`}
       >
         <div
@@ -1917,7 +1896,9 @@ export default function Homepage() {
                 <p className="text-[#8B724E]">
                   {t("homepage.tramUsers", { count: tramUsers })}
                 </p>
-                <p className="text-[#543A14]">รถรางจะออกเวลา 09.00น.</p>
+                <p className="text-[#543A14]">
+                  {t("homepage.tramTime", { time: formattedTime })}
+                </p>
               </div>
 
               <div

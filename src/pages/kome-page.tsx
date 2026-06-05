@@ -9,7 +9,7 @@ export default function KomePage() {
 
   return (
     <main className="w-full h-full flex flex-col overflow-hidden">
-      <section className="w-full h-auto mt-4 relative">
+      <section className="z-50 w-full h-auto mt-8 relative">
         {!imgLoaded && (
           <div className="w-full h-40 bg-gray-200 animate-pulse rounded" />
         )}
@@ -21,9 +21,9 @@ export default function KomePage() {
         />
       </section>
 
-      <div className="mx-auto w-[85%] border-b border-[#D9D9D9] h-5" />
+      <div className="z-50 mx-auto w-[85%] border-b border-[#D9D9D9] h-5" />
 
-      <section className="w-full h-full overflow-y-auto px-10 space-y-3 py-5">
+      <section className="z-50 w-full h-full overflow-y-auto px-10 space-y-3 py-5">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => <KomeLoader key={i} />)
         ) : items.length === 0 ? (
@@ -42,6 +42,8 @@ export default function KomePage() {
           ))
         )}
       </section>
+
+      {/* <div className="min-h-[77svh] max-w-107.5 mx-auto fixed bottom-0 w-full bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_36%,#FBFCF0_62%,#E6EFD8_100%)] z-1" /> */}
     </main>
   );
 }

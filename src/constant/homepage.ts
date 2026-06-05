@@ -26,16 +26,28 @@ export const isSaturday = new Date().getDay() === 6;
 //     : "/images/homepage/cn-bg-weekend.svg",
 // };
 
+// export const BG_MAP: Record<string, string> = {
+//   th: isSaturday
+//     ? "/images/homepage/th-new-bg-no-kuang.svg"
+//     : "/images/homepage/th-new-bg-no-kuang.svg",
+//   en: isSaturday
+//     ? "/images/homepage/en-bg.svg"
+//     : "/images/homepage/en-bg-weekend.svg",
+//   cn: isSaturday
+//     ? "/images/homepage/cn-bg.svg"
+//     : "/images/homepage/cn-bg-weekend.svg",
+// };
+
 export const BG_MAP: Record<string, string> = {
   th: isSaturday
     ? "/images/homepage/th-new-bg-no-kuang.svg"
     : "/images/homepage/th-new-bg-no-kuang.svg",
   en: isSaturday
-    ? "/images/homepage/en-bg.svg"
-    : "/images/homepage/en-bg-weekend.svg",
+    ? "/images/homepage/th-new-bg-no-kuang.svg"
+    : "/images/homepage/th-new-bg-no-kuang.svg",
   cn: isSaturday
-    ? "/images/homepage/cn-bg.svg"
-    : "/images/homepage/cn-bg-weekend.svg",
+    ? "/images/homepage/th-new-bg-no-kuang.svg"
+    : "/images/homepage/th-new-bg-no-kuang.svg",
 };
 
 // export const STATION_ID_MAP: Record<number, string> = {

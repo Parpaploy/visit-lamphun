@@ -22,7 +22,10 @@ export default function PublicLayout() {
     <NavbarTitleProvider>
       <div
         className={`h-svh w-full mx-auto max-w-107.5 flex flex-col items-center overflow-hidden ${
-          location.pathname === "/app"
+          location.pathname === "/app" ||
+          location.pathname === "/app/recommend" ||
+          location.pathname === "/app/travel" ||
+          location.pathname === "/app/contact"
             ? "bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)]"
             : location.pathname.startsWith("/app/")
               ? "bg-white"

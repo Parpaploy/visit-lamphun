@@ -36,7 +36,8 @@
     "goToToilet": " Tap to Navigate",
     "recommendStore": "Nearby Recommended Stores",
     "recommendActivity": "Nearby Recommended Activities",
-    "recommendToilet": "Nearby Restrooms"
+    "recommendToilet": "Nearby Restrooms",
+    "tramTime": "The tram departs at {{time}}."
   },
 
   "contact": {
