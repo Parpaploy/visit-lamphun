@@ -2003,8 +2003,7 @@ export default function Homepage() {
                       <div className="text-start w-full px-5 mt-3 flex flex-col justify-center items-start gap-y-1">
                         {selectedCard?.location && (
                           <p className="text-[16px] text-[#543A14]">
-                            สถานที่ตั้ง:
-                            {selectedCard?.location}
+                            {t("form.location")}:{selectedCard?.location}
                           </p>
                         )}
 
