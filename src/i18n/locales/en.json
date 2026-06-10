@@ -87,7 +87,10 @@
     "close": "Closed",
     "closeDesc": "every Mon.",
     "allRoute": "Baht (all route)",
-    "price": "Price"
+    "price": "Price",
+    "baht": "THB",
+    "departure": "Departure",
+    "arrival": "Arrival"
   },
 
   "form": {
@@ -128,7 +131,8 @@
     "selectTag": "Select place category",
     "openTime": "Opening Time",
     "closeTime": "Closing Time",
-    "location": "Location"
+    "location": "Location",
+    "everyday": "Every day"
   },
 
   "dashboard": {

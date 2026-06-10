@@ -67,7 +67,7 @@
 //   );
 // }
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ItemMenu from "../components/recommend-page/item-menu";
 import ItemCard from "../components/recommend-page/item-card";
 import { useTranslation } from "react-i18next";
@@ -76,37 +76,39 @@ import RecommendLoader2 from "../components/skeleton-load/recommend-loader-2";
 import SubNavbar from "../components/navbar/sub-navbar";
 import type { IRecommendMode } from "../interfaces/navbar.interface";
 import { useRecommendItems } from "../hooks/useRecommendItems";
-import { IoIosArrowDown } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
-import { useNavbarTitle } from "../hooks/useNavbar";
+// import { IoIosArrowDown } from "react-icons/io";
+// import { useNavigate } from "react-router-dom";
+// import { useNavbarTitle } from "../hooks/useNavbar";
 
 export default function RecommendedPage() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "th" | "en" | "cn";
 
-  const navigate = useNavigate();
+  const detailScrollRef = useRef<HTMLDivElement>(null);
 
-  const [leaving, setLeaving] = useState<boolean>(false);
+  // const navigate = useNavigate();
+
+  // const [leaving, setLeaving] = useState<boolean>(false);
   const [entering, setEntering] = useState<boolean>(true);
 
   const [mode, setMode] = useState<IRecommendMode>("goods");
 
   const { items, loading } = useRecommendItems(mode);
-  const { setOverrideTitle } = useNavbarTitle();
+  // const { setOverrideTitle } = useNavbarTitle();
 
   useEffect(() => {
     const timer = setTimeout(() => setEntering(false), 10);
     return () => clearTimeout(timer);
   }, []);
 
-  const handleClose = () => {
-    setLeaving(true);
+  // const handleClose = () => {
+  //   setLeaving(true);
 
-    setTimeout(() => {
-      setOverrideTitle(null);
-      navigate("/app");
-    }, 100);
-  };
+  //   setTimeout(() => {
+  //     setOverrideTitle(null);
+  //     navigate("/app");
+  //   }, 100);
+  // };
 
   return (
     <main className="relative w-full h-full flex flex-col overflow-hidden">
@@ -120,26 +122,33 @@ export default function RecommendedPage() {
         mode2Name={t("recommend.places")}
         mode3Name={t("recommend.story")}
         isTabStyle={true}
-        leaving={leaving}
+        // leaving={leaving}
       />
 
-      <section
+      {/* <section
         className={`z-5 ${i18n.language === "en" ? "max-h-[82.5svh]" : "max-h-[85.5svh]"} shadow-[0_0px_12.3px_0_rgba(50,33,21,0.15)] flex-col absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-[25px] w-[95%] h-full flex items-center justify-start overflow-hidden bg-white transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           leaving || entering ? "translate-y-full" : "translate-y-0"
         }`}
+      > */}
+      <section
+        className={`z-5 ${i18n.language === "en" ? "max-h-[82.5svh]" : "max-h-[85.5svh]"} shadow-[0_0px_12.3px_0_rgba(50,33,21,0.15)] flex-col absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-[25px] w-[95%] h-full flex items-center justify-start overflow-hidden bg-white transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          entering ? "translate-y-full" : "translate-y-0"
+        }`}
       >
-        <div
+        {/* <div
           onClick={handleClose}
           className="w-full bg-[#BF4B17] flex justify-center items-center text-white py-1"
         >
           <IoIosArrowDown size={24} />
-        </div>
+        </div> */}
 
         <div
-          className={`w-full h-full ${mode === "story" ? "px-10" : "px-5"} pt-3 pb-5 overflow-y-auto`}
+          ref={detailScrollRef}
+          // className={`w-full h-full ${mode === "story" ? "px-10" : "px-5"} pt-3 pb-5 overflow-y-auto`}
+          className="w-full h-full px-10 pt-0 pb-5 overflow-y-auto"
         >
           {loading ? (
-            mode === "story" ? (
+            mode === "story" || mode === "goods" || mode === "places" ? (
               Array.from({ length: 2 }).map((_, i) => (
                 <RecommendLoader key={i} />
               ))
@@ -162,10 +171,20 @@ export default function RecommendedPage() {
                   className="animate-fade-in"
                   style={{ animationDelay: `${idx * 60}ms` }}
                 >
-                  {mode === "story" ? (
-                    <ItemCard title={title} desc={desc} imgUrl={item.img} />
+                  {mode === "story" || mode === "goods" || mode === "places" ? (
+                    <ItemCard
+                      title={title}
+                      desc={desc}
+                      imgUrl={item.img}
+                      detailScrollRef={detailScrollRef}
+                    />
                   ) : (
-                    <ItemMenu title={title} desc={desc} imgUrl={item.img} />
+                    <ItemMenu
+                      title={title}
+                      desc={desc}
+                      imgUrl={item.img}
+                      detailScrollRef={detailScrollRef}
+                    />
                   )}
                 </div>
               );

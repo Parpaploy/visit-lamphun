@@ -1623,6 +1623,8 @@ export default function Homepage() {
 
   const [entering, setEntering] = useState<boolean>(true);
 
+  const [isClamped, setIsClamped] = useState<boolean>(false);
+
   useEffect(() => {
     const timer = setTimeout(() => setEntering(false), 10);
     return () => clearTimeout(timer);
@@ -1856,6 +1858,22 @@ export default function Homepage() {
     }
   }, [tramStationId, selectedTram]);
 
+  useEffect(() => {
+    const el = descRef.current;
+    if (!el) return;
+
+    const check = () => {
+      setIsClamped(el.scrollHeight > el.clientHeight);
+    };
+
+    check();
+
+    const observer = new ResizeObserver(check);
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, [data, i18n.language, showFullDesc]);
+
   return (
     <main className="relative w-full h-full overflow-hidden flex flex-col items-center justify-start">
       <div className="absolute top-0 left-0">
@@ -2040,87 +2058,94 @@ export default function Homepage() {
                         <IoIosArrowForward />
                       </button>
                     ) : (
-                      <div
-                        ref={descRef}
-                        className="text-[#543A14] text-[16px] font-normal mt-1"
-                      >
-                        <p className={`${showFullDesc ? "" : "line-clamp-3"}`}>
+                      <div className="text-[#543A14] text-[16px] font-normal mt-1">
+                        <p
+                          ref={descRef}
+                          className={`${showFullDesc ? "" : "line-clamp-3"}`}
+                        >
                           {data?.desc[i18n.language as keyof MLString] ??
                             data?.desc.th}
                         </p>
-                        <button
-                          onClick={() => {
-                            setShowFullDesc((prev) => {
-                              const next = !prev;
+                        {(isClamped || showFullDesc) && (
+                          <button
+                            onClick={() => {
+                              setShowFullDesc((prev) => {
+                                const next = !prev;
 
-                              // if (!prev) {
-                              //   setTimeout(() => {
-                              //     const container = detailScrollRef.current;
-                              //     const el = descRef.current;
+                                // if (!prev) {
+                                //   setTimeout(() => {
+                                //     const container = detailScrollRef.current;
+                                //     const el = descRef.current;
 
-                              //     if (container && el) {
-                              //       const containerRect =
-                              //         container.getBoundingClientRect();
-                              //       const elRect = el.getBoundingClientRect();
+                                //     if (container && el) {
+                                //       const containerRect =
+                                //         container.getBoundingClientRect();
+                                //       const elRect = el.getBoundingClientRect();
 
-                              //       const offset =
-                              //         elRect.top -
-                              //         containerRect.top +
-                              //         container.scrollTop;
+                                //       const offset =
+                                //         elRect.top -
+                                //         containerRect.top +
+                                //         container.scrollTop;
 
-                              //       const target =
-                              //         offset -
-                              //         container.clientHeight / 2 +
-                              //         el.clientHeight / 2;
+                                //       const target =
+                                //         offset -
+                                //         container.clientHeight / 2 +
+                                //         el.clientHeight / 2;
 
-                              //       smoothScrollTo(container, target, 250);
-                              //     }
-                              //   }, 50);
-                              // }
+                                //       smoothScrollTo(container, target, 250);
+                                //     }
+                                //   }, 50);
+                                // }
 
-                              if (!prev) {
-                                requestAnimationFrame(() => {
+                                if (!prev) {
                                   requestAnimationFrame(() => {
-                                    const container = detailScrollRef.current;
-                                    const el = descRef.current;
+                                    requestAnimationFrame(() => {
+                                      const container = detailScrollRef.current;
+                                      const el = descRef.current;
 
-                                    if (container && el) {
-                                      const containerRect =
-                                        container.getBoundingClientRect();
-                                      const elRect = el.getBoundingClientRect();
+                                      if (container && el) {
+                                        const containerRect =
+                                          container.getBoundingClientRect();
+                                        const elRect =
+                                          el.getBoundingClientRect();
 
-                                      const offset =
-                                        elRect.top -
-                                        containerRect.top +
-                                        container.scrollTop;
+                                        const offset =
+                                          elRect.top -
+                                          containerRect.top +
+                                          container.scrollTop;
 
-                                      const maxScroll =
-                                        container.scrollHeight -
-                                        container.clientHeight;
+                                        const maxScroll =
+                                          container.scrollHeight -
+                                          container.clientHeight;
 
-                                      const OFFSET = 15;
+                                        const OFFSET = 15;
 
-                                      const target = Math.max(
-                                        0,
-                                        Math.min(offset - OFFSET, maxScroll),
-                                      );
+                                        const target = Math.max(
+                                          0,
+                                          Math.min(offset - OFFSET, maxScroll),
+                                        );
 
-                                      smoothScrollTo(container, target, 220);
-                                    }
+                                        smoothScrollTo(container, target, 220);
+                                      }
+                                    });
                                   });
-                                });
-                              }
+                                }
 
-                              return next;
-                            });
-                          }}
-                          className="relative z-50 mx-auto text-[#F48B3C] text-[14px] mt-1 flex justify-center items-center gap-1"
-                        >
-                          {showFullDesc
-                            ? t("homepage.readLess")
-                            : t("homepage.readMore")}
-                          {showFullDesc ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                        </button>
+                                return next;
+                              });
+                            }}
+                            className="relative z-50 mx-auto font-bold text-[#F48B3C] text-[14px] mt-1 flex justify-center items-center gap-1"
+                          >
+                            {showFullDesc
+                              ? t("homepage.readLess")
+                              : t("homepage.readMore")}
+                            {showFullDesc ? (
+                              <IoIosArrowUp />
+                            ) : (
+                              <IoIosArrowDown />
+                            )}
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>

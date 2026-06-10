@@ -17,6 +17,8 @@ export interface KomeItem {
   phone: string;
 }
 
+export type Direction = "CNX_LPH" | "LPH_CNX";
+
 export interface TrainItem {
   id: string;
   origin: MLString;
@@ -27,7 +29,7 @@ export interface TrainItem {
   destinationStation: MLString;
   price: number;
   desc: MLString;
-  day: "weekday" | "weekend";
+  day: "weekday" | "weekend" | "everyday";
 }
 
 export interface TramItem {

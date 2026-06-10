@@ -87,7 +87,10 @@
     "close": "ปิดทำการ",
     "closeDesc": "ทุกวันจันทร์",
     "allRoute": "บาทตลอดสาย",
-    "price": "ราคา"
+    "price": "ราคา",
+    "baht": "บาท",
+    "departure": "เวลาออก",
+    "arrival": "เวลาถึง"
   },
 
   "form": {
@@ -128,7 +131,8 @@
     "selectTag": "เลือกหมวดหมู่ของสถานที่",
     "openTime": "เวลาเปิดทำการ",
     "closeTime": "เวลาปิดทำการ",
-    "location": "สถานที่ตั้ง"
+    "location": "สถานที่ตั้ง",
+    "everyday": "ทุกวัน"
   },
 
   "dashboard": {

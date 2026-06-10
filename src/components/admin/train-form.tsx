@@ -3,7 +3,7 @@ import type { MLString, TrainItem } from "../../interfaces/content.interface";
 
 const inputCls =
   "border border-[#C6C6C6] rounded-xl px-3 py-2 text-[13px] text-[#543A14] outline-none placeholder:text-[#C6C6C6] w-full";
-const selectCls = `${inputCls} bg-white`;
+// const selectCls = `${inputCls} bg-white`;
 
 type TrainFormData = Omit<TrainItem, "id">;
 
@@ -170,16 +170,17 @@ export default function TrainForm({
         onChange={(e) => ch((f) => ({ ...f, price: Number(e.target.value) }))}
         className={inputCls}
       />
-      <select
+      {/* <select
         value={v.day}
         onChange={(e) =>
           ch((f) => ({ ...f, day: e.target.value as "weekday" | "weekend" }))
         }
         className={selectCls}
       >
+        <option value="everyday">{t("form.everyday")}</option>
         <option value="weekday">{t("form.weekday")}</option>
         <option value="weekend">{t("form.weekend")}</option>
-      </select>
+      </select> */}
 
       <input
         placeholder={p("form.desc", "inTh")}

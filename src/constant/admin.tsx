@@ -57,7 +57,7 @@ export const EMPTY_TRAIN: Omit<TrainItem, "id"> = {
   destinationStation: { ...EMPTY_ML },
   price: 0,
   desc: { ...EMPTY_ML },
-  day: "weekday",
+  day: "everyday",
 };
 
 export const EMPTY_RECOMMEND = {

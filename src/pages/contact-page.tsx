@@ -214,18 +214,18 @@ import ContactLoader from "../components/skeleton-load/contact-loader";
 import { useEmergencyItems } from "../hooks/useEmergencyItems";
 import LazyImage from "../components/skeleton-load/image-loader";
 import { formatTime12h, formatTime12hCn } from "../utils/ml";
-import { IoIosArrowDown } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
-import { useNavbarTitle } from "../hooks/useNavbar";
+// import { IoIosArrowDown } from "react-icons/io";
+// import { useNavigate } from "react-router-dom";
+// import { useNavbarTitle } from "../hooks/useNavbar";
 
 export default function ContactPage() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "th" | "en" | "cn";
   const isTH = i18n.language === "th";
-  const navigate = useNavigate();
-  const { setOverrideTitle } = useNavbarTitle();
+  // const navigate = useNavigate();
+  // const { setOverrideTitle } = useNavbarTitle();
 
-  const [leaving, setLeaving] = useState(false);
+  // const [leaving, setLeaving] = useState(false);
   const [entering, setEntering] = useState(true);
 
   const [mode, setMode] = useState<IContactMode>("emergency");
@@ -250,13 +250,13 @@ export default function ContactPage() {
 
   const { items, loading } = useEmergencyItems();
 
-  const handleClose = () => {
-    setLeaving(true);
-    setTimeout(() => {
-      setOverrideTitle(null);
-      navigate("/app");
-    }, 100);
-  };
+  // const handleClose = () => {
+  //   setLeaving(true);
+  //   setTimeout(() => {
+  //     setOverrideTitle(null);
+  //     navigate("/app");
+  //   }, 100);
+  // };
 
   return (
     <main className="relative w-full h-full flex flex-col overflow-hidden">
@@ -271,20 +271,25 @@ export default function ContactPage() {
         mode3Name={t("contact.line")}
         isSmallOne={true}
         isTabStyle={true}
-        leaving={leaving}
+        // leaving={leaving}
       />
 
-      <section
+      {/* <section
         className={`z-5 ${i18n.language === "en" ? "max-h-[82.5svh]" : "max-h-[85.5svh]"} shadow-[0_0px_12.3px_0_rgba(50,33,21,0.15)] flex-col absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-[25px] w-[95%] h-full flex items-center justify-start overflow-hidden bg-white transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           leaving || entering ? "translate-y-full" : "translate-y-0"
         }`}
+      > */}
+      <section
+        className={`z-5 ${i18n.language === "en" ? "max-h-[82.5svh]" : "max-h-[85.5svh]"} shadow-[0_0px_12.3px_0_rgba(50,33,21,0.15)] flex-col absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-[25px] w-[95%] h-full flex items-center justify-start overflow-hidden bg-white transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          entering ? "translate-y-full" : "translate-y-0"
+        }`}
       >
-        <div
+        {/* <div
           onClick={handleClose}
           className="w-full bg-[#BF4B17] flex justify-center items-center text-white py-1 cursor-pointer shrink-0"
         >
           <IoIosArrowDown size={24} />
-        </div>
+        </div> */}
 
         <div className="w-full flex-1 overflow-y-auto space-y-4 p-7">
           {mode === "emergency" &&
