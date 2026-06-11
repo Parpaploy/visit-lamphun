@@ -415,7 +415,6 @@ import DayBlock from "../components/travel-page/day-block";
 import TrainCard from "../components/travel-page/train-card";
 import TramCard from "../components/travel-page/tram-card";
 import OtherCard from "../components/travel-page/other-card";
-import TravelLoader from "../components/skeleton-load/travel-loader";
 import type { ITravelMode } from "../interfaces/navbar.interface";
 import SubNavbar from "../components/navbar/sub-navbar";
 import {
@@ -429,6 +428,7 @@ import {
 import TrainLoader from "../components/skeleton-load/train-loader";
 import TrainDirectionFilter from "../components/travel-page/train-direction-filter";
 import { timeToMinutes } from "../utils/countdown";
+import TravelLoader from "../components/skeleton-load/travel-loader";
 
 export default function TravelPage() {
   const { t } = useTranslation();
