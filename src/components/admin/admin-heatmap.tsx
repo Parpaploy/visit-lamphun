@@ -14,6 +14,7 @@ import type {
   HeatmapTableProps,
   StationId,
 } from "../../interfaces/admin.interface";
+import { formatTime12h, formatTime12hCn } from "../../utils/ml";
 
 function HeatmapTable({
   title,
@@ -488,8 +489,16 @@ export default function AdminHeatmap() {
             >
               <p className="font-bold">{tooltip.station}</p>
               {tooltip.date && <p className="text-white/70">{tooltip.date}</p>}
-              <p className="text-white/70">{tooltip.slot} น.</p>
-              <p>{tooltip.count} คน</p>
+              <p className="text-white/70">
+                {lang === "th"
+                  ? `${tooltip.slot ?? "?"} น.`
+                  : lang === "en"
+                    ? formatTime12h(tooltip.slot)
+                    : formatTime12hCn(tooltip.slot)}
+              </p>
+              <p>
+                {tooltip.count} {t("heatmap.people")}
+              </p>
               {tooltip.lastTime && (
                 <p className="text-white/60">
                   {t("heatmap.latest")} {tooltip.lastTime}

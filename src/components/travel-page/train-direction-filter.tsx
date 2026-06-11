@@ -10,7 +10,7 @@ export default function TrainDirectionFilter({
   value: Direction;
   onChange: (dir: Direction) => void;
 }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const lang = i18n.language as "th" | "en" | "cn";
 
   const isForward = value === "CNX_LPH";
@@ -46,7 +46,9 @@ export default function TrainDirectionFilter({
   return (
     <div className="relative w-full flex items-center">
       <div className="flex-1 flex flex-col items-center gap-1">
-        <p className="text-[16px] font-bold text-[#543A14]">สถานีต้นทาง</p>
+        <p className="text-[16px] font-bold text-[#543A14]">
+          {t("form.originStation")}
+        </p>
         <div className="drop-shadow-[0_0_12.3px_rgba(50,33,21,0.15)] text-[16px] font-normal text-black w-full rounded-l-[5px] px-3 py-1 text-center bg-white">
           <span
             style={{
@@ -76,7 +78,9 @@ export default function TrainDirectionFilter({
       </button>
 
       <div className="flex-1 flex flex-col items-center gap-1">
-        <p className="text-[16px] font-bold text-[#543A14]">สถานีปลายทาง</p>
+        <p className="text-[16px] font-bold text-[#543A14]">
+          {t("form.destinationStation")}
+        </p>
         <div className="drop-shadow-[0_0_12.3px_rgba(50,33,21,0.15)] text-[16px] font-normal text-black w-full rounded-l-[5px] px-3 py-1 text-center bg-white">
           <span
             style={{

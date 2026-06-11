@@ -575,9 +575,7 @@ export default function TravelPage() {
 
         {mode === "train" && (
           <div className="w-[90%] border-b border-[#D9D9D9] pt-4 pb-1.5 text-center text-[14px] font-normal text-[#543A14]">
-            <p className="w-[80%] mx-auto">
-              ซื้อตั๋วได้ที่สถานีรถไฟต้นทาง โดยสามารถซื้อก่อนเวลารถไฟออก 2 ชม.
-            </p>
+            <p className="w-[80%] mx-auto">{t("travel.desc")}</p>
           </div>
         )}
 

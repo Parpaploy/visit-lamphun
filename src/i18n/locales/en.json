@@ -90,7 +90,8 @@
     "price": "Price",
     "baht": "THB",
     "departure": "Departure",
-    "arrival": "Arrival"
+    "arrival": "Arrival",
+    "desc": "Tickets can be purchased at the departure train station up to 2 hours before departure."
   },
 
   "form": {
