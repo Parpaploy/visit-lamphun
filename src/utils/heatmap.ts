@@ -98,7 +98,7 @@ export const STATION_COORDS = {
     lng: 0,
   },
   "province-other": {
-    name: { th: "พื้นที่อื่นๆ", en: "Other Areas", cn: "ด้านนอกพื้นที่" },
+    name: { th: "พื้นที่อื่นๆ", en: "Other Areas", cn: "其他地区" },
     lat: 0,
     lng: 0,
   },
