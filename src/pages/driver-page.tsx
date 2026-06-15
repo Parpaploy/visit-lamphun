@@ -7,15 +7,18 @@ import {
 } from "../services/tram.services";
 import { haversineDistance } from "../utils/geo";
 import type { GpsPosition, Station } from "../interfaces/tram.interface";
-import { STATIONS } from "../constant/tram";
+import { STATIONS, AUTO_CHECKIN_RADIUS } from "../constant/tram";
 import CheckinPopup from "../components/driver-page/checkin-popup";
 import UndoCheckinPopup from "../components/driver-page/undo-checkin-popup";
 import FinishRoutePopup from "../components/driver-page/finish-route-popup";
 import { IoIosArrowBack } from "react-icons/io";
+import { fetchLatestSensorReading } from "../services/sensor.services";
 
 export default function DriverPage() {
   const tramId = localStorage.getItem("driver_tram_id") ?? "";
 
+  const [currentStationId, setCurrentStationId] = useState<string | null>(null);
+  const [isNearStation, setIsNearStation] = useState(false);
   const [step, setStep] = useState<"mode" | "manual" | "gps">("mode");
   const [gpsPosition, setGpsPosition] = useState<GpsPosition | null>(null);
   const [gpsError, setGpsError] = useState<string | null>(null);
@@ -36,7 +39,6 @@ export default function DriverPage() {
   const nextIndexRef = useRef(0);
   const watchIdRef = useRef<number | null>(null);
   const lastAutoCheckinRef = useRef<string | null>(null);
-
   const lastPositionRef = useRef<{ lat: number; lng: number } | null>(null);
 
   const updateNextIndex = (val: number) => {
@@ -63,20 +65,13 @@ export default function DriverPage() {
     [tramId],
   );
 
+  const writeCheckinRef = useRef(writeCheckin);
+  useEffect(() => {
+    writeCheckinRef.current = writeCheckin;
+  }, [writeCheckin]);
+
   const updateNearestStation = useCallback(
     async (lat: number, lng: number) => {
-      if (lastPositionRef.current) {
-        const d = haversineDistance(
-          lat,
-          lng,
-          lastPositionRef.current.lat,
-          lastPositionRef.current.lng,
-        );
-        if (d < 2) return;
-      }
-
-      lastPositionRef.current = { lat, lng };
-
       let nearest: Station | null = null;
       let minDist = Infinity;
       let nearestIdx = -1;
@@ -97,30 +92,38 @@ export default function DriverPage() {
 
       if (!nearest || !tramId) return;
 
+      console.log(
+        "nearest:",
+        nearest.id,
+        "dist:",
+        minDist,
+        "isNear:",
+        minDist <= AUTO_CHECKIN_RADIUS,
+        "nearestIdx:",
+        nearestIdx,
+        "nextIndexRef:",
+        nextIndexRef.current,
+      );
+
+      setCurrentStationId(nearest.id);
+      setIsNearStation(minDist <= AUTO_CHECKIN_RADIUS);
+
       await updateTramPosition(tramId, nearest, lat, lng);
 
-      if (minDist <= 5) {
+      if (minDist <= AUTO_CHECKIN_RADIUS) {
         if (lastAutoCheckinRef.current === nearest.id) return;
 
-        if (
-          nearestIdx === nextIndexRef.current ||
-          nearestIdx === nextIndexRef.current - 1
-        ) {
+        if (nearestIdx === nextIndexRef.current) {
           lastAutoCheckinRef.current = nearest.id;
-
-          await writeCheckin(nearest, "gps");
-
-          if (nearestIdx >= nextIndexRef.current) {
-            updateNextIndex(nearestIdx + 1);
-          }
+          await writeCheckinRef.current(nearest, "gps");
+          updateNextIndex(nearestIdx + 1);
         }
       }
     },
-    [tramId, writeCheckin],
+    [tramId],
   );
 
   const updateNearestStationRef = useRef(updateNearestStation);
-
   useEffect(() => {
     updateNearestStationRef.current = updateNearestStation;
   }, [updateNearestStation]);
@@ -136,24 +139,26 @@ export default function DriverPage() {
     stopGps();
     if (step !== "gps") return;
 
-    watchIdRef.current = navigator.geolocation.watchPosition(
-      (pos) => {
-        const { latitude, longitude, accuracy } = pos.coords;
+    const fetchAndUpdate = async () => {
+      const sensor = await fetchLatestSensorReading();
+      if (!sensor || sensor.lat === -999 || sensor.lon === -999) {
+        setGpsError("ไม่มีสัญญาณ GPS จาก sensor");
+        return;
+      }
+      setGpsError(null);
+      setGpsPosition({ lat: sensor.lat, lng: sensor.lon, accuracy: 0 });
+      updateNearestStationRef.current(sensor.lat, sensor.lon);
+    };
 
-        setGpsPosition({ lat: latitude, lng: longitude, accuracy });
+    fetchAndUpdate();
 
-        updateNearestStationRef.current(latitude, longitude);
-      },
-      (err) => setGpsError(err.message),
-      { enableHighAccuracy: true },
-    );
+    const interval = setInterval(fetchAndUpdate, 10_000);
 
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const { latitude, longitude } = pos.coords;
-      updateNearestStationRef.current(latitude, longitude);
-    });
-
-    return () => stopGps();
+    return () => {
+      stopGps();
+      clearInterval(interval);
+      lastPositionRef.current = null;
+    };
   }, [step, stopGps]);
 
   const enterManual = async () => {
@@ -177,13 +182,11 @@ export default function DriverPage() {
   const enterGps = async () => {
     try {
       const tram = await fetchTramById(tramId);
-
       if (tram?.current_station_id) {
         const currentIdx = STATIONS.findIndex(
           (s) => s.id === tram.current_station_id,
         );
         const newIndex = currentIdx >= 0 ? currentIdx + 1 : 0;
-
         nextIndexRef.current = newIndex;
         setNextIndex(newIndex);
       } else {
@@ -197,58 +200,14 @@ export default function DriverPage() {
 
     lastAutoCheckinRef.current = null;
     lastPositionRef.current = null;
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
-
-        setGpsPosition({
-          lat,
-          lng,
-          accuracy: pos.coords.accuracy,
-        });
-
-        let nearestIdx = 0;
-        let minDist = Infinity;
-
-        for (let i = 0; i < STATIONS.length; i++) {
-          const dist = haversineDistance(
-            lat,
-            lng,
-            STATIONS[i].lat,
-            STATIONS[i].lng,
-          );
-
-          if (dist < minDist) {
-            minDist = dist;
-            nearestIdx = i;
-          }
-        }
-
-        nextIndexRef.current = nearestIdx + 1;
-        setNextIndex(nearestIdx + 1);
-
-        lastAutoCheckinRef.current = null;
-      },
-      (err) => {
-        console.error(err);
-        setGpsError(err.message);
-      },
-      {
-        enableHighAccuracy: true,
-        maximumAge: 0,
-      },
-    );
-
+    setCurrentStationId(null);
+    setIsNearStation(false);
     setStep("gps");
   };
 
   const handleConfirmCheckin = async () => {
     if (!pendingStation) return;
-
     await writeCheckin(pendingStation.station, "manual");
-
     updateNextIndex(pendingStation.index + 1);
     setPendingStation(null);
   };
@@ -261,15 +220,11 @@ export default function DriverPage() {
 
   const handleUndoConfirm = async () => {
     if (!pendingUndo) return;
-
     const prevIndex = pendingUndo.index - 1;
-
     updateNextIndex(pendingUndo.index);
-
     if (prevIndex >= 0) {
       await writeCheckin(STATIONS[prevIndex], "manual");
     }
-
     setPendingUndo(null);
   };
 
@@ -404,11 +359,11 @@ export default function DriverPage() {
                   </p>
                   <p className="text-[14px] text-[#559200]">รับสัญญาณอยู่</p>
                 </div>
-                {gpsPosition?.accuracy && (
+                {gpsPosition?.accuracy ? (
                   <span className="text-[14px] bg-[#559200]/15 text-[#559200] font-medium px-2.5 py-1 rounded-full">
                     ±{Math.round(gpsPosition.accuracy)} ม.
                   </span>
-                )}
+                ) : null}
               </div>
 
               {gpsError && (
@@ -419,8 +374,8 @@ export default function DriverPage() {
 
               {gpsPosition && (
                 <div className="flex justify-center items-center gap-3 bg-[#FFF0DC] rounded-[9px] text-center py-3 text-[16px] font-medium text-[#543A14]">
-                  <span>{gpsPosition.lat.toFixed(4)}°N</span>
-                  <span>{gpsPosition.lng.toFixed(4)}°E</span>
+                  <span>{gpsPosition.lat}°N</span>
+                  <span>{gpsPosition.lng}°E</span>
                 </div>
               )}
             </div>
@@ -429,17 +384,32 @@ export default function DriverPage() {
               สถานีถัดไป
             </p>
 
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 whitespace-nowrap">
               {STATIONS.map((s, i) => {
-                const isDone = i < nextIndex;
-                const isCurrent = i === nextIndex;
+                const nearestIdx = currentStationId
+                  ? STATIONS.findIndex((st) => st.id === currentStationId)
+                  : -1;
+
+                const isDone =
+                  nearestIdx !== -1 ? i < nearestIdx : i < nextIndex;
+
+                const isHere = isNearStation && i === nearestIdx;
+
+                const isHeading =
+                  isNearStation && nearestIdx !== -1 && i === nearestIdx + 1;
 
                 return (
                   <div
                     key={s.id}
-                    className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center ${isDone ? "bg-[#FEEABB]" : "bg-white"}`}
+                    className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center ${
+                      isHere
+                        ? "bg-[#E8F5D0]"
+                        : isDone
+                          ? "bg-[#FEEABB]"
+                          : "bg-white"
+                    }`}
                   >
-                    <span className="flex items-center gap-2">
+                    <span className="whitespace-normal flex items-center gap-2">
                       <span className="w-7 h-7 rounded-full flex items-center justify-center font-medium text-[20px]">
                         {i + 1}
                       </span>
@@ -456,19 +426,25 @@ export default function DriverPage() {
                       </p>
                     </span>
 
-                    {isDone ? (
-                      <span className="px-4 py-px rounded-full text-[14px] font-medium bg-[#FFFFFF] text-[#B9B9B9]">
-                        เช็คอินแล้ว
-                      </span>
-                    ) : isCurrent ? (
-                      <span className="px-4 py-0.5 rounded-full text-[14px] font-medium text-white bg-[#FF8B2B] animate-pulse">
-                        กำลังมุ่งหน้า
-                      </span>
-                    ) : (
-                      <span className="bg-[#B9B9B9] text-white px-4 py-0.5 rounded-full text-[14px] font-medium">
-                        รออยู่
-                      </span>
-                    )}
+                    <div className="flex items-center justify-end">
+                      {isHere ? (
+                        <span className="px-4 py-0.5 rounded-full text-[14px] font-medium text-white bg-[#559200] animate-pulse">
+                          อยู่ที่นี่
+                        </span>
+                      ) : isDone ? (
+                        <span className="px-4 py-px rounded-full text-[14px] font-medium bg-[#FFFFFF] text-[#B9B9B9]">
+                          เช็คอินแล้ว
+                        </span>
+                      ) : isHeading ? (
+                        <span className="px-4 py-0.5 rounded-full text-[14px] font-medium text-white bg-[#FF8B2B] animate-pulse">
+                          กำลังมุ่งหน้า
+                        </span>
+                      ) : (
+                        <span className="bg-[#B9B9B9] text-white px-4 py-0.5 rounded-full text-[14px] font-medium">
+                          รออยู่
+                        </span>
+                      )}
+                    </div>
                   </div>
                 );
               })}

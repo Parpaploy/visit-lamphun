@@ -10,8 +10,8 @@ export const STATION_COORDS = {
       en: "Wat Phra That Hariphunchai",
       cn: "哈里蓬猜寺",
     },
-    lat: 18.5771055,
-    lng: 99.008501,
+    lat: 18.5771106,
+    lng: 99.0059261,
   },
   community: {
     name: {
@@ -19,8 +19,8 @@ export const STATION_COORDS = {
       en: "Lamphun Community Museum",
       cn: "南奔城市社区博物馆",
     },
-    lat: 18.5775416,
-    lng: 99.0060922,
+    lat: 18.5775467,
+    lng: 99.0035173,
   },
   chamthewi: {
     name: {
@@ -28,8 +28,8 @@ export const STATION_COORDS = {
       en: "Queen Chama Thewi Monument",
       cn: "乍瑪黛維女王紀念碑",
     },
-    lat: 18.5747234,
-    lng: 99.0042447,
+    lat: 18.5747285,
+    lng: 99.0016698,
   },
   // khuang: {
   //   name: { th: "ข่วงพันปี", en: "Millennium Square", cn: "千年广场" },
@@ -38,18 +38,18 @@ export const STATION_COORDS = {
   // },
   "wat-chamthewi": {
     name: { th: "วัดจามเทวี", en: "Wat Chama Thewi", cn: "乍玛黛维寺" },
-    lat: 18.5815502,
-    lng: 98.9963657,
+    lat: 18.5815553,
+    lng: 98.9937908,
   },
   mahawan: {
     name: { th: "วัดมหาวัน", en: "Wat Mahawan", cn: "玛哈湾寺" },
-    lat: 18.578852,
-    lng: 99.0033117,
+    lat: 18.5788571,
+    lng: 99.0007368,
   },
   "khong-ruesi": {
     name: { th: "วัดพระคงฤาษี", en: "Wat Phra Khong Rue Si", cn: "帕空圣人寺" },
-    lat: 18.5837282,
-    lng: 99.008241,
+    lat: 18.5837333,
+    lng: 99.0056661,
   },
   "san-pa-yang": {
     name: {
@@ -57,8 +57,8 @@ export const STATION_COORDS = {
       en: "Wat San Pa Yang Luang",
       cn: "圣帕扬隆寺",
     },
-    lat: 18.5853532,
-    lng: 99.0118584,
+    lat: 18.5853583,
+    lng: 99.0092835,
   },
   "ku-chang": {
     name: {
@@ -66,8 +66,8 @@ export const STATION_COORDS = {
       en: "Ku Chang - Ku Ma",
       cn: "古象塔 - 古马塔",
     },
-    lat: 18.5867237,
-    lng: 99.0178729,
+    lat: 18.5867288,
+    lng: 99.015298,
   },
   "muan-chai": {
     name: {
@@ -75,8 +75,8 @@ export const STATION_COORDS = {
       en: "Suan Muan Jai (Railway Learning Center)",
       cn: "欢乐公园 (铁路学习中心)",
     },
-    lat: 18.5862068,
-    lng: 99.0186529,
+    lat: 18.5862119,
+    lng: 99.016078,
   },
   "mai-thai": {
     name: {
@@ -84,8 +84,8 @@ export const STATION_COORDS = {
       en: "Lamphun Thai Silk Learning Center",
       cn: "南奔泰国丝绸学习中心",
     },
-    lat: 18.5828849,
-    lng: 99.0165264,
+    lat: 18.58289,
+    lng: 99.0139515,
   },
   "province-lamphun": {
     name: { th: "พื้นที่ลำพูน (อื่นๆ)", en: "Lamphun Area", cn: "南奔地区" },
