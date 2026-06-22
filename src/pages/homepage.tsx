@@ -1625,6 +1625,8 @@ export default function Homepage() {
 
   const [isClamped, setIsClamped] = useState<boolean>(false);
 
+  const prevTramStationNumberRef = useRef<string | null>(null);
+
   useEffect(() => {
     const timer = setTimeout(() => setEntering(false), 10);
     return () => clearTimeout(timer);
@@ -1793,6 +1795,9 @@ export default function Homepage() {
 
   useEffect(() => {
     if (!tramStationNumber) return;
+    if (prevTramStationNumberRef.current === tramStationNumber) return;
+    prevTramStationNumberRef.current = tramStationNumber;
+
     startTransition(() => {
       setStationExpanded(Number(tramStationNumber) as stationNumber);
       setMode("store");
@@ -1982,6 +1987,7 @@ export default function Homepage() {
             setOverrideTitle(null);
             setShowFullDesc(false);
             setSelectedTag(null);
+            setShowScrollBtn(true);
           }}
           className="w-full bg-[#BF4B17] flex justify-center items-center text-white py-1"
         >

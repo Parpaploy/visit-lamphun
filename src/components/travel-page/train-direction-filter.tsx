@@ -81,7 +81,7 @@ export default function TrainDirectionFilter({
         <p className="text-[16px] font-bold text-[#543A14]">
           {t("form.destinationStation")}
         </p>
-        <div className="drop-shadow-[0_0_12.3px_rgba(50,33,21,0.15)] text-[16px] font-normal text-black w-full rounded-l-[5px] px-3 py-1 text-center bg-white">
+        <div className="drop-shadow-[0_0_12.3px_rgba(50,33,21,0.15)] text-[16px] font-normal text-black w-full rounded-r-[5px] px-3 py-1 text-center bg-white">
           <span
             style={{
               transition: flash
