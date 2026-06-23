@@ -74,7 +74,7 @@ export default function ItemCard({
 
       <div className="w-full h-35 rounded-[18px] overflow-hidden">
         <img
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-top"
           src={imgUrl}
           loading="lazy"
         />
