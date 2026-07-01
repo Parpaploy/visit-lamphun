@@ -43,11 +43,14 @@ export interface TramItem {
 
 export interface OtherItem {
   id: string;
+  image: string;
   place: MLString;
-  desc: MLString;
-  desc2: MLString;
-  type: "van" | "tricycle" | "songthaew";
-  phone: string;
+  boardingPoint: MLString;
+  route: MLString;
+  departureTime: MLString;
+  price: number;
+  type: "van" | "tricycle" | "songthaew" | "motorcycle";
+  phone?: string;
   link: string;
   lineLink?: string;
   day: "weekday" | "weekend";
@@ -77,3 +80,5 @@ export interface StationPopupData {
   phone?: string;
   location?: string;
 }
+
+export type CardType = "van" | "tricycle" | "songthaew" | "motorcycle";

@@ -408,9 +408,9 @@
 //   );
 // }
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import DayButton from "../components/travel-page/day-btn";
+// import DayButton from "../components/travel-page/day-btn";
 // import DayBlock from "../components/travel-page/day-block";
 import TrainCard from "../components/travel-page/train-card";
 import TramCard from "../components/travel-page/tram-card";
@@ -439,7 +439,7 @@ export default function TravelPage() {
   const [entering, setEntering] = useState(true);
 
   const [mode, setMode] = useState<ITravelMode>("tram");
-  const [day, setDay] = useState<"weekday" | "weekend">("weekday");
+  // const [day, setDay] = useState<"weekday" | "weekend">("weekday");
   const [prevMode, setPrevMode] = useState<ITravelMode>(mode);
   const [modeLoading, setModeLoading] = useState(false);
   const [direction, setDirection] = useState<"CNX_LPH" | "LPH_CNX">("CNX_LPH");
@@ -488,6 +488,8 @@ export default function TravelPage() {
   //   }, 100);
   // };
 
+  const detailScrollRef = useRef<HTMLDivElement>(null);
+
   const now = new Date();
   const nowMinutes = now.getHours() * 60 + now.getMinutes();
 
@@ -533,14 +535,12 @@ export default function TravelPage() {
           <IoIosArrowDown size={24} />
         </div> */}
 
-        <section
-          className={`w-[90%] mx-auto flex justify-center items-center gap-x-4 ${mode !== "train" && mode !== "tram" ? "border-b border-[#D9D9D9] py-5" : "pt-5"} shrink-0`}
-        >
+        <section className="w-[90%] mx-auto flex justify-center items-center gap-x-4 pt-5 shrink-0">
           {mode !== "train" ? (
             <>
               {mode !== "tram" ? (
                 <>
-                  <DayButton
+                  {/* <DayButton
                     title={t("travel.weekday")}
                     desc={t("travel.weekdayDesc")}
                     day={day}
@@ -553,7 +553,16 @@ export default function TravelPage() {
                     day={day}
                     week="weekend"
                     setDay={setDay}
-                  />
+                  /> */}
+
+                  <div className="w-[90%] border-b border-[#D9D9D9] pb-1.5 text-center text-[14px] font-normal text-[#543A14]">
+                    <h1 className="w-full mx-auto text-[16px] font-bold text-[#543A14] pb-2">
+                      {t("travel.otherTravelWay")}
+                    </h1>
+                    <p className="w-full mx-auto">
+                      {t("travel.otherSuggestion")}
+                    </p>
+                  </div>
                 </>
               ) : (
                 <>
@@ -567,7 +576,7 @@ export default function TravelPage() {
                   /> */}
 
                   <div className="w-[90%] border-b border-[#D9D9D9] pb-1.5 text-center text-[14px] font-normal text-[#543A14]">
-                    <h1 className="w-full mx-auto text-[16px] font-bold text-[#543A14] pb-3">
+                    <h1 className="w-full mx-auto text-[16px] font-bold text-[#543A14] pb-2">
                       {t("travel.tramHeader1")} <br /> {t("travel.tramHeader2")}
                     </h1>
                     <p className="w-full mx-auto">
@@ -589,6 +598,7 @@ export default function TravelPage() {
         )}
 
         <section
+          ref={detailScrollRef}
           className={`w-full flex-1 flex flex-col ${(mode === "train" || mode === "tram") && !loading ? "gap-y-1" : "gap-y-4 mt-1"} overflow-y-auto p-5 pt-3`}
         >
           {loading ? (
@@ -652,14 +662,14 @@ export default function TravelPage() {
 
               {mode === "other" &&
                 otherItems
-                  .filter((item) => item.day === day)
+                  // .filter((item) => item.day === day)
                   .map((item, idx) => (
                     <div
                       key={item.id}
                       className="animate-fade-in"
                       style={{ animationDelay: `${idx * 60}ms` }}
                     >
-                      <OtherCard
+                      {/* <OtherCard
                         place={item.place}
                         desc={item.desc}
                         desc2={item.desc2}
@@ -667,6 +677,20 @@ export default function TravelPage() {
                         phone={item.phone}
                         link={item.link}
                         lineLink={item.lineLink}
+                      /> */}
+                      <OtherCard
+                        place={item.place}
+                        imgUrl={item.image}
+                        boardingPoint={item.boardingPoint}
+                        route={item.route}
+                        departureTime={item.departureTime}
+                        price={item.price}
+                        type={item.type}
+                        phone={item.phone}
+                        link={item.link}
+                        lineLink={item.lineLink}
+                        isLast={idx === otherItems.length - 1}
+                        detailScrollRef={detailScrollRef}
                       />
                     </div>
                   ))}

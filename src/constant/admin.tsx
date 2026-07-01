@@ -1,5 +1,9 @@
 import { useTranslation } from "react-i18next";
-import type { Tab } from "../interfaces/admin.interface";
+import type {
+  OtherFieldVisibility,
+  OtherFormData,
+  Tab,
+} from "../interfaces/admin.interface";
 import type {
   OtherItem,
   TrainItem,
@@ -129,10 +133,13 @@ export const EMPTY_TRAM: Omit<TramItem, "id"> = {
 
 export const EMPTY_OTHER: Omit<OtherItem, "id"> = {
   place: { ...EMPTY_ML },
-  desc: { ...EMPTY_ML },
-  desc2: { ...EMPTY_ML },
-  type: "van",
+  image: "",
+  boardingPoint: { ...EMPTY_ML },
   phone: "",
+  route: { ...EMPTY_ML },
+  departureTime: { ...EMPTY_ML },
+  price: 0,
+  type: "van",
   link: "",
   lineLink: "",
   day: "weekday",
@@ -155,3 +162,47 @@ export const TIME_SLOTS = [
   "19:00",
   "20:00",
 ];
+
+export const FIELD_VISIBILITY: Record<OtherItem["type"], OtherFieldVisibility> =
+  {
+    van: {
+      route: true,
+      departureTime: true,
+      price: true,
+      phone: false,
+      lineLink: true,
+    },
+    motorcycle: {
+      route: false,
+      departureTime: false,
+      price: false,
+      phone: true,
+      lineLink: false,
+    },
+    songthaew: {
+      route: true,
+      departureTime: true,
+      price: true,
+      phone: false,
+      lineLink: false,
+    },
+    tricycle: {
+      route: true,
+      departureTime: true,
+      price: false,
+      phone: false,
+      lineLink: false,
+    },
+  };
+
+export function resetHiddenFields(f: OtherFormData): OtherFormData {
+  const vis = FIELD_VISIBILITY[f.type];
+  return {
+    ...f,
+    route: vis.route ? f.route : { ...EMPTY_ML },
+    departureTime: vis.departureTime ? f.departureTime : { ...EMPTY_ML },
+    price: vis.price ? f.price : 0,
+    phone: vis.phone ? f.phone : "",
+    lineLink: vis.lineLink ? f.lineLink : "",
+  };
+}

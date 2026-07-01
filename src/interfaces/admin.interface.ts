@@ -104,3 +104,13 @@ export interface HeatmapTableProps {
   ) => void;
   onCellMouseLeave: () => void;
 }
+
+export type OtherFieldVisibility = {
+  route: boolean;
+  departureTime: boolean;
+  price: boolean;
+  phone: boolean;
+  lineLink: boolean;
+};
+
+export type OtherFormData = Omit<OtherItem, "id">;

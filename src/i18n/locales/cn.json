@@ -96,7 +96,15 @@
     "tramHeader2": "每周一休息",
     "tramDesc1": "车票可在帕塔哈里奔猜寺对面购买",
     "tramDesc2": "可在发车前购票",
-    "boardingPoint": "上车点"
+    "boardingPoint": "上车点",
+    "otherTravelWay": "其他出行方式",
+    "otherSuggestion": "公共交通上车点推荐",
+    "route": "路线",
+    "departureTime": "发车时间",
+    "priceTitle": "票价",
+    "phoneTitle": "联系电话",
+    "phone": "电话",
+    "noPrice": "具体费用请在上车地点询问"
   },
 
   "form": {
@@ -132,13 +140,19 @@
     "van": "面包车",
     "tricycle": "三轮车",
     "songthaew": "双条车",
+    "motorcycle": "摩托车出租",
     "lineLink": "LINE link（加好友）",
+    "boardingPoint": "上车点",
+    "route": "路线",
+    "departureTime": "出发时间",
+    "baht": "泰铢",
     "extension": "分机号",
     "selectTag": "选择地点类别",
     "openTime": "开放时间",
     "closeTime": "关闭时间",
     "location": "位置",
-    "everyday": "每天"
+    "everyday": "每天",
+    "addLine": "添加行"
   },
 
   "dashboard": {

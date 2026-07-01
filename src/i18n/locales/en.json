@@ -87,7 +87,6 @@
     "close": "Closed",
     "closeDesc": "every Mon.",
     "allRoute": "All route",
-    "price": "Price",
     "baht": "THB",
     "departure": "Departure",
     "arrival": "Arrival",
@@ -96,7 +95,16 @@
     "tramHeader2": "Closed every Monday",
     "tramDesc1": "Tickets are available across from Wat Phra That Hariphunchai",
     "tramDesc2": "and can be purchased before departure time",
-    "boardingPoint": "Boarding Point "
+    "boardingPoint": "Boarding Point ",
+    "otherTravelWay": "Other Modes of Travel",
+    "otherSuggestion": "Public Transport Pickup Point Recommendations",
+    "route": "Route",
+    "departureTime": "Departure Time",
+    "priceTitle": "Fare",
+    "price": "Price",
+    "phoneTitle": "Contact Number",
+    "phone": "Tel.",
+    "noPrice": "Please inquire about the fare at the pickup point"
   },
 
   "form": {
@@ -132,13 +140,19 @@
     "van": "Van",
     "tricycle": "Tricycle",
     "songthaew": "Songthaew",
+    "motorcycle": "Motorcycle Taxi",
     "lineLink": "LINE link (Add Friend)",
+    "boardingPoint": "Boarding Point",
+    "route": "Route",
+    "departureTime": "Departure Time",
+    "baht": "THB",
     "extension": "Extension",
     "selectTag": "Select place category",
     "openTime": "Opening Time",
     "closeTime": "Closing Time",
     "location": "Location",
-    "everyday": "Every day"
+    "everyday": "Every day",
+    "addLine": "Add line"
   },
 
   "dashboard": {

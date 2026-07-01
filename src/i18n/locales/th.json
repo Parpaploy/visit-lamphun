@@ -96,7 +96,15 @@
     "tramHeader2": "ปิดทำการ ทุกวันจันทร์",
     "tramDesc1": "ซื้อตั๋วได้ฝั่งตรงข้ามวัดพระธาตุหริภุญชัย",
     "tramDesc2": "โดยสามารถซื้อก่อนเวลารถออก",
-    "boardingPoint": "จุดขึ้นรถ"
+    "boardingPoint": "จุดขึ้นรถ",
+    "otherTravelWay": "การเดินทางในรูปแบบอื่นๆ",
+    "otherSuggestion": "แนะนำจุดให้บริการรถสาธารณะ",
+    "route": "เส้นทาง",
+    "departureTime": "เวลาออกรถ",
+    "priceTitle": "อัตราค่าบริการ",
+    "phoneTitle": "เบอร์ติดต่อ",
+    "phone": "โทรศัพท์",
+    "noPrice": "อัตราค่าบริการสอบถามได้ที่จุดขึ้น"
   },
 
   "form": {
@@ -132,13 +140,19 @@
     "van": "รถตู้",
     "tricycle": "สามล้อ",
     "songthaew": "สองแถว",
+    "motorcycle": "มอเตอร์ไซค์รับจ้าง",
     "lineLink": "LINE link (เพิ่มเพื่อน)",
+    "boardingPoint": "จุดขึ้นรถ",
+    "route": "เส้นทาง",
+    "departureTime": "เวลาออกรถ",
+    "baht": "บาท",
     "extension": "เบอร์ต่อ",
     "selectTag": "เลือกหมวดหมู่ของสถานที่",
     "openTime": "เวลาเปิดทำการ",
     "closeTime": "เวลาปิดทำการ",
     "location": "สถานที่ตั้ง",
-    "everyday": "ทุกวัน"
+    "everyday": "ทุกวัน",
+    "addLine": "เพิ่มบรรทัด"
   },
 
   "dashboard": {

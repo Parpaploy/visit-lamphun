@@ -23,7 +23,7 @@ export default function KomePage() {
 
       <div className="z-50 mx-auto w-[85%] border-b border-[#D9D9D9] h-5" />
 
-      <section className="z-50 w-full h-full overflow-y-auto px-10 space-y-3 py-5">
+      <section className="z-50 w-full h-full overflow-y-auto px-10 space-y-3 py-5 bg-[linear-gradient(-201deg,#FFE2A5_0%,#FBFCF0_22%,#FBFCF0_62%,#E6EFD8_100%)]">
         {loading ? (
           Array.from({ length: 4 }).map((_, i) => <KomeLoader key={i} />)
         ) : items.length === 0 ? (

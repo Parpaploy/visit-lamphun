@@ -127,11 +127,11 @@ export default function AdminPopup({
                     <div
                       onClick={() => fileInputRef.current?.click()}
                       className={`relative aspect-square w-auto h-60 mx-auto rounded-2xl overflow-hidden cursor-pointer border-2 border-dashed transition-all duration-200
-        ${
-          previewUrl || imgUrl
-            ? "border-[#BF4B17]"
-            : "border-[#D9C5AE] hover:border-[#BF4B17] flex flex-col items-center justify-center gap-1 bg-[#FDF8F3] hover:bg-[#FFF1E8]"
-        }`}
+                                  ${
+                                    previewUrl || imgUrl
+                                      ? "border-[#BF4B17]"
+                                      : "border-[#D9C5AE] hover:border-[#BF4B17] flex flex-col items-center justify-center gap-1 bg-[#FDF8F3] hover:bg-[#FFF1E8]"
+                                  }`}
                     >
                       {previewUrl || imgUrl ? (
                         <>
