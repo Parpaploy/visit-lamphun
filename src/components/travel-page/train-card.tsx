@@ -430,8 +430,9 @@ export default function TrainCard({
 
         <div className="px-3 h-full w-[24%] flex flex-col justify-center items-center text-center gap-y-3">
           <p className="text-black font-bold text-[clamp(14px,3.2vw,16px)] shrink-0">
-            <span>{t("travel.price")}</span>
-            <span className="ml-1">{price}</span>
+            <span className="ml-1">
+              {t("travel.price")} <br /> {price} {t("travel.baht")}
+            </span>
           </p>
 
           <p className="font-normal text-black text-[clamp(14px,3.2vw,16px)]">

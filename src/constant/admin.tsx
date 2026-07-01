@@ -122,7 +122,8 @@ export const inputCls =
 export const EMPTY_TRAM: Omit<TramItem, "id"> = {
   place: { ...EMPTY_ML },
   round: "morning",
-  time: "",
+  originTime: "",
+  destinationTime: "",
   price: 0,
 };
 

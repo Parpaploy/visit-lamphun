@@ -411,7 +411,7 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import DayButton from "../components/travel-page/day-btn";
-import DayBlock from "../components/travel-page/day-block";
+// import DayBlock from "../components/travel-page/day-block";
 import TrainCard from "../components/travel-page/train-card";
 import TramCard from "../components/travel-page/tram-card";
 import OtherCard from "../components/travel-page/other-card";
@@ -438,7 +438,7 @@ export default function TravelPage() {
   // const [leaving, setLeaving] = useState(false);
   const [entering, setEntering] = useState(true);
 
-  const [mode, setMode] = useState<ITravelMode>("train");
+  const [mode, setMode] = useState<ITravelMode>("tram");
   const [day, setDay] = useState<"weekday" | "weekend">("weekday");
   const [prevMode, setPrevMode] = useState<ITravelMode>(mode);
   const [modeLoading, setModeLoading] = useState(false);
@@ -506,11 +506,11 @@ export default function TravelPage() {
       <SubNavbar
         mode={mode}
         setMode={setMode}
-        mode1="train"
-        mode2="tram"
+        mode1="tram"
+        mode2="train"
         mode3="other"
-        mode1Name={t("travel.train")}
-        mode2Name={t("travel.tram")}
+        mode1Name={t("travel.tram")}
+        mode2Name={t("travel.train")}
         mode3Name={t("travel.other")}
         isTabStyle={true}
         // leaving={leaving}
@@ -534,7 +534,7 @@ export default function TravelPage() {
         </div> */}
 
         <section
-          className={`w-[90%] mx-auto flex justify-center items-center gap-x-4 ${mode !== "train" ? "border-b border-[#D9D9D9] py-5" : "pt-5"} shrink-0`}
+          className={`w-[90%] mx-auto flex justify-center items-center gap-x-4 ${mode !== "train" && mode !== "tram" ? "border-b border-[#D9D9D9] py-5" : "pt-5"} shrink-0`}
         >
           {mode !== "train" ? (
             <>
@@ -557,14 +557,23 @@ export default function TravelPage() {
                 </>
               ) : (
                 <>
-                  <DayBlock
+                  {/* <DayBlock
                     title={t("travel.open")}
                     desc={t("travel.openDesc")}
                   />
                   <DayBlock
                     title={t("travel.close")}
                     desc={t("travel.closeDesc")}
-                  />
+                  /> */}
+
+                  <div className="w-[90%] border-b border-[#D9D9D9] pb-1.5 text-center text-[14px] font-normal text-[#543A14]">
+                    <h1 className="w-full mx-auto text-[16px] font-bold text-[#543A14] pb-3">
+                      {t("travel.tramHeader1")} <br /> {t("travel.tramHeader2")}
+                    </h1>
+                    <p className="w-full mx-auto">
+                      {t("travel.tramDesc1")} <br /> {t("travel.tramDesc2")}
+                    </p>
+                  </div>
                 </>
               )}
             </>
@@ -580,11 +589,11 @@ export default function TravelPage() {
         )}
 
         <section
-          className={`w-full flex-1 flex flex-col ${mode === "train" && !loading ? "gap-y-1" : "gap-y-4"} overflow-y-auto p-5`}
+          className={`w-full flex-1 flex flex-col ${(mode === "train" || mode === "tram") && !loading ? "gap-y-1" : "gap-y-4 mt-1"} overflow-y-auto p-5 pt-3`}
         >
           {loading ? (
             Array.from({ length: 2 }).map((_, i) =>
-              mode === "train" ? (
+              mode === "train" || mode === "tram" ? (
                 <TrainLoader key={i} />
               ) : (
                 <TravelLoader key={i} />
@@ -620,20 +629,26 @@ export default function TravelPage() {
                 })}
 
               {mode === "tram" &&
-                tramItems.map((item, idx) => (
-                  <div
-                    key={item.id}
-                    className="animate-fade-in"
-                    style={{ animationDelay: `${idx * 60}ms` }}
-                  >
-                    <TramCard
-                      place={item.place}
-                      round={item.round}
-                      time={item.time}
-                      price={item.price}
-                    />
-                  </div>
-                ))}
+                tramItems.map((item, idx) => {
+                  const isPast =
+                    timeToMinutes(item.destinationTime) < nowMinutes;
+                  return (
+                    <div
+                      key={item.id}
+                      className="animate-fade-in"
+                      style={{ animationDelay: `${idx * 60}ms` }}
+                    >
+                      <TramCard
+                        place={item.place}
+                        // round={item.round}
+                        originTime={item.originTime}
+                        destinationTime={item.destinationTime}
+                        price={item.price}
+                        isPast={isPast}
+                      />
+                    </div>
+                  );
+                })}
 
               {mode === "other" &&
                 otherItems

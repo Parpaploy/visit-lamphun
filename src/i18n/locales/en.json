@@ -86,12 +86,17 @@
     "openDesc": "Tue. - Sun.",
     "close": "Closed",
     "closeDesc": "every Mon.",
-    "allRoute": "Baht (all route)",
+    "allRoute": "All route",
     "price": "Price",
     "baht": "THB",
     "departure": "Departure",
     "arrival": "Arrival",
-    "desc": "Tickets can be purchased at the departure train station up to 2 hours before departure."
+    "desc": "Tickets can be purchased at the departure train station up to 2 hours before departure.",
+    "tramHeader1": "Open Tuesday - Sunday",
+    "tramHeader2": "Closed every Monday",
+    "tramDesc1": "Tickets are available across from Wat Phra That Hariphunchai",
+    "tramDesc2": "and can be purchased before departure time",
+    "boardingPoint": "Boarding Point "
   },
 
   "form": {

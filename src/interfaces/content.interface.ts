@@ -36,7 +36,8 @@ export interface TramItem {
   id: string;
   place: MLString;
   round: "morning" | "afternoon";
-  time: string;
+  originTime: string;
+  destinationTime: string;
   price: number;
 }
 

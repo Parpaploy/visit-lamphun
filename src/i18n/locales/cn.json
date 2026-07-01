@@ -86,12 +86,17 @@
     "openDesc": "周二至周日",
     "close": "关闭",
     "closeDesc": "每周一",
-    "allRoute": "泰铢（全程）",
+    "allRoute": "全程",
     "price": "价格",
     "baht": "泰铢",
     "departure": "出发时间",
     "arrival": "到达时间",
-    "desc": "可在出发火车站购票，最迟可在火车出发前 2 小时购买。"
+    "desc": "可在出发火车站购票，最迟可在火车出发前 2 小时购买。",
+    "tramHeader1": "营业时间：周二至周日",
+    "tramHeader2": "每周一休息",
+    "tramDesc1": "车票可在帕塔哈里奔猜寺对面购买",
+    "tramDesc2": "可在发车前购票",
+    "boardingPoint": "上车点"
   },
 
   "form": {
