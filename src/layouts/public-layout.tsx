@@ -26,7 +26,7 @@ export default function PublicLayout() {
           location.pathname === "/app/recommend" ||
           location.pathname === "/app/travel" ||
           location.pathname === "/app/contact"
-            ? "bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)]"
+            ? "bg-[linear-gradient(68deg,#FC8B32_0%,#FBC859_100%)]"
             : location.pathname.startsWith("/app/")
               ? "bg-white"
               : "bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_22%,#FBFCF0_62%,#E6EFD8_100%)]"

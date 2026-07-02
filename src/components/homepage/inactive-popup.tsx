@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { RxCross2 } from "react-icons/rx";
 
 export default function InactivePopup({
@@ -6,20 +7,21 @@ export default function InactivePopup({
 }: {
   setIsInactivePopup: (val: boolean) => void;
 }) {
+  const { t } = useTranslation();
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
-
     return () => {
       document.body.style.overflow = "auto";
     };
   }, []);
 
   return (
-    <div className="max-w-107.5 mx-auto fixed inset-0 backdrop-blur-[5px] flex items-center justify-center z-50">
+    <div className="max-w-107.5 mx-auto fixed inset-0 backdrop-blur-[5px] flex items-center justify-center z-9999">
       <div className="relative border border-black/30 bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] rounded-[42px] px-8 py-15 w-[95%] text-center">
         <button
           onClick={() => setIsInactivePopup(false)}
-          className="rounded-full border border-[#D9D9D9] p-1 absolute top-4 right-4 text-[#543A14]"
+          className="absolute top-4 right-4 text-[#543A14]/63"
         >
           <RxCross2 size={28} />
         </button>
@@ -28,26 +30,27 @@ export default function InactivePopup({
           <img className="w-full h-full" src="/icons/homepage/pray.svg" />
         </div>
 
-        <h2 className="text-[24px] font-bold text-[#543A14]">
-          วันนี้รถรางหยุดให้บริการ
+        <h2 className="text-[24px] font-bold text-black">
+          {t("inactivePopup.title")}
         </h2>
 
         <p className="text-[16px] font-normal text-[#543A14] mt-2 mb-3">
-          ขออภัยในความไม่สะดวก
+          {t("inactivePopup.desc")}
         </p>
 
         <div className="flex flex-col justify-center items-center">
           <p className="text-[16px] font-normal text-[#543A14] mt-3">
-            สอบถามข้อมูลเพิ่มเติม
+            {t("inactivePopup.contactMore")}
           </p>
-
           <div className="flex justify-center items-center gap-3">
             <div className="w-5 h-5">
-              <img className="w-full h-full" src="/icons/navbar/phone.svg" />
+              <img
+                className="w-full h-full"
+                src="/icons/contact-page/phone-icon.svg"
+              />
             </div>
-
             <p className="mt-1 text-[16px] font-normal text-[#543A14]">
-              โทรศัพท์ : 085-6950729
+              {t("contact.phone")} : 085-6950729
             </p>
           </div>
         </div>

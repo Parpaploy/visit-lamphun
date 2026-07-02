@@ -249,5 +249,11 @@
     "login": "Login",
     "loading": "Signing in...",
     "error": "Invalid email or password"
+  },
+
+  "inactivePopup": {
+    "title": "The tram is not in service today",
+    "desc": "We apologize for the inconvenience",
+    "contactMore": "For more information, please contact"
   }
 }

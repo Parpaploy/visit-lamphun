@@ -656,6 +656,15 @@ export default function Navbar() {
     matched?.sf ??
     (location.pathname.includes("contact") ? "contact" : "homepage");
 
+  const contactIcon = footerList.th.find(
+    (item) => item.path === "/app/contact",
+  )?.img;
+
+  const pageIcon =
+    matched?.img ??
+    (sf === "contact" ? contactIcon : undefined) ??
+    "/icons/navbar/map-icon.svg";
+
   // const pageTitle = pageTitleMap[lang]?.[sf] ?? pageTitleMap.th[sf];
   const { overrideTitle } = useNavbarTitle();
   const pageTitle =
@@ -666,6 +675,10 @@ export default function Navbar() {
       <div
         className={`${location.pathname !== "/app" && location.pathname !== "/app/recommend" && location.pathname !== "/app/travel" && location.pathname !== "/app/contact" ? "bg-[linear-gradient(68deg,#FC8B32_0%,#FBC859_100%)]" : ""} w-full h-[9svh] px-3.75 pt-1.25 flex justify-between items-center`}
       >
+        <div className="w-12 h-12 -mt-1.5">
+          <img className="w-full h-full" src={pageIcon} alt={pageTitle} />
+        </div>
+
         <h1 className="text-[#543A14] text-[20px] font-bold leading-7">
           {pageTitle}
         </h1>

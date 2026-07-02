@@ -260,3 +260,14 @@ export const subtitleMap: Record<"th" | "en" | "cn", string> = {
   en: "Visit Lamphun",
   cn: "游览南奔",
 };
+
+export const SF_ICON_MAP: Record<string, string> = {
+  homepage: "/icons/navbar/map-icon.svg",
+  travel: "/icons/navbar/travel.svg",
+  goods: "/icons/navbar/recommend.svg",
+  kome: "/icons/navbar/kome.svg",
+  tbook: "/icons/navbar/shop.svg",
+  contact: "/icons/navbar/phone.svg",
+  checkin: "/icons/navbar/checkin-icon.svg",
+  roadmap: "/icons/navbar/roadmap-icon.svg",
+};

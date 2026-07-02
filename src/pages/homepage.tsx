@@ -1788,15 +1788,15 @@ export default function Homepage() {
     setMode(newMode);
     setSelectedCard(null);
     setSelectedTag(null);
-    setOverrideTitle(
-      newMode === "store"
-        ? t("homepage.storeNearMe")
-        : newMode === "activity"
-          ? t("homepage.activityNearMe")
-          : newMode === "toilet"
-            ? t("homepage.toiletNearMe")
-            : null,
-    );
+    // setOverrideTitle(
+    //   newMode === "store"
+    //     ? t("homepage.storeNearMe")
+    //     : newMode === "activity"
+    //       ? t("homepage.activityNearMe")
+    //       : newMode === "toilet"
+    //         ? t("homepage.toiletNearMe")
+    //         : null,
+    // );
   };
 
   useEffect(() => {
@@ -1823,7 +1823,7 @@ export default function Homepage() {
       setStationExpanded(Number(tramStationNumber) as stationNumber);
       setMode("store");
       setSelectedTag(null);
-      setOverrideTitle(t("homepage.storeNearMe"));
+      // setOverrideTitle(t("homepage.storeNearMe"));
     });
   }, [tramStationNumber, t, setOverrideTitle]);
 
@@ -2270,7 +2270,7 @@ export default function Homepage() {
                                 closeTime: place.closeTime,
                                 phone: place.phone,
                               });
-                              setOverrideTitle(t("homepage.storeNearMe"));
+                              // setOverrideTitle(t("homepage.storeNearMe"));
                               setIsCardTransitioning(false);
                             }, 150);
                           }}
@@ -2316,7 +2316,7 @@ export default function Homepage() {
                                 closeTime: act.closeTime,
                                 phone: act.phone,
                               });
-                              setOverrideTitle(t("homepage.activityNearMe"));
+                              // setOverrideTitle(t("homepage.activityNearMe"));
                               setIsCardTransitioning(false);
                             }, 150);
                           }}
@@ -2364,7 +2364,7 @@ export default function Homepage() {
                                 phone: toilet.phone,
                                 location: toilet.location,
                               });
-                              setOverrideTitle(t("homepage.toiletNearMe"));
+                              // setOverrideTitle(t("homepage.toiletNearMe"));
                               setIsCardTransitioning(false);
                             }, 150);
                           }}
