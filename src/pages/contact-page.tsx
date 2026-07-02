@@ -214,6 +214,7 @@ import ContactLoader from "../components/skeleton-load/contact-loader";
 import { useEmergencyItems } from "../hooks/useEmergencyItems";
 import LazyImage from "../components/skeleton-load/image-loader";
 import { formatTime12h, formatTime12hCn } from "../utils/ml";
+import EmergencyPhoneCard from "../components/contact-page/emergency-phone-card";
 // import { IoIosArrowDown } from "react-icons/io";
 // import { useNavigate } from "react-router-dom";
 // import { useNavbarTitle } from "../hooks/useNavbar";
@@ -291,7 +292,7 @@ export default function ContactPage() {
           <IoIosArrowDown size={24} />
         </div> */}
 
-        <div className="w-full flex-1 overflow-y-auto space-y-4 p-7">
+        <div className="w-full flex-1 overflow-y-auto space-y-4 p-5">
           {mode === "emergency" &&
             (modeLoading || loading ? (
               Array.from({ length: 3 }).map((_, i) => <ContactLoader key={i} />)
@@ -300,45 +301,71 @@ export default function ContactPage() {
                 ยังไม่มีข้อมูล
               </p>
             ) : (
-              items.map((item, idx) => (
-                <div
-                  key={item.id}
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${idx * 60}ms` }}
-                >
-                  <EmergencyCard
-                    header={item.header}
-                    items={[
-                      ...(item.address[lang]
-                        ? [
-                            {
-                              type: "address" as const,
-                              text: item.address[lang],
-                            },
-                          ]
-                        : []),
-                      ...(item.openTime || item.closeTime
-                        ? [
-                            {
-                              type: "hours" as const,
-                              text:
-                                lang === "th"
-                                  ? `${item.openTime ?? "?"} – ${item.closeTime ?? "?"} น.`
-                                  : lang === "en"
-                                    ? `${formatTime12h(item.openTime)} – ${formatTime12h(item.closeTime)}`
-                                    : `${formatTime12hCn(item.openTime)} – ${formatTime12hCn(item.closeTime)}`,
-                            },
-                          ]
-                        : []),
-                      ...item.phones.map((ph) => ({
-                        type: "phone" as const,
-                        text: `${ph.label[lang] || `${t("contact.phone")}`} : ${ph.number}`,
-                        ext: ph.ext,
-                      })),
-                    ]}
-                  />
-                </div>
-              ))
+              items.map((item, idx) => {
+                if (item.header.th === "เบอร์โทรฉุกเฉิน") {
+                  return (
+                    <div
+                      key={item.id}
+                      className="animate-fade-in"
+                      style={{ animationDelay: `${idx * 60}ms` }}
+                    >
+                      <EmergencyPhoneCard
+                        // header={item.header}
+                        phones={item.phones.map((ph) => ({
+                          label: ph.label,
+                          number: ph.number,
+                          ext: ph.ext,
+                        }))}
+                      />
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div
+                      key={item.id}
+                      className="animate-fade-in"
+                      style={{ animationDelay: `${idx * 60}ms` }}
+                    >
+                      <EmergencyCard
+                        header={item.header}
+                        items={[
+                          ...(item.address[lang]
+                            ? [
+                                {
+                                  type: "address" as const,
+                                  text: item.address[lang],
+                                },
+                              ]
+                            : []),
+                          ...(item.openTime || item.closeTime
+                            ? [
+                                {
+                                  type: "hours" as const,
+                                  text:
+                                    lang === "th"
+                                      ? `${item.openTime ?? "?"} – ${item.closeTime ?? "?"} น.`
+                                      : lang === "en"
+                                        ? `${formatTime12h(item.openTime)} – ${formatTime12h(item.closeTime)}`
+                                        : `${formatTime12hCn(item.openTime)} – ${formatTime12hCn(item.closeTime)}`,
+                                },
+                              ]
+                            : []),
+                          ...item.phones.map((ph) => {
+                            const hasLabel = !!ph.label[lang]?.trim();
+                            return {
+                              type: "phone" as const,
+                              text: ph.number,
+                              label: hasLabel ? ph.label[lang] : undefined,
+                              ext: ph.ext,
+                              hasLabel,
+                            };
+                          }),
+                        ]}
+                      />
+                    </div>
+                  );
+                }
+              })
             ))}
 
           {mode === "news" &&

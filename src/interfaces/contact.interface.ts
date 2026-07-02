@@ -4,4 +4,6 @@ export interface CardItem {
   type: CardItemType;
   text: string;
   ext?: string;
+  hasLabel?: boolean;
+  label?: string;
 }
