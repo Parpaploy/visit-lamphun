@@ -15,6 +15,7 @@ export interface KomeItem {
   id: string;
   name: MLString;
   phone: string;
+  link?: string;
 }
 
 export type Direction = "CNX_LPH" | "LPH_CNX";

@@ -73,7 +73,7 @@ export const EMPTY_RECOMMEND = {
   descCn: "",
 };
 
-export const EMPTY_KOME = { name: { ...EMPTY_ML }, phone: "" };
+export const EMPTY_KOME = { name: { ...EMPTY_ML }, phone: "", link: "" };
 
 export const EMPTY_CONTACT = {
   header: { ...EMPTY_ML },

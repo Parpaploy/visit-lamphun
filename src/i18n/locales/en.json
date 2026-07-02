@@ -40,6 +40,10 @@
     "tramTime": "The tram departs at {{time}}."
   },
 
+  "komepage": {
+    "header": "Contact Information: Lantern Production Group"
+  },
+
   "contact": {
     "emergency": "Emergency Numbers",
     "news": "Follow News",
