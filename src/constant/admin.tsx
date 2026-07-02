@@ -44,8 +44,8 @@ export function useStationModes(): {
 export function useTravelModes(): { value: ITravelMode; label: string }[] {
   const { t } = useTranslation();
   return [
-    { value: "train", label: t("travel.train") },
     { value: "tram", label: t("travel.tram") },
+    { value: "train", label: t("travel.train") },
     { value: "other", label: t("travel.other") },
   ];
 }
