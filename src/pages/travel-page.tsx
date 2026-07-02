@@ -428,7 +428,8 @@ import {
 import TrainLoader from "../components/skeleton-load/train-loader";
 import TrainDirectionFilter from "../components/travel-page/train-direction-filter";
 import { timeToMinutes } from "../utils/countdown";
-import TravelLoader from "../components/skeleton-load/travel-loader";
+// import TravelLoader from "../components/skeleton-load/travel-loader";
+import RecommendLoader from "../components/skeleton-load/recommend-loader";
 
 export default function TravelPage() {
   const { t } = useTranslation();
@@ -555,7 +556,7 @@ export default function TravelPage() {
                     setDay={setDay}
                   /> */}
 
-                  <div className="w-[90%] border-b border-[#D9D9D9] pb-1.5 text-center text-[14px] font-normal text-[#543A14]">
+                  <div className="w-full border-b border-[#D9D9D9] pb-1.5 text-center text-[14px] font-normal text-[#543A14]">
                     <h1 className="w-full mx-auto text-[16px] font-bold text-[#543A14] pb-2">
                       {t("travel.otherTravelWay")}
                     </h1>
@@ -575,7 +576,7 @@ export default function TravelPage() {
                     desc={t("travel.closeDesc")}
                   /> */}
 
-                  <div className="w-[90%] border-b border-[#D9D9D9] pb-1.5 text-center text-[14px] font-normal text-[#543A14]">
+                  <div className="w-full border-b border-[#D9D9D9] pb-1.5 text-center text-[14px] font-normal text-[#543A14]">
                     <h1 className="w-full mx-auto text-[16px] font-bold text-[#543A14] pb-2">
                       {t("travel.tramHeader1")} <br /> {t("travel.tramHeader2")}
                     </h1>
@@ -599,14 +600,16 @@ export default function TravelPage() {
 
         <section
           ref={detailScrollRef}
-          className={`w-full flex-1 flex flex-col ${(mode === "train" || mode === "tram") && !loading ? "gap-y-1" : "gap-y-4 mt-1"} overflow-y-auto p-5 pt-3`}
+          className={`w-full flex-1 flex flex-col ${(mode === "train" || mode === "tram") && !loading ? "gap-y-1" : "gap-y-4 mt-1"} ${mode === "train" || mode === "tram" ? "px-6" : "px-8"} overflow-y-auto p-5 pt-3`}
         >
           {loading ? (
             Array.from({ length: 2 }).map((_, i) =>
               mode === "train" || mode === "tram" ? (
                 <TrainLoader key={i} />
               ) : (
-                <TravelLoader key={i} />
+                <div className="-mt-7">
+                  <RecommendLoader key={i} />
+                </div>
               ),
             )
           ) : (
