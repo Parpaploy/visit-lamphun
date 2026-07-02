@@ -1638,6 +1638,12 @@ export default function Homepage() {
   };
 
   useEffect(() => {
+    return () => {
+      setOverrideTitle(null);
+    };
+  }, [setOverrideTitle]);
+
+  useEffect(() => {
     if (spanRef.current) {
       setWidth(spanRef.current.offsetWidth + 24);
     }
@@ -1757,7 +1763,28 @@ export default function Homepage() {
     };
   }, [currentBg]);
 
-  const handleSetMode = (newMode: typeof mode) => {
+  // const handleSetMode = (newMode: typeof mode) => {
+  //   setMode(newMode);
+  //   setSelectedCard(null);
+  //   setSelectedTag(null);
+  //   setOverrideTitle(
+  //     newMode === "store"
+  //       ? t("homepage.storeNearMe")
+  //       : newMode === "activity"
+  //         ? t("homepage.activityNearMe")
+  //         : t("homepage.toiletNearMe"),
+  //   );
+  //   if (tramStationId && stationExpanded === 0) {
+  //     const stationNum = Object.entries(STATION_ID_MAP).find(
+  //       ([, id]) => id === tramStationId,
+  //     )?.[0];
+  //     if (stationNum) {
+  //       setStationExpanded(Number(stationNum) as stationNumber);
+  //     }
+  //   }
+  // };
+
+  const handleHitboxSetMode = (newMode: typeof mode) => {
     setMode(newMode);
     setSelectedCard(null);
     setSelectedTag(null);
@@ -1766,16 +1793,10 @@ export default function Homepage() {
         ? t("homepage.storeNearMe")
         : newMode === "activity"
           ? t("homepage.activityNearMe")
-          : t("homepage.toiletNearMe"),
+          : newMode === "toilet"
+            ? t("homepage.toiletNearMe")
+            : null,
     );
-    if (tramStationId && stationExpanded === 0) {
-      const stationNum = Object.entries(STATION_ID_MAP).find(
-        ([, id]) => id === tramStationId,
-      )?.[0];
-      if (stationNum) {
-        setStationExpanded(Number(stationNum) as stationNumber);
-      }
-    }
   };
 
   useEffect(() => {
@@ -1887,7 +1908,7 @@ export default function Homepage() {
 
       <SubNavbar
         mode={mode}
-        setMode={handleSetMode}
+        setMode={handleHitboxSetMode}
         mode1="store"
         mode2="activity"
         mode3="toilet"
@@ -1956,9 +1977,12 @@ export default function Homepage() {
 
                 <div className="absolute inset-0">
                   <Hitbox
+                    // loaded={loaded || !!prevBg}
+                    // setStationExpanded={setStationExpanded}
+                    // setMode={setMode}
                     loaded={loaded || !!prevBg}
                     setStationExpanded={setStationExpanded}
-                    setMode={setMode}
+                    setMode={handleHitboxSetMode}
                   />
                   {(loaded || prevBg) && (
                     <TramPin
