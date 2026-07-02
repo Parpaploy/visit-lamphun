@@ -1,4 +1,9 @@
-import type { Location, PlaceTag } from "../interfaces/homepage.interface";
+import type {
+  Lang,
+  Location,
+  PlaceTag,
+  StationPin,
+} from "../interfaces/homepage.interface";
 
 export const isSaturday = new Date().getDay() === 6;
 
@@ -43,11 +48,11 @@ export const BG_MAP: Record<string, string> = {
     ? "/images/homepage/th-new-bg-no-kuang.svg"
     : "/images/homepage/th-new-bg-no-kuang.svg",
   en: isSaturday
-    ? "/images/homepage/th-new-bg-no-kuang.svg"
-    : "/images/homepage/th-new-bg-no-kuang.svg",
+    ? "/images/homepage/en-new-bg-no-kuang.svg"
+    : "/images/homepage/en-new-bg-no-kuang.svg",
   cn: isSaturday
-    ? "/images/homepage/th-new-bg-no-kuang.svg"
-    : "/images/homepage/th-new-bg-no-kuang.svg",
+    ? "/images/homepage/cn-new-bg-no-kuang.svg"
+    : "/images/homepage/cn-new-bg-no-kuang.svg",
 };
 
 // export const STATION_ID_MAP: Record<number, string> = {
@@ -1155,8 +1160,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "hariphunchai",
       name: "Hariphunchai",
       points: [
-        { x: 85, y: -115, width: 80, height: 85 },
-        { x: 40, y: -30, width: 175, height: 30 },
+        { x: 78, y: -90, width: 80, height: 85 },
+        { x: 2, y: -5, width: 210, height: 30 },
       ],
     },
     {
@@ -1164,8 +1169,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "community",
       name: "Community Museum",
       points: [
-        { x: 240, y: -40, width: 110, height: 65 },
-        { x: 210, y: 22, width: 170, height: 30 },
+        { x: 225, y: -15, width: 105, height: 60 },
+        { x: 163, y: 42, width: 230, height: 30 },
       ],
     },
     {
@@ -1173,8 +1178,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "chamthewi",
       name: "Chamthewi Statue",
       points: [
-        { x: 80, y: 20, width: 80, height: 85 },
-        { x: 30, y: 105, width: 195, height: 30 },
+        { x: 75, y: 40, width: 80, height: 85 },
+        { x: 0, y: 120, width: 233, height: 30 },
       ],
     },
     // {
@@ -1191,8 +1196,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "wat-chamthewi",
       name: "Wat Chamthewi",
       points: [
-        { x: 256, y: 108, width: 70, height: 85 },
-        { x: 247, y: 191, width: 92, height: 30 },
+        { x: 238, y: 118, width: 70, height: 85 },
+        { x: 205, y: 197, width: 138, height: 30 },
       ],
     },
     {
@@ -1200,8 +1205,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "mahawan",
       name: "Wat Mahawan",
       points: [
-        { x: 66, y: 190, width: 100, height: 75 },
-        { x: 71, y: 265, width: 90, height: 31 },
+        { x: 60, y: 193, width: 100, height: 75 },
+        { x: 55, y: 268, width: 110, height: 31 },
       ],
     },
     {
@@ -1209,8 +1214,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "khong-ruesi",
       name: "Wat Phra Khong Ruesi",
       points: [
-        { x: 265, y: 254, width: 55, height: 90 },
-        { x: 233, y: 340, width: 120, height: 35 },
+        { x: 245, y: 254, width: 55, height: 90 },
+        { x: 190, y: 335, width: 168, height: 35 },
       ],
     },
     {
@@ -1218,8 +1223,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "san-pa-yang",
       name: "Wat San Pa Yang Luang",
       points: [
-        { x: 92, y: 340, width: 75, height: 75 },
-        { x: 58, y: 415, width: 145, height: 30 },
+        { x: 86, y: 334, width: 75, height: 75 },
+        { x: 18, y: 405, width: 172, height: 30 },
       ],
     },
     {
@@ -1227,8 +1232,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "ku-chang",
       name: "Ku Chang Ku Ma",
       points: [
-        { x: 240, y: 415, width: 85, height: 80 },
-        { x: 232, y: 495, width: 105, height: 30 },
+        { x: 223, y: 400, width: 85, height: 80 },
+        { x: 198, y: 477, width: 133, height: 30 },
       ],
     },
     {
@@ -1236,8 +1241,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "muan-chai",
       name: "Muan Jai",
       points: [
-        { x: 233, y: 620, width: 95, height: 60 },
-        { x: 225, y: 680, width: 110, height: 32 },
+        { x: 215, y: 593, width: 95, height: 60 },
+        { x: 205, y: 647, width: 113, height: 32 },
       ],
     },
     {
@@ -1245,8 +1250,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "mai-thai",
       name: "Mai Thai",
       points: [
-        { x: 90, y: 498, width: 85, height: 60 },
-        { x: 60, y: 557, width: 145, height: 50 },
+        { x: 85, y: 480, width: 85, height: 60 },
+        { x: 50, y: 540, width: 155, height: 43 },
       ],
     },
   ],
@@ -1256,8 +1261,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "hariphunchai",
       name: "哈里奔猜",
       points: [
-        { x: 85, y: -115, width: 80, height: 85 },
-        { x: 40, y: -30, width: 175, height: 30 },
+        { x: 85, y: -117, width: 82, height: 87 },
+        { x: 40, y: -30, width: 155, height: 32 },
       ],
     },
     {
@@ -1266,7 +1271,7 @@ export const hitboxData: Record<string, Location[]> = {
       name: "社区博物馆",
       points: [
         { x: 240, y: -40, width: 110, height: 65 },
-        { x: 210, y: 22, width: 170, height: 30 },
+        { x: 227, y: 22, width: 140, height: 30 },
       ],
     },
     {
@@ -1274,8 +1279,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "chamthewi",
       name: "占玛เทวี",
       points: [
-        { x: 80, y: 20, width: 80, height: 85 },
-        { x: 30, y: 105, width: 195, height: 30 },
+        { x: 80, y: 18, width: 80, height: 87 },
+        { x: 35, y: 105, width: 177, height: 30 },
       ],
     },
     // {
@@ -1311,7 +1316,7 @@ export const hitboxData: Record<string, Location[]> = {
       name: "空鲁西寺",
       points: [
         { x: 265, y: 254, width: 55, height: 90 },
-        { x: 233, y: 340, width: 120, height: 35 },
+        { x: 238, y: 340, width: 107, height: 35 },
       ],
     },
     {
@@ -1319,8 +1324,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "san-pa-yang",
       name: "圣巴扬寺",
       points: [
-        { x: 92, y: 340, width: 75, height: 75 },
-        { x: 58, y: 415, width: 145, height: 30 },
+        { x: 92, y: 338, width: 75, height: 77 },
+        { x: 74, y: 415, width: 112, height: 30 },
       ],
     },
     {
@@ -1329,7 +1334,7 @@ export const hitboxData: Record<string, Location[]> = {
       name: "库常库玛",
       points: [
         { x: 240, y: 415, width: 85, height: 80 },
-        { x: 232, y: 495, width: 105, height: 30 },
+        { x: 217, y: 492, width: 131, height: 30 },
       ],
     },
     {
@@ -1337,8 +1342,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "muan-chai",
       name: "沐恩猜",
       points: [
-        { x: 233, y: 620, width: 95, height: 60 },
-        { x: 225, y: 680, width: 110, height: 32 },
+        { x: 233, y: 618, width: 95, height: 62 },
+        { x: 240, y: 680, width: 85, height: 32 },
       ],
     },
     {
@@ -1346,8 +1351,8 @@ export const hitboxData: Record<string, Location[]> = {
       id: "mai-thai",
       name: "泰丝学习中心",
       points: [
-        { x: 90, y: 498, width: 85, height: 60 },
-        { x: 60, y: 557, width: 145, height: 50 },
+        { x: 89, y: 498, width: 88, height: 60 },
+        { x: 74, y: 557, width: 120, height: 50 },
       ],
     },
   ],
@@ -1387,21 +1392,46 @@ export const hitboxData: Record<string, Location[]> = {
 //   "mai-thai": { x: 295, y: 525, offsetY: 0 },
 // };
 
-export const STATION_PIN_MAP: Record<
-  string,
-  { x: number; y: number; offsetX?: number; offsetY?: number }
-> = {
-  hariphunchai: { x: 118, y: 35, offsetX: -0.75, offsetY: 4 },
-  community: { x: 290, y: 80, offsetX: 1.5, offsetY: 2 },
-  chamthewi: { x: 130, y: 120, offsetX: -1.5, offsetY: 2 },
-  // khuang: { x: 300, y: 195, offsetX: -1, offsetY: 2 },
-  "wat-chamthewi": { x: 295, y: 190, offsetX: -0.75, offsetY: 3 },
-  mahawan: { x: 115, y: 250, offsetX: -0.25, offsetY: 1 },
-  "khong-ruesi": { x: 290, y: 290, offsetX: 0.25, offsetY: 2.5 },
-  "san-pa-yang": { x: 123, y: 360, offsetX: 1.5, offsetY: 0 },
-  "ku-chang": { x: 280, y: 405, offsetX: 0.5, offsetY: 1.5 },
-  "muan-chai": { x: 280, y: 545, offsetX: 0.25, offsetY: 0 },
-  "mai-thai": { x: 138, y: 465, offsetY: 0 },
+export const STATION_PIN_MAP: Record<Lang, Record<string, StationPin>> = {
+  th: {
+    hariphunchai: { x: 118, y: 35, offsetX: -0.75, offsetY: 4 },
+    community: { x: 290, y: 80, offsetX: 1.5, offsetY: 2 },
+    chamthewi: { x: 130, y: 120, offsetX: -1.5, offsetY: 2 },
+    // khuang: { x: 300, y: 195, offsetX: -1, offsetY: 2 },
+    "wat-chamthewi": { x: 295, y: 190, offsetX: -0.75, offsetY: 3 },
+    mahawan: { x: 115, y: 250, offsetX: -0.25, offsetY: 1 },
+    "khong-ruesi": { x: 290, y: 290, offsetX: 0.25, offsetY: 2.5 },
+    "san-pa-yang": { x: 123, y: 360, offsetX: 1.5, offsetY: 0 },
+    "ku-chang": { x: 280, y: 405, offsetX: 0.5, offsetY: 1.5 },
+    "muan-chai": { x: 280, y: 545, offsetX: 0.25, offsetY: 0 },
+    "mai-thai": { x: 138, y: 465, offsetY: 0 },
+  },
+  en: {
+    hariphunchai: { x: 111, y: 35, offsetX: -0.75, offsetY: 4 },
+    community: { x: 270, y: 80, offsetX: 1.5, offsetY: 2 },
+    chamthewi: { x: 125, y: 120, offsetX: -1.5, offsetY: 2 },
+    // khuang: { x: 300, y: 195, offsetX: -1, offsetY: 2 },
+    "wat-chamthewi": { x: 275, y: 190, offsetX: -0.75, offsetY: 3 },
+    mahawan: { x: 110, y: 250, offsetX: -0.25, offsetY: 1 },
+    "khong-ruesi": { x: 272, y: 290, offsetX: 0.25, offsetY: 2.5 },
+    "san-pa-yang": { x: 116, y: 360, offsetX: 1.5, offsetY: 0 },
+    "ku-chang": { x: 262, y: 405, offsetX: 0.5, offsetY: 1.5 },
+    "muan-chai": { x: 261, y: 545, offsetX: 0.25, offsetY: 0 },
+    "mai-thai": { x: 130, y: 465, offsetY: 0 },
+  },
+  cn: {
+    hariphunchai: { x: 117, y: 35, offsetX: -0.75, offsetY: 4 },
+    community: { x: 289, y: 80, offsetX: 1.5, offsetY: 2 },
+    chamthewi: { x: 130, y: 120, offsetX: -1.5, offsetY: 2 },
+    // khuang: { x: 300, y: 195, offsetX: -1, offsetY: 2 },
+    "wat-chamthewi": { x: 295, y: 190, offsetX: -0.75, offsetY: 3 },
+    mahawan: { x: 116, y: 250, offsetX: -0.25, offsetY: 1 },
+    "khong-ruesi": { x: 290, y: 290, offsetX: 0.25, offsetY: 2.5 },
+    "san-pa-yang": { x: 123, y: 360, offsetX: 1.5, offsetY: 0 },
+    "ku-chang": { x: 280, y: 405, offsetX: 0.5, offsetY: 1.5 },
+    "muan-chai": { x: 280, y: 545, offsetX: 0.25, offsetY: 0 },
+    "mai-thai": { x: 138, y: 465, offsetY: 0 },
+  },
 };
 
 export const MAP_WIDTH = 393;

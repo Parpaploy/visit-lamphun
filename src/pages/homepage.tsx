@@ -1556,6 +1556,7 @@ import {
 } from "../constant/homepage";
 import Hitbox from "../components/homepage/hitbox";
 import type {
+  Lang,
   PlaceTag,
   SelectedCard,
   stationNumber,
@@ -1788,6 +1789,7 @@ export default function Homepage() {
     setMode(newMode);
     setSelectedCard(null);
     setSelectedTag(null);
+
     // setOverrideTitle(
     //   newMode === "store"
     //     ? t("homepage.storeNearMe")
@@ -1797,6 +1799,21 @@ export default function Homepage() {
     //         ? t("homepage.toiletNearMe")
     //         : null,
     // );
+  };
+
+  const handleTabSetMode = (newMode: typeof mode) => {
+    setMode(newMode);
+    setSelectedCard(null);
+    setSelectedTag(null);
+
+    if (tramStationId && stationExpanded === 0) {
+      const stationNum = Object.entries(STATION_ID_MAP).find(
+        ([, id]) => id === tramStationId,
+      )?.[0];
+      if (stationNum) {
+        setStationExpanded(Number(stationNum) as stationNumber);
+      }
+    }
   };
 
   useEffect(() => {
@@ -1908,7 +1925,7 @@ export default function Homepage() {
 
       <SubNavbar
         mode={mode}
-        setMode={handleHitboxSetMode}
+        setMode={handleTabSetMode}
         mode1="store"
         mode2="activity"
         mode3="toilet"
@@ -1986,6 +2003,7 @@ export default function Homepage() {
                   />
                   {(loaded || prevBg) && (
                     <TramPin
+                      lang={lang as Lang}
                       stationId={tramStationId}
                       loaded={loaded || !!prevBg}
                     />

@@ -68,3 +68,12 @@ export type SelectedCard = {
   phone?: string;
   location?: string;
 } | null;
+
+export type Lang = "th" | "en" | "cn";
+
+export type StationPin = {
+  x: number;
+  y: number;
+  offsetX?: number;
+  offsetY?: number;
+};
