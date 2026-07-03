@@ -9,6 +9,22 @@ import type {
 } from "./content.interface";
 import type { TransportType } from "./stat.interface";
 
+export type PlaceEditState = {
+  id: string;
+  nameTh: string;
+  nameEn: string;
+  nameCn: string;
+  link: string;
+  tag: string;
+  openTime: string;
+  closeTime: string;
+  phone: string;
+  img: string;
+  newFile: File | null;
+  previewUrl: string | null;
+  saving: boolean;
+};
+
 export type EditState = {
   id: string;
   nameTh: string;
@@ -19,18 +35,23 @@ export type EditState = {
   newFile: File | null;
   previewUrl: string | null;
   saving: boolean;
+  openTime: string;
+  closeTime: string;
+  phone: string;
+  location: string;
 };
 
 export type Tab =
-  | "places"
-  | "recommend"
-  | "kome"
-  | "travel"
-  | "contact"
-  | "popup"
-  | "heatmap";
+  // | "places"
+  // | "activities"
+  // | "toilets"
+  "station" | "recommend" | "kome" | "travel" | "contact" | "heatmap";
 
-export type ContactEditState = EmergencyItem & { saving: boolean };
+export interface ContactEditState extends EmergencyItem {
+  saving: boolean;
+  openTime: string;
+  closeTime: string;
+}
 
 export type KomeEditState = KomeItem & { saving: boolean };
 
@@ -49,6 +70,7 @@ export type OtherEdit = OtherItem & { saving: boolean };
 export interface CellData {
   count: number;
   lastTime: string;
+  lastTimestamp?: number;
 }
 
 export interface HeatmapRecord {
@@ -82,3 +104,13 @@ export interface HeatmapTableProps {
   ) => void;
   onCellMouseLeave: () => void;
 }
+
+export type OtherFieldVisibility = {
+  route: boolean;
+  departureTime: boolean;
+  price: boolean;
+  phone: boolean;
+  lineLink: boolean;
+};
+
+export type OtherFormData = Omit<OtherItem, "id">;

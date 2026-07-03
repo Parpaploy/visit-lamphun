@@ -22,11 +22,30 @@
     "back": "กลับหน้าหลัก",
     "close": "ปิดหน้าต่าง",
     "loading": "กำลังโหลด...",
-    "noPlaces": "ยังไม่มีสถานที่"
+    "noPlaces": "ยังไม่มีสถานที่",
+    "noActivities": "ยังไม่มีกิจกรรม",
+    "noToilets": "ยังไม่มีห้องน้ำ",
+    "storeNearMe": "ร้านค้าใกล้ฉัน",
+    "activityNearMe": "กิจกรรมใกล้ฉัน",
+    "toiletNearMe": "ห้องน้ำใกล้ฉัน",
+    "readMore": "อ่านเพิ่มเติม",
+    "readLess": "ย่อลง",
+    "tramUsers": "จำนวนผู้เข้าใช้รถรางขณะนี้ {{count}} คน",
+    "goToStore": "นำทางไปยังร้านค้า",
+    "goToActivity": "กดเพื่อนำทาง",
+    "goToToilet": "กดเพื่อนำทาง",
+    "recommendStore": "ร้านค้าแนะนำใกล้เคียง",
+    "recommendActivity": "กิจกรรมแนะนำใกล้เคียง",
+    "recommendToilet": "ห้องน้ำใกล้เคียง",
+    "tramTime": "รถรางจะออกเวลา {{time}} น."
+  },
+
+  "komepage": {
+    "header": "ช่องทางติดต่อกลุ่มผลิตโคม"
   },
 
   "contact": {
-    "emergency": "เบอร์โทรฉุกเฉิน",
+    "emergency": "เบอร์ฉุกเฉิน",
     "news": "ติดตามข่าวสาร",
     "line": "LINE",
     "page": "ไปยังหน้าเพจ",
@@ -40,14 +59,23 @@
   },
 
   "navbar": {
-    "stat": "สถิติผู้ใช้งาน",
-    "unit": "คน"
+    "stat": "จำนวนผู้ใช้งาน",
+    "unit": "คน",
+    "changeLanguage": "เปลี่ยนภาษา",
+    "menu": "เมนู"
   },
 
   "recommend": {
     "goods": "ของดี",
     "places": "ที่เด่น",
     "story": "เรื่องดัง"
+  },
+
+  "station": {
+    "history": "ประวัติสถานที่",
+    "places": "ร้านค้า",
+    "activities": "กิจกรรม",
+    "toilets": "ห้องน้ำ"
   },
 
   "travel": {
@@ -62,8 +90,25 @@
     "openDesc": "อังคาร - อาทิตย์",
     "close": "ปิดทำการ",
     "closeDesc": "ทุกวันจันทร์",
-    "allRoute": "บาทตลอดสาย",
-    "price": "ราคา"
+    "allRoute": "ตลอดสาย",
+    "price": "ราคา",
+    "baht": "บาท",
+    "departure": "เวลาออก",
+    "arrival": "เวลาถึง",
+    "desc": "ซื้อตั๋วได้ที่สถานีรถไฟต้นทาง โดยสามารถซื้อก่อนเวลารถไฟออก 2 ชม.",
+    "tramHeader1": "เปิดทำการ ทุกวันอังคาร - อาทิตย์",
+    "tramHeader2": "ปิดทำการ ทุกวันจันทร์",
+    "tramDesc1": "ซื้อตั๋วได้ฝั่งตรงข้ามวัดพระธาตุหริภุญชัย",
+    "tramDesc2": "โดยสามารถซื้อก่อนเวลารถออก",
+    "boardingPoint": "จุดขึ้นรถ",
+    "otherTravelWay": "การเดินทางในรูปแบบอื่นๆ",
+    "otherSuggestion": "แนะนำจุดให้บริการรถสาธารณะ",
+    "route": "เส้นทาง",
+    "departureTime": "เวลาออกรถ",
+    "priceTitle": "อัตราค่าบริการ",
+    "phoneTitle": "เบอร์ติดต่อ",
+    "phone": "โทรศัพท์",
+    "noPrice": "อัตราค่าบริการสอบถามได้ที่จุดขึ้น"
   },
 
   "form": {
@@ -81,6 +126,8 @@
     "weekday": "วันธรรมดา",
     "weekend": "วันหยุด",
     "place": "สถานที่",
+    "activity": "กิจกรรม",
+    "toilet": "ห้องน้ำ",
     "descFull": "คำอธิบาย",
     "desc2": "คำอธิบายเพิ่มเติม",
     "groupName": "ชื่อกลุ่ม",
@@ -97,20 +144,40 @@
     "van": "รถตู้",
     "tricycle": "สามล้อ",
     "songthaew": "สองแถว",
+    "motorcycle": "มอเตอร์ไซค์รับจ้าง",
     "lineLink": "LINE link (เพิ่มเพื่อน)",
-    "extension": "เบอร์ต่อ"
+    "boardingPoint": "จุดขึ้นรถ",
+    "route": "เส้นทาง",
+    "departureTime": "เวลาออกรถ",
+    "baht": "บาท",
+    "extension": "เบอร์ต่อ",
+    "selectTag": "เลือกหมวดหมู่ของสถานที่",
+    "openTime": "เวลาเปิดทำการ",
+    "closeTime": "เวลาปิดทำการ",
+    "location": "สถานที่ตั้ง",
+    "everyday": "ทุกวัน",
+    "addLine": "เพิ่มบรรทัด"
   },
 
   "dashboard": {
     "title": "จัดการข้อมูล",
     "tabs": {
       "places": "สถานที่",
+      "activities": "กิจกรรม",
+      "toilets": "ห้องน้ำ",
+      "station": "สถานี",
       "popup": "Popup",
       "recommend": "ของดี ที่เด่น เรื่องดัง",
       "kome": "กลุ่มผลิตโคม",
       "travel": "การเดินทาง",
-      "contact": "ติดต่อเรา / ข้อเสนอแนะ",
+      "contact": "เบอร์ฉุกเฉิน",
       "heatmap": "จำนวนผู้ใช้แต่ละจุด"
+    },
+    "placeCategory": {
+      "cafe": "คาเฟ่",
+      "restaurant": "ร้านอาหาร",
+      "market": "ตลาด",
+      "other": "อื่นๆ"
     },
 
     "loading": "กำลังโหลด...",
@@ -132,9 +199,13 @@
     "editPopup": "แก้ไขข้อมูล Popup",
     "image": "รูปภาพ",
     "addPlace": "+ เพิ่มสถานที่",
+    "addActivity": "+ เพิ่มกิจกรรม",
+    "addToilet": "+ เพิ่มห้องน้ำ",
     "addTravel": "เพิ่มการเดินทางอื่นๆ",
     "selectStation": "เลือกสถานี",
     "placesIn": "สถานที่ใน",
+    "activitiesIn": "กิจกรรมใน",
+    "toiletsIn": "ห้องน้ำใน",
     "editPlace": "แก้ไขสถานที่",
     "uploading": "กำลังอัพโหลด",
     "confirmDelete": "ลบรายการนี้?",
@@ -178,5 +249,11 @@
     "login": "เข้าสู่ระบบ",
     "loading": "กำลังเข้าสู่ระบบ...",
     "error": "อีเมลหรือรหัสผ่านไม่ถูกต้อง"
+  },
+
+  "inactivePopup": {
+    "title": "วันนี้รถรางหยุดให้บริการ",
+    "desc": "ขออภัยในความไม่สะดวก",
+    "contactMore": "สอบถามข้อมูลเพิ่มเติม"
   }
 }

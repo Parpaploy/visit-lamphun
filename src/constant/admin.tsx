@@ -1,5 +1,9 @@
 import { useTranslation } from "react-i18next";
-import type { Tab } from "../interfaces/admin.interface";
+import type {
+  OtherFieldVisibility,
+  OtherFormData,
+  Tab,
+} from "../interfaces/admin.interface";
 import type {
   OtherItem,
   TrainItem,
@@ -7,6 +11,7 @@ import type {
 } from "../interfaces/content.interface";
 import type {
   IRecommendMode,
+  IStationMode,
   ITravelMode,
 } from "../interfaces/navbar.interface";
 import { STATION_ID_MAP } from "./homepage";
@@ -23,11 +28,24 @@ export function useRecommendModes(): {
   ];
 }
 
+export function useStationModes(): {
+  value: IStationMode;
+  label: string;
+}[] {
+  const { t } = useTranslation();
+  return [
+    { value: "history", label: t("station.history") },
+    { value: "places", label: t("station.places") },
+    { value: "activities", label: t("station.activities") },
+    { value: "toilets", label: t("station.toilets") },
+  ];
+}
+
 export function useTravelModes(): { value: ITravelMode; label: string }[] {
   const { t } = useTranslation();
   return [
-    { value: "train", label: t("travel.train") },
     { value: "tram", label: t("travel.tram") },
+    { value: "train", label: t("travel.train") },
     { value: "other", label: t("travel.other") },
   ];
 }
@@ -43,7 +61,7 @@ export const EMPTY_TRAIN: Omit<TrainItem, "id"> = {
   destinationStation: { ...EMPTY_ML },
   price: 0,
   desc: { ...EMPTY_ML },
-  day: "weekday",
+  day: "everyday",
 };
 
 export const EMPTY_RECOMMEND = {
@@ -55,20 +73,24 @@ export const EMPTY_RECOMMEND = {
   descCn: "",
 };
 
-export const EMPTY_KOME = { name: { ...EMPTY_ML }, phone: "" };
+export const EMPTY_KOME = { name: { ...EMPTY_ML }, phone: "", link: "" };
 
 export const EMPTY_CONTACT = {
   header: { ...EMPTY_ML },
   address: { ...EMPTY_ML },
-  hours: { ...EMPTY_ML },
+  openTime: "",
+  closeTime: "",
   phones: [{ label: { ...EMPTY_ML }, number: "", ext: "" }],
 };
 
 export function useTabs(): { value: Tab; label: string }[] {
   const { t } = useTranslation();
   return [
-    { value: "places", label: t("dashboard.tabs.places") },
-    { value: "popup", label: t("dashboard.tabs.popup") },
+    // { value: "places", label: t("dashboard.tabs.places") },
+    // { value: "activities" as Tab, label: t("dashboard.tabs.activities") },
+    // { value: "toilets" as Tab, label: t("dashboard.tabs.toilets") },
+    { value: "station", label: t("dashboard.tabs.station") },
+    // { value: "popup", label: t("dashboard.tabs.popup") },
     { value: "recommend", label: t("dashboard.tabs.recommend") },
     { value: "travel", label: t("dashboard.tabs.travel") },
     { value: "kome", label: t("dashboard.tabs.kome") },
@@ -77,7 +99,24 @@ export function useTabs(): { value: Tab; label: string }[] {
   ];
 }
 
-export const EMPTY_FORM = { nameTh: "", nameEn: "", nameCn: "", link: "" };
+export const EMPTY_FORM = {
+  nameTh: "",
+  nameEn: "",
+  nameCn: "",
+  link: "",
+  tag: "",
+  openTime: "",
+  closeTime: "",
+  phone: "",
+  location: "",
+};
+
+export const PLACE_TAGS = [
+  { value: "cafe", label: "dashboard.placeCategory.cafe" },
+  { value: "restaurant", label: "dashboard.placeCategory.restaurant" },
+  { value: "market", label: "dashboard.placeCategory.market" },
+  { value: "other", label: "dashboard.placeCategory.other" },
+];
 
 export const STATION_IDS = Object.values(STATION_ID_MAP);
 
@@ -87,16 +126,20 @@ export const inputCls =
 export const EMPTY_TRAM: Omit<TramItem, "id"> = {
   place: { ...EMPTY_ML },
   round: "morning",
-  time: "",
+  originTime: "",
+  destinationTime: "",
   price: 0,
 };
 
 export const EMPTY_OTHER: Omit<OtherItem, "id"> = {
   place: { ...EMPTY_ML },
-  desc: { ...EMPTY_ML },
-  desc2: { ...EMPTY_ML },
-  type: "van",
+  image: "",
+  boardingPoint: { ...EMPTY_ML },
   phone: "",
+  route: { ...EMPTY_ML },
+  departureTime: { ...EMPTY_ML },
+  price: 0,
+  type: "van",
   link: "",
   lineLink: "",
   day: "weekday",
@@ -119,3 +162,47 @@ export const TIME_SLOTS = [
   "19:00",
   "20:00",
 ];
+
+export const FIELD_VISIBILITY: Record<OtherItem["type"], OtherFieldVisibility> =
+  {
+    van: {
+      route: true,
+      departureTime: true,
+      price: true,
+      phone: false,
+      lineLink: true,
+    },
+    motorcycle: {
+      route: false,
+      departureTime: false,
+      price: false,
+      phone: true,
+      lineLink: false,
+    },
+    songthaew: {
+      route: true,
+      departureTime: true,
+      price: true,
+      phone: false,
+      lineLink: false,
+    },
+    tricycle: {
+      route: true,
+      departureTime: true,
+      price: false,
+      phone: false,
+      lineLink: false,
+    },
+  };
+
+export function resetHiddenFields(f: OtherFormData): OtherFormData {
+  const vis = FIELD_VISIBILITY[f.type];
+  return {
+    ...f,
+    route: vis.route ? f.route : { ...EMPTY_ML },
+    departureTime: vis.departureTime ? f.departureTime : { ...EMPTY_ML },
+    price: vis.price ? f.price : 0,
+    phone: vis.phone ? f.phone : "",
+    lineLink: vis.lineLink ? f.lineLink : "",
+  };
+}

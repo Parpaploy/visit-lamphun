@@ -7,33 +7,44 @@ import {
 } from "../services/tram.services";
 import { haversineDistance } from "../utils/geo";
 import type { GpsPosition, Station } from "../interfaces/tram.interface";
-import { STATIONS } from "../constant/tram";
+import { STATIONS, AUTO_CHECKIN_RADIUS } from "../constant/tram";
 import CheckinPopup from "../components/driver-page/checkin-popup";
 import UndoCheckinPopup from "../components/driver-page/undo-checkin-popup";
 import FinishRoutePopup from "../components/driver-page/finish-route-popup";
 import { IoIosArrowBack } from "react-icons/io";
+import { fetchLatestSensorReading } from "../services/sensor.services";
 
 export default function DriverPage() {
   const tramId = localStorage.getItem("driver_tram_id") ?? "";
 
+  const [currentStationId, setCurrentStationId] = useState<string | null>(null);
+  const [isNearStation, setIsNearStation] = useState(false);
   const [step, setStep] = useState<"mode" | "manual" | "gps">("mode");
   const [gpsPosition, setGpsPosition] = useState<GpsPosition | null>(null);
   const [gpsError, setGpsError] = useState<string | null>(null);
-  const [loadingManual, setLoadingManual] = useState<boolean>(false);
-  const [pendingFinish, setPendingFinish] = useState<boolean>(false);
+  const [loadingManual, setLoadingManual] = useState(false);
+  const [pendingFinish, setPendingFinish] = useState(false);
 
   const [nextIndex, setNextIndex] = useState(0);
   const [pendingStation, setPendingStation] = useState<{
     station: Station;
     index: number;
   } | null>(null);
+
   const [pendingUndo, setPendingUndo] = useState<{
     station: Station;
     index: number;
   } | null>(null);
 
+  const nextIndexRef = useRef(0);
   const watchIdRef = useRef<number | null>(null);
   const lastAutoCheckinRef = useRef<string | null>(null);
+  const lastPositionRef = useRef<{ lat: number; lng: number } | null>(null);
+
+  const updateNextIndex = (val: number) => {
+    nextIndexRef.current = val;
+    setNextIndex(val);
+  };
 
   const stopGps = useCallback(() => {
     if (watchIdRef.current !== null) {
@@ -43,7 +54,7 @@ export default function DriverPage() {
   }, []);
 
   const writeCheckin = useCallback(
-    async (station: Station, mode: "manual" | "auto") => {
+    async (station: Station, mode: "manual" | "gps") => {
       if (!tramId) return;
       try {
         await updateTramCheckin(tramId, station, mode);
@@ -53,6 +64,11 @@ export default function DriverPage() {
     },
     [tramId],
   );
+
+  const writeCheckinRef = useRef(writeCheckin);
+  useEffect(() => {
+    writeCheckinRef.current = writeCheckin;
+  }, [writeCheckin]);
 
   const updateNearestStation = useCallback(
     async (lat: number, lng: number) => {
@@ -76,41 +92,74 @@ export default function DriverPage() {
 
       if (!nearest || !tramId) return;
 
+      console.log(
+        "nearest:",
+        nearest.id,
+        "dist:",
+        minDist,
+        "isNear:",
+        minDist <= AUTO_CHECKIN_RADIUS,
+        "nearestIdx:",
+        nearestIdx,
+        "nextIndexRef:",
+        nextIndexRef.current,
+      );
+
+      setCurrentStationId(nearest.id);
+      setIsNearStation(minDist <= AUTO_CHECKIN_RADIUS);
+
       await updateTramPosition(tramId, nearest, lat, lng);
 
-      if (minDist <= 5 && nearestIdx === nextIndex) {
+      if (minDist <= AUTO_CHECKIN_RADIUS) {
         if (lastAutoCheckinRef.current === nearest.id) return;
-        lastAutoCheckinRef.current = nearest.id;
 
-        await updateTramCheckin(tramId, nearest, "gps");
-        setNextIndex(nearestIdx + 1);
+        if (nearestIdx === nextIndexRef.current) {
+          lastAutoCheckinRef.current = nearest.id;
+          await writeCheckinRef.current(nearest, "gps");
+          updateNextIndex(nearestIdx + 1);
+        }
       }
     },
-    [tramId, nextIndex],
+    [tramId],
   );
+
+  const updateNearestStationRef = useRef(updateNearestStation);
+  useEffect(() => {
+    updateNearestStationRef.current = updateNearestStation;
+  }, [updateNearestStation]);
 
   const handleFinishConfirm = async () => {
     if (tramId) await clearTramStation(tramId);
     setPendingFinish(false);
-    setNextIndex(0);
+    updateNextIndex(0);
     setStep("mode");
   };
 
   useEffect(() => {
     stopGps();
     if (step !== "gps") return;
-    watchIdRef.current = navigator.geolocation.watchPosition(
-      (pos) => {
-        if (step !== "gps") return;
-        const { latitude, longitude, accuracy } = pos.coords;
-        setGpsPosition({ lat: latitude, lng: longitude, accuracy });
-        updateNearestStation(latitude, longitude);
-      },
-      (err) => setGpsError(err.message),
-      { enableHighAccuracy: true },
-    );
-    return () => stopGps();
-  }, [step, updateNearestStation, stopGps]);
+
+    const fetchAndUpdate = async () => {
+      const sensor = await fetchLatestSensorReading();
+      if (!sensor || sensor.lat === -999 || sensor.lon === -999) {
+        setGpsError("ไม่มีสัญญาณ GPS จาก sensor");
+        return;
+      }
+      setGpsError(null);
+      setGpsPosition({ lat: sensor.lat, lng: sensor.lon, accuracy: 0 });
+      updateNearestStationRef.current(sensor.lat, sensor.lon);
+    };
+
+    fetchAndUpdate();
+
+    const interval = setInterval(fetchAndUpdate, 10_000);
+
+    return () => {
+      stopGps();
+      clearInterval(interval);
+      lastPositionRef.current = null;
+    };
+  }, [step, stopGps]);
 
   const enterManual = async () => {
     setLoadingManual(true);
@@ -120,12 +169,10 @@ export default function DriverPage() {
         const currentIdx = STATIONS.findIndex(
           (s) => s.id === tram.current_station_id,
         );
-        setNextIndex(currentIdx >= 0 ? currentIdx + 1 : 0);
+        updateNextIndex(currentIdx >= 0 ? currentIdx + 1 : 0);
       } else {
-        setNextIndex(0);
+        updateNextIndex(0);
       }
-    } catch {
-      setNextIndex(0);
     } finally {
       setLoadingManual(false);
       setStep("manual");
@@ -139,20 +186,29 @@ export default function DriverPage() {
         const currentIdx = STATIONS.findIndex(
           (s) => s.id === tram.current_station_id,
         );
-        setNextIndex(currentIdx >= 0 ? currentIdx + 1 : 0);
+        const newIndex = currentIdx >= 0 ? currentIdx + 1 : 0;
+        nextIndexRef.current = newIndex;
+        setNextIndex(newIndex);
       } else {
+        nextIndexRef.current = 0;
         setNextIndex(0);
       }
     } catch {
+      nextIndexRef.current = 0;
       setNextIndex(0);
     }
+
+    lastAutoCheckinRef.current = null;
+    lastPositionRef.current = null;
+    setCurrentStationId(null);
+    setIsNearStation(false);
     setStep("gps");
   };
 
   const handleConfirmCheckin = async () => {
     if (!pendingStation) return;
     await writeCheckin(pendingStation.station, "manual");
-    setNextIndex(pendingStation.index + 1);
+    updateNextIndex(pendingStation.index + 1);
     setPendingStation(null);
   };
 
@@ -165,7 +221,7 @@ export default function DriverPage() {
   const handleUndoConfirm = async () => {
     if (!pendingUndo) return;
     const prevIndex = pendingUndo.index - 1;
-    setNextIndex(pendingUndo.index);
+    updateNextIndex(pendingUndo.index);
     if (prevIndex >= 0) {
       await writeCheckin(STATIONS[prevIndex], "manual");
     }
@@ -177,7 +233,6 @@ export default function DriverPage() {
       className={`h-full flex flex-col items-center ${step === "mode" ? "bg-[linear-gradient(161deg,#FFE2A5_0%,#FBFCF0_22%,#FFFFFF_62%,#E6EFD8_100%)]" : "bg-white"}`}
     >
       <div className="w-full p-4">
-        {/* Mode Selection */}
         {step === "mode" && (
           <div className="w-full h-[80svh] flex justify-center items-start pt-10 px-3">
             <div className="w-full bg-white rounded-[18px] shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-5 px-7 flex flex-col justify-center items-center">
@@ -187,7 +242,6 @@ export default function DriverPage() {
               <p className="text-[14px] font-normal text-[#543A14] mb-4 text-center">
                 กรุณาเลือก เช็คอินด้วยตนเอง หรือ เช็คอินด้วย GPS
               </p>
-
               <div className="w-full flex flex-col justify-center items-center gap-2">
                 <button
                   onClick={enterManual}
@@ -207,7 +261,6 @@ export default function DriverPage() {
           </div>
         )}
 
-        {/* Manual */}
         {step === "manual" && (
           <div className="space-y-1.5">
             <button
@@ -224,8 +277,7 @@ export default function DriverPage() {
               return (
                 <div
                   key={s.id}
-                  className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center
-                    ${done ? "bg-[#FEEABB]" : "bg-white"}`}
+                  className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center ${done ? "bg-[#FEEABB]" : "bg-white"}`}
                 >
                   <span className="flex items-center gap-2">
                     <span className="w-7 h-7 rounded-full flex items-center justify-center font-medium text-[20px]">
@@ -248,12 +300,7 @@ export default function DriverPage() {
                     <button
                       onClick={() => handleUndoRequest(i)}
                       disabled={i !== nextIndex - 1}
-                      className={`px-4 py-px rounded-full text-[14px] font-medium
-                        ${
-                          i === nextIndex - 1
-                            ? "bg-[#FFFFFF] text-[#B9B9B9] block"
-                            : "hidden"
-                        }`}
+                      className={`px-4 py-px rounded-full text-[14px] font-medium ${i === nextIndex - 1 ? "bg-[#FFFFFF] text-[#B9B9B9] block" : "hidden"}`}
                     >
                       ยกเลิก
                     </button>
@@ -281,9 +328,7 @@ export default function DriverPage() {
             <div className="w-full justify-center items-center flex">
               <button
                 onClick={() => {
-                  if (nextIndex >= STATIONS.length) {
-                    setPendingFinish(true);
-                  }
+                  if (nextIndex >= STATIONS.length) setPendingFinish(true);
                 }}
                 className={`${nextIndex >= STATIONS.length ? "bg-[#FF8B2B]" : "bg-[#B9B9B9]"} text-white rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-10 py-2 font-medium text-[24px] mt-2`}
               >
@@ -293,7 +338,6 @@ export default function DriverPage() {
           </div>
         )}
 
-        {/* GPS */}
         {step === "gps" && (
           <div className="w-full h-full flex flex-col gap-3">
             <button
@@ -315,11 +359,11 @@ export default function DriverPage() {
                   </p>
                   <p className="text-[14px] text-[#559200]">รับสัญญาณอยู่</p>
                 </div>
-                {gpsPosition?.accuracy && (
+                {gpsPosition?.accuracy ? (
                   <span className="text-[14px] bg-[#559200]/15 text-[#559200] font-medium px-2.5 py-1 rounded-full">
                     ±{Math.round(gpsPosition.accuracy)} ม.
                   </span>
-                )}
+                ) : null}
               </div>
 
               {gpsError && (
@@ -330,8 +374,8 @@ export default function DriverPage() {
 
               {gpsPosition && (
                 <div className="flex justify-center items-center gap-3 bg-[#FFF0DC] rounded-[9px] text-center py-3 text-[16px] font-medium text-[#543A14]">
-                  <span>{gpsPosition.lat.toFixed(4)}°N</span>
-                  <span>{gpsPosition.lng.toFixed(4)}°E</span>
+                  <span>{gpsPosition.lat}°N</span>
+                  <span>{gpsPosition.lng}°E</span>
                 </div>
               )}
             </div>
@@ -340,33 +384,32 @@ export default function DriverPage() {
               สถานีถัดไป
             </p>
 
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 whitespace-nowrap">
               {STATIONS.map((s, i) => {
-                const isDone = i < nextIndex;
-                const isCurrent = i === nextIndex;
+                const nearestIdx = currentStationId
+                  ? STATIONS.findIndex((st) => st.id === currentStationId)
+                  : -1;
+
+                const isDone =
+                  nearestIdx !== -1 ? i < nearestIdx : i < nextIndex;
+
+                const isHere = isNearStation && i === nearestIdx;
+
+                const isHeading =
+                  isNearStation && nearestIdx !== -1 && i === nearestIdx + 1;
 
                 return (
                   <div
                     key={s.id}
-                    className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center
-                    ${
-                      isDone
-                        ? "bg-[#FEEABB]"
-                        : isCurrent
-                          ? "bg-white"
+                    className={`shadow-[0_4px_4px_0_rgba(0,0,0,0.125)] border-2 border-[#D9D9D9] text-[#543A14] font-medium text-[20px] rounded-[20px] px-2 py-1 flex justify-between items-center ${
+                      isHere
+                        ? "bg-[#E8F5D0]"
+                        : isDone
+                          ? "bg-[#FEEABB]"
                           : "bg-white"
                     }`}
-
-                    //       className={`flex items-center gap-3 px-3 py-2.5 rounded-2xl border
-                    // ${
-                    //   isDone
-                    //     ? "bg-[#FEEABB] border-[#F5C47560]"
-                    //     : isCurrent
-                    //       ? "bg-white border-[#FF8B2B] border-2"
-                    //       : "bg-white border-gray-100"
-                    // }`}
                   >
-                    <span className="flex items-center gap-2">
+                    <span className="whitespace-normal flex items-center gap-2">
                       <span className="w-7 h-7 rounded-full flex items-center justify-center font-medium text-[20px]">
                         {i + 1}
                       </span>
@@ -383,19 +426,25 @@ export default function DriverPage() {
                       </p>
                     </span>
 
-                    {isDone ? (
-                      <span className="px-4 py-px rounded-full text-[14px] font-medium bg-[#FFFFFF] text-[#B9B9B9]">
-                        เช็คอินแล้ว
-                      </span>
-                    ) : isCurrent ? (
-                      <span className="px-4 py-0.5 rounded-full text-[14px] font-medium text-white bg-[#FF8B2B] animate-pulse">
-                        กำลังมุ่งหน้า
-                      </span>
-                    ) : (
-                      <span className="bg-[#B9B9B9] text-white px-4 py-0.5 rounded-full text-[14px] font-medium">
-                        รออยู่
-                      </span>
-                    )}
+                    <div className="flex items-center justify-end">
+                      {isHere ? (
+                        <span className="px-4 py-0.5 rounded-full text-[14px] font-medium text-white bg-[#559200] animate-pulse">
+                          อยู่ที่นี่
+                        </span>
+                      ) : isDone ? (
+                        <span className="px-4 py-px rounded-full text-[14px] font-medium bg-[#FFFFFF] text-[#B9B9B9]">
+                          เช็คอินแล้ว
+                        </span>
+                      ) : isHeading ? (
+                        <span className="px-4 py-0.5 rounded-full text-[14px] font-medium text-white bg-[#FF8B2B] animate-pulse">
+                          กำลังมุ่งหน้า
+                        </span>
+                      ) : (
+                        <span className="bg-[#B9B9B9] text-white px-4 py-0.5 rounded-full text-[14px] font-medium">
+                          รออยู่
+                        </span>
+                      )}
+                    </div>
                   </div>
                 );
               })}
@@ -417,9 +466,6 @@ export default function DriverPage() {
         <UndoCheckinPopup
           station={pendingUndo.station}
           index={pendingUndo.index}
-          // prevStation={
-          //   pendingUndo.index > 0 ? STATIONS[pendingUndo.index - 1] : null
-          // }
           onConfirm={handleUndoConfirm}
           onClose={() => setPendingUndo(null)}
         />

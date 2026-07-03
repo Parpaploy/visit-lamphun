@@ -14,6 +14,7 @@ import type {
   HeatmapTableProps,
   StationId,
 } from "../../interfaces/admin.interface";
+import { formatTime12h, formatTime12hCn } from "../../utils/ml";
 
 function HeatmapTable({
   title,
@@ -110,6 +111,7 @@ export default function AdminHeatmap() {
     visible: boolean;
     station: string;
     slot: string;
+    date: string;
     count: number;
     lastTime: string;
     x: number;
@@ -118,6 +120,7 @@ export default function AdminHeatmap() {
     visible: false,
     station: "",
     slot: "",
+    date: "",
     count: 0,
     lastTime: "",
     x: 0,
@@ -130,6 +133,12 @@ export default function AdminHeatmap() {
       setLoading(false);
     });
     return unsub;
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => setTooltip((t) => ({ ...t, visible: false }));
+    window.addEventListener("scroll", handleScroll, true);
+    return () => window.removeEventListener("scroll", handleScroll, true);
   }, []);
 
   const filteredRecords = useMemo(() => {
@@ -188,6 +197,7 @@ export default function AdminHeatmap() {
       if (result[r.stationId]?.[slot] !== undefined) {
         result[r.stationId][slot].count += 1;
         result[r.stationId][slot].lastTime = formatTime(r.timestamp);
+        result[r.stationId][slot].lastTimestamp = r.timestamp;
         seenUsersInSlot.add(uniqueKey);
       }
     });
@@ -225,11 +235,13 @@ export default function AdminHeatmap() {
     slot: string,
     cell: CellData,
   ) => {
-    const rect = (
-      e.currentTarget.closest(".w-full.flex-col.gap-4") as HTMLElement
-    )?.getBoundingClientRect();
-
-    if (!rect) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const localeMap = { th: "th-TH", en: "en-US", cn: "zh-CN" };
+    const dateStr = cell.lastTimestamp
+      ? new Date(cell.lastTimestamp).toLocaleDateString(
+          localeMap[lang] || "th-TH",
+        )
+      : "";
 
     setTooltip({
       visible: true,
@@ -237,8 +249,9 @@ export default function AdminHeatmap() {
       slot,
       count: cell.count,
       lastTime: cell.lastTime,
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+      date: dateStr,
+      x: rect.left + rect.width / 2,
+      y: rect.top,
     });
   };
 
@@ -471,12 +484,21 @@ export default function AdminHeatmap() {
 
           {tooltip.visible && (
             <div
-              className="pointer-events-none absolute z-50 bg-[#543A14] text-white text-[11px] rounded-xl px-3 py-2 shadow-lg transition-all duration-100 ease-in-out"
-              style={{ top: tooltip.y + 12, left: tooltip.x + 8 }}
+              className="pointer-events-none fixed z-50 bg-[#543A14] text-white text-[11px] rounded-xl px-3 py-2 shadow-lg -translate-x-1/2 -translate-y-full"
+              style={{ top: tooltip.y - 8, left: tooltip.x }}
             >
               <p className="font-bold">{tooltip.station}</p>
-              <p className="text-white/70">{tooltip.slot} น.</p>
-              <p>{tooltip.count} คน</p>
+              {tooltip.date && <p className="text-white/70">{tooltip.date}</p>}
+              <p className="text-white/70">
+                {lang === "th"
+                  ? `${tooltip.slot ?? "?"} น.`
+                  : lang === "en"
+                    ? formatTime12h(tooltip.slot)
+                    : formatTime12hCn(tooltip.slot)}
+              </p>
+              <p>
+                {tooltip.count} {t("heatmap.people")}
+              </p>
               {tooltip.lastTime && (
                 <p className="text-white/60">
                   {t("heatmap.latest")} {tooltip.lastTime}

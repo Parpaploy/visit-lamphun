@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EMPTY_FORM, inputCls, STATION_IDS } from "../../constant/admin";
+import { EMPTY_FORM, inputCls, PLACE_TAGS } from "../../constant/admin";
 import { useStationPlaces } from "../../hooks/useStationPlaces";
-import type { EditState } from "../../interfaces/admin.interface";
+import type { PlaceEditState } from "../../interfaces/admin.interface";
 import {
   addPlace,
   deletePlace,
@@ -11,8 +11,13 @@ import {
 } from "../../services/dashboard.services";
 import type { StationPlace } from "../../interfaces/homepage.interface";
 import { STATION_NAMES_ML } from "../../constant/homepage";
+import { formatTime12h } from "../../utils/ml";
 
-export default function PlacesPanel() {
+export default function PlacesPanel({
+  selectedStation,
+}: {
+  selectedStation: string;
+}) {
   const { t, i18n } = useTranslation();
   const lang =
     i18n.language === "en" || i18n.language === "cn" ? i18n.language : "th";
@@ -20,9 +25,6 @@ export default function PlacesPanel() {
   const p = (key: string, lang: "inTh" | "inEn" | "inCn", req = false) =>
     `${t(key)} ${t(`form.${lang}`)}${req ? " *" : ""}`;
 
-  const [selectedStation, setSelectedStation] = useState<string>(
-    STATION_IDS[0],
-  );
   const { places, loading, refetch } = useStationPlaces(selectedStation);
 
   const [saving, setSaving] = useState<boolean>(false);
@@ -33,7 +35,7 @@ export default function PlacesPanel() {
   const [formError, setFormError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [editing, setEditing] = useState<EditState | null>(null);
+  const [editing, setEditing] = useState<PlaceEditState | null>(null);
   const editFileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +68,10 @@ export default function PlacesPanel() {
         },
         img: imgUrl,
         link: form.link.trim(),
+        tag: form.tag || undefined,
+        openTime: form.openTime.trim() || undefined,
+        closeTime: form.closeTime.trim() || undefined,
+        phone: form.phone.trim() || undefined,
       });
       setForm(EMPTY_FORM);
       setImageFile(null);
@@ -98,7 +104,11 @@ export default function PlacesPanel() {
       nameEn: place.name.en,
       nameCn: place.name.cn,
       link: place.link,
+      tag: place.tag ?? "",
       img: place.img,
+      openTime: place.openTime ?? "",
+      closeTime: place.closeTime ?? "",
+      phone: place.phone ?? "",
       newFile: null,
       previewUrl: null,
       saving: false,
@@ -138,6 +148,10 @@ export default function PlacesPanel() {
         },
         img: imgUrl,
         link: editing.link.trim(),
+        tag: editing.tag || undefined,
+        openTime: editing.openTime.trim() || undefined,
+        closeTime: editing.closeTime.trim() || undefined,
+        phone: editing.phone.trim() || undefined,
       });
       setEditing(null);
       setUploadProgress(null);
@@ -152,80 +166,158 @@ export default function PlacesPanel() {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <div>
-        <label className="block text-[13px] text-[#8B724E] font-medium mb-1">
-          {t("dashboard.selectStation")}
-        </label>
-        <select
-          value={selectedStation}
-          onChange={(e) => {
-            setSelectedStation(e.target.value);
-            setEditing(null);
-          }}
-          className="w-full border border-[#C6C6C6] bg-white rounded-xl px-4 py-2.5 text-[14px] text-[#543A14] outline-none"
-        >
-          {STATION_IDS.map((id) => (
-            <option key={id} value={id}>
-              {stationName(id)}
-            </option>
-          ))}
-        </select>
-      </div>
-
       <div className="bg-white rounded-2xl border border-[#D9D9D9] shadow-sm p-4">
         <h2 className="text-[14px] font-semibold text-[#543A14] mb-3">
           {t("dashboard.addNew")}
         </h2>
         <div className="flex flex-col gap-y-2.5">
-          <input
-            placeholder={p("form.place", "inTh", true)}
-            value={form.nameTh}
-            onChange={(e) => setForm((f) => ({ ...f, nameTh: e.target.value }))}
-            className={inputCls}
-          />
-          <input
-            placeholder={p("form.place", "inEn", true)}
-            value={form.nameEn}
-            onChange={(e) => setForm((f) => ({ ...f, nameEn: e.target.value }))}
-            className={inputCls}
-          />
-          <input
-            placeholder={p("form.place", "inCn", true)}
-            value={form.nameCn}
-            onChange={(e) => setForm((f) => ({ ...f, nameCn: e.target.value }))}
-            className={inputCls}
-          />
-          <input
-            placeholder={`${t("form.link")} *`}
-            value={form.link}
-            onChange={(e) => setForm((f) => ({ ...f, link: e.target.value }))}
-            className={inputCls}
-          />
+          <div className="w-full flex justify-center items-center gap-x-3">
+            <div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className={`relative aspect-square w-auto h-60 mx-auto rounded-2xl overflow-hidden cursor-pointer border-2 border-dashed transition-all duration-200
+                  ${
+                    previewUrl
+                      ? "border-[#BF4B17]"
+                      : "border-[#D9C5AE] hover:border-[#BF4B17] flex flex-col items-center justify-center gap-1 bg-[#FDF8F3] hover:bg-[#FFF1E8]"
+                  }`}
+              >
+                {previewUrl ? (
+                  <>
+                    <img
+                      src={previewUrl}
+                      alt="preview"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <span className="text-white text-[13px] font-medium">
+                        {t("dashboard.changeImage")}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-2 left-2 right-2">
+                      <span className="inline-block bg-black/50 backdrop-blur-sm text-white text-[11px] rounded-lg px-2.5 py-1 truncate max-w-full">
+                        {imageFile?.name}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#BF4B17"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="3" y="3" width="18" height="18" rx="4" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <path d="M21 15l-5-5L5 21" />
+                    </svg>
+                    <p className="text-[13px] font-semibold text-[#BF4B17]">
+                      {t("dashboard.selectImage")}
+                    </p>
+                    <p className="text-[11px] text-[#C4A882]">JPG, PNG, WEBP</p>
+                  </>
+                )}
+              </div>
+            </div>
 
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            className="border border-dashed border-[#C6C6C6] rounded-xl py-3 text-[13px] text-[#8B724E] hover:border-[#BF4B17] transition-colors"
-          >
-            {imageFile ? imageFile.name : t("dashboard.selectImage")}
-          </button>
-
-          {previewUrl && (
-            <div className="w-full h-36 rounded-xl overflow-hidden">
-              <img
-                src={previewUrl}
-                alt="preview"
-                className="w-full h-full object-cover"
+            <div className="w-full flex flex-col gap-y-3">
+              <input
+                placeholder={p("form.place", "inTh", true)}
+                value={form.nameTh}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, nameTh: e.target.value }))
+                }
+                className={inputCls}
+              />
+              <input
+                placeholder={p("form.place", "inEn", true)}
+                value={form.nameEn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, nameEn: e.target.value }))
+                }
+                className={inputCls}
+              />
+              <input
+                placeholder={p("form.place", "inCn", true)}
+                value={form.nameCn}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, nameCn: e.target.value }))
+                }
+                className={inputCls}
+              />
+              <select
+                value={form.tag}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, tag: e.target.value }))
+                }
+                className={inputCls}
+              >
+                <option value="">{t("form.selectTag")}</option>
+                {PLACE_TAGS.map((tag) => (
+                  <option key={tag.value} value={tag.value}>
+                    {t(tag.label)}
+                  </option>
+                ))}
+              </select>
+              <input
+                placeholder={`${t("form.link")} *`}
+                value={form.link}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, link: e.target.value }))
+                }
+                className={inputCls}
               />
             </div>
-          )}
+          </div>
+
+          <div className="flex gap-x-2">
+            <div className="w-full flex flex-col justify-start items-start">
+              <p className="text-[13px] text-[#543A14]">{t("form.openTime")}</p>
+              <input
+                type="time"
+                placeholder={t("form.openTime")}
+                value={form.openTime}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, openTime: e.target.value }))
+                }
+                className={`${inputCls} flex-1`}
+              />
+            </div>
+            <div className="w-full flex flex-col justify-start items-start">
+              <p className="text-[13px] text-[#543A14]">
+                {t("form.closeTime")}
+              </p>
+              <input
+                type="time"
+                placeholder={t("form.closeTime")}
+                value={form.closeTime}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, closeTime: e.target.value }))
+                }
+                className={`${inputCls} flex-1`}
+              />
+            </div>
+          </div>
+
+          <input
+            placeholder={t("form.phone")}
+            value={form.phone}
+            onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+            className={inputCls}
+          />
+
           {uploadProgress !== null && !editing && (
             <div className="w-full bg-[#F5F5F5] rounded-full h-2">
               <div
@@ -271,64 +363,137 @@ export default function PlacesPanel() {
                   <p className="text-[12px] font-semibold text-[#BF4B17]">
                     {t("dashboard.editPlace")}
                   </p>
-                  <input
-                    placeholder={p("form.place", "inTh")}
-                    value={editing.nameTh}
-                    onChange={(e) =>
-                      setEditing((s) => s && { ...s, nameTh: e.target.value })
-                    }
-                    className={inputCls}
-                  />
-                  <input
-                    placeholder={p("form.place", "inEn")}
-                    value={editing.nameEn}
-                    onChange={(e) =>
-                      setEditing((s) => s && { ...s, nameEn: e.target.value })
-                    }
-                    className={inputCls}
-                  />
-                  <input
-                    placeholder={p("form.place", "inCn")}
-                    value={editing.nameCn}
-                    onChange={(e) =>
-                      setEditing((s) => s && { ...s, nameCn: e.target.value })
-                    }
-                    className={inputCls}
-                  />
-                  <input
-                    placeholder={t("form.link")}
-                    value={editing.link}
-                    onChange={(e) =>
-                      setEditing((s) => s && { ...s, link: e.target.value })
-                    }
-                    className={inputCls}
-                  />
+                  <div className="w-full flex justify-center items-center gap-x-3">
+                    <div>
+                      <input
+                        ref={editFileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleEditImageChange}
+                        className="hidden"
+                      />
+                      <div
+                        onClick={() => editFileInputRef.current?.click()}
+                        className="relative aspect-square w-auto h-60 mx-auto rounded-2xl overflow-hidden cursor-pointer border-2 border-dashed border-[#D9C5AE] hover:border-[#BF4B17] transition-all duration-200"
+                      >
+                        <img
+                          src={editing.previewUrl ?? editing.img}
+                          alt="preview"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <span className="text-white text-[13px] font-semibold">
+                            {t("dashboard.changeImage")}
+                          </span>
+                        </div>
+                        {editing.newFile && (
+                          <div className="absolute bottom-2 left-2 right-2">
+                            <span className="inline-block bg-black/50 backdrop-blur-sm text-white text-[11px] rounded-lg px-2.5 py-1 truncate max-w-full">
+                              {editing.newFile.name}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
 
-                  <input
-                    ref={editFileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleEditImageChange}
-                    className="hidden"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => editFileInputRef.current?.click()}
-                    className="border border-dashed border-[#C6C6C6] rounded-xl py-2 text-[12px] text-[#8B724E] hover:border-[#BF4B17] transition-colors"
-                  >
-                    {editing.newFile
-                      ? editing.newFile.name
-                      : t("dashboard.changeImage")}
-                  </button>
-
-                  <div className="w-full h-28 rounded-xl overflow-hidden">
-                    <img
-                      src={editing.previewUrl ?? editing.img}
-                      alt="preview"
-                      className="w-full h-full object-cover"
-                    />
+                    <div className="w-full flex flex-col gap-y-3">
+                      <input
+                        placeholder={p("form.place", "inTh")}
+                        value={editing.nameTh}
+                        onChange={(e) =>
+                          setEditing(
+                            (s) => s && { ...s, nameTh: e.target.value },
+                          )
+                        }
+                        className={inputCls}
+                      />
+                      <input
+                        placeholder={p("form.place", "inEn")}
+                        value={editing.nameEn}
+                        onChange={(e) =>
+                          setEditing(
+                            (s) => s && { ...s, nameEn: e.target.value },
+                          )
+                        }
+                        className={inputCls}
+                      />
+                      <input
+                        placeholder={p("form.place", "inCn")}
+                        value={editing.nameCn}
+                        onChange={(e) =>
+                          setEditing(
+                            (s) => s && { ...s, nameCn: e.target.value },
+                          )
+                        }
+                        className={inputCls}
+                      />
+                      <select
+                        value={editing.tag}
+                        onChange={(e) =>
+                          setEditing((s) => s && { ...s, tag: e.target.value })
+                        }
+                        className={inputCls}
+                      >
+                        <option value="">{t("form.selectTag")}</option>
+                        {PLACE_TAGS.map((tag) => (
+                          <option key={tag.value} value={tag.value}>
+                            {t(tag.label)}
+                          </option>
+                        ))}
+                      </select>
+                      <input
+                        placeholder={t("form.link")}
+                        value={editing.link}
+                        onChange={(e) =>
+                          setEditing((s) => s && { ...s, link: e.target.value })
+                        }
+                        className={inputCls}
+                      />
+                    </div>
                   </div>
 
+                  <div className="flex gap-x-2">
+                    <div className="w-full flex flex-col justify-start items-start">
+                      <p className="text-[13px] text-[#543A14]">
+                        {t("form.openTime")}
+                      </p>
+                      <input
+                        type="time"
+                        placeholder={t("form.openTime")}
+                        value={editing.openTime}
+                        onChange={(e) =>
+                          setEditing(
+                            (s) => s && { ...s, openTime: e.target.value },
+                          )
+                        }
+                        className={`${inputCls} flex-1`}
+                      />
+                    </div>
+                    <div className="w-full flex flex-col justify-start items-start">
+                      <p className="text-[13px] text-[#543A14]">
+                        {t("form.closeTime")}
+                      </p>
+                      <input
+                        type="time"
+                        placeholder={t("form.closeTime")}
+                        value={editing.closeTime}
+                        onChange={(e) =>
+                          setEditing(
+                            (s) => s && { ...s, closeTime: e.target.value },
+                          )
+                        }
+                        className={`${inputCls} flex-1`}
+                      />
+                    </div>
+                  </div>
+                  <input
+                    placeholder={t("form.phone")}
+                    value={editing.phone}
+                    onChange={(e) =>
+                      setEditing((s) => s && { ...s, phone: e.target.value })
+                    }
+                    className={inputCls}
+                  />
                   {uploadProgress !== null && editing && (
                     <div className="w-full bg-[#F5F5F5] rounded-full h-2">
                       <div
@@ -372,15 +537,37 @@ export default function PlacesPanel() {
                     />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold text-[#543A14] truncate">
+                    <div className="flex justify-start items-center gap-1 text-[13px] font-semibold text-[#543A14] truncate">
                       {place.name.th}
-                    </p>
+                      {place.tag && (
+                        <span
+                          className={`inline-block text-[11px] font-medium bg-[#BF4B17] text-white rounded-full px-2 ${i18n.language === "th" ? "pt-0.5" : i18n.language === "en" ? "pt-px" : ""} mb-1`}
+                        >
+                          {t(
+                            PLACE_TAGS.find((tg) => tg.value === place.tag)
+                              ?.label ?? place.tag,
+                          )}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-[11px] text-[#8B724E] truncate">
                       {place.name.en}
                     </p>
                     <p className="text-[11px] text-[#8B724E] truncate">
                       {place.name.cn}
                     </p>
+
+                    {(place.openTime || place.closeTime) && (
+                      <p className="text-[11px] text-[#8B724E]">
+                        {formatTime12h(place.openTime)} –{" "}
+                        {formatTime12h(place.closeTime)}
+                      </p>
+                    )}
+                    {place.phone && (
+                      <p className="text-[11px] text-[#8B724E]">
+                        {place.phone}
+                      </p>
+                    )}
                   </div>
                   <div className="flex flex-col gap-y-1 shrink-0">
                     <button

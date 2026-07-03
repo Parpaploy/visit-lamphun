@@ -1,16 +1,238 @@
+// import { useState, useEffect } from "react";
+// import { useTranslation } from "react-i18next";
+// import SubNavbar from "../components/navbar/sub-navbar";
+// import type { IContactMode } from "../interfaces/navbar.interface";
+// import EmergencyCard from "../components/contact-page/emergency-card";
+// import ContactLoader from "../components/skeleton-load/contact-loader";
+// import { useEmergencyItems } from "../hooks/useEmergencyItems";
+// import LazyImage from "../components/skeleton-load/image-loader";
+// import { formatTime12h, formatTime12hCn } from "../utils/ml";
+
+// export default function ContactPage() {
+//   const { t, i18n } = useTranslation();
+//   const lang = i18n.language as "th" | "en" | "cn";
+//   const isTH = i18n.language === "th";
+
+//   const [mode, setMode] = useState<IContactMode>("emergency");
+//   const [prevMode, setPrevMode] = useState<IContactMode>(mode);
+//   const [modeLoading, setModeLoading] = useState(false);
+
+//   if (mode !== prevMode) {
+//     setPrevMode(mode);
+//     setModeLoading(true);
+//   }
+
+//   useEffect(() => {
+//     if (!modeLoading) return;
+//     const timer = setTimeout(() => setModeLoading(false), 350);
+//     return () => clearTimeout(timer);
+//   }, [modeLoading]);
+
+//   const { items, loading } = useEmergencyItems();
+
+//   return (
+//     <main className="relative w-full h-full flex flex-col overflow-hidden">
+//       <SubNavbar
+//         mode={mode}
+//         setMode={setMode}
+//         mode1="emergency"
+//         mode2="news"
+//         mode3="line"
+//         mode1Name={t("contact.emergency")}
+//         mode2Name={t("contact.news")}
+//         mode3Name={t("contact.line")}
+//         isSmallOne={true}
+//         isTabStyle={true}
+//       />
+
+//       <section className="w-full flex-1 overflow-y-auto space-y-4 p-7">
+//         {mode === "emergency" &&
+//           (modeLoading || loading ? (
+//             Array.from({ length: 3 }).map((_, i) => <ContactLoader key={i} />)
+//           ) : items.length === 0 ? (
+//             <p className="text-center text-[13px] text-[#C6C6C6]">
+//               ยังไม่มีข้อมูล
+//             </p>
+//           ) : (
+//             items.map((item, idx) => (
+//               <div
+//                 key={item.id}
+//                 className="animate-fade-in"
+//                 style={{ animationDelay: `${idx * 60}ms` }}
+//               >
+//                 <EmergencyCard
+//                   header={item.header}
+//                   items={[
+//                     ...(item.address[lang]
+//                       ? [{ type: "address" as const, text: item.address[lang] }]
+//                       : []),
+//                     ...(item.openTime || item.closeTime
+//                       ? [
+//                           {
+//                             type: "hours" as const,
+//                             text:
+//                               lang === "th"
+//                                 ? `${item.openTime ?? "?"} – ${item.closeTime ?? "?"} น.`
+//                                 : lang === "en"
+//                                   ? `${formatTime12h(item.openTime)} – ${formatTime12h(item.closeTime)}`
+//                                   : `${formatTime12hCn(item.openTime)} – ${formatTime12hCn(item.closeTime)}`,
+//                           },
+//                         ]
+//                       : []),
+//                     ...item.phones.map((ph) => ({
+//                       type: "phone" as const,
+//                       text: `${ph.label[lang] || `${t("contact.phone")}`} : ${ph.number}`,
+//                       ext: ph.ext,
+//                     })),
+//                   ]}
+//                 />
+//               </div>
+//             ))
+//           ))}
+
+//         {mode === "news" &&
+//           modeLoading &&
+//           Array.from({ length: 2 }).map((_, i) => <ContactLoader key={i} />)}
+
+//         {mode === "news" && !modeLoading && (
+//           <div className="animate-fade-in flex flex-col gap-y-4">
+//             <div className="flex flex-col justify-between items-center gap-y-2 px-5 py-5 border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+//               <h1 className="text-[#104DB6] text-[24px] font-semibold">
+//                 Facebook
+//               </h1>
+
+//               <LazyImage
+//                 src="/images/contact-page/fb-pic.svg"
+//                 className="w-full"
+//               />
+
+//               <button
+//                 onClick={() => {
+//                   window.open(
+//                     "https://www.facebook.com/TourismLamphunMunicipality/?locale=th_TH",
+//                     "_blank",
+//                     "noopener,noreferrer",
+//                   );
+//                 }}
+//                 className="text-[14px] font-medium mt-2 text-white bg-[#105DE2] border border-[#105DE2] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-12 py-2"
+//               >
+//                 {t("contact.page")}
+//               </button>
+//             </div>
+
+//             <div className="overflow-hidden border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+//               <h1 className="py-2 text-center w-full bg-[#FFF0DC] text-black font-bold text-[16px]">
+//                 Tourist Care
+//               </h1>
+
+//               <div className="w-full h-full px-7 py-4 flex flex-col justify-between items-center gap-y-2">
+//                 <LazyImage
+//                   src="/images/contact-page/tourist-care-pic.svg"
+//                   className="w-[95%] mb-2"
+//                 />
+
+//                 <p className="text-[12px] text-center font-normal mb-1">
+//                   {isTH ? (
+//                     <>
+//                       <span className="font-bold">Public Service</span>{" "}
+//                       {t("contact.touristCareDesc")}
+//                     </>
+//                   ) : (
+//                     t("contact.touristCareDesc")
+//                   )}
+//                 </p>
+
+//                 <LazyImage
+//                   src="/images/contact-page/tourist-care-qr.svg"
+//                   className="w-32"
+//                 />
+
+//                 <button
+//                   onClick={() => {
+//                     window.open(
+//                       "https://travel.cmonehealth.org/travel-app/#/?admin_area_id=13164&authorityId=4921",
+//                       "_blank",
+//                       "noopener,noreferrer",
+//                     );
+//                   }}
+//                   className="text-[14px] font-medium mt-2 text-white bg-[#BF4B17] border border-[#BF4B17] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-12 py-2"
+//                 >
+//                   {t("contact.web")}
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         )}
+
+//         {mode === "line" && modeLoading && <ContactLoader />}
+
+//         {mode === "line" && !modeLoading && (
+//           <div className="animate-fade-in min-h-full flex flex-col justify-between items-center gap-y-2 px-10 py-5 border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
+//             <h1 className="text-[#11A04B] text-[24px] font-semibold">Line</h1>
+
+//             <LazyImage
+//               src="/images/contact-page/line-pic.svg"
+//               className="w-full"
+//             />
+
+//             <p className="text-[12px] text-center">{t("contact.lineDesc")}</p>
+
+//             <LazyImage
+//               src="/images/contact-page/line-qr.svg"
+//               className="w-24"
+//             />
+
+//             <p className="text-[12px] text-[#BF4B17] text-center">
+//               {t("contact.scan")}
+//             </p>
+
+//             <button
+//               onClick={() => {
+//                 window.open(
+//                   "https://line.me/ti/p/Xwfq5YWEKd",
+//                   "_blank",
+//                   "noopener,noreferrer",
+//                 );
+//               }}
+//               className="text-[14px] font-medium text-white bg-[#1DCC64] border border-[#1DCC64] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-12 py-2"
+//             >
+//               {t("menu.friend")}
+//             </button>
+//           </div>
+//         )}
+//       </section>
+//     </main>
+//   );
+// }
+
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import SubNavbar from "../components/navbar/sub-navbar";
 import type { IContactMode } from "../interfaces/navbar.interface";
 import EmergencyCard from "../components/contact-page/emergency-card";
-import ContactLoader from "../components/skeleton-load/contact-loader";
+// import ContactLoader from "../components/skeleton-load/contact-loader";
 import { useEmergencyItems } from "../hooks/useEmergencyItems";
 import LazyImage from "../components/skeleton-load/image-loader";
+import { formatTime12h, formatTime12hCn } from "../utils/ml";
+import EmergencyPhoneCard from "../components/contact-page/emergency-phone-card";
+// import { IoIosArrowDown } from "react-icons/io";
+// import { useNavigate } from "react-router-dom";
+// import { useNavbarTitle } from "../hooks/useNavbar";
+import { IoIosArrowForward } from "react-icons/io";
+import EmergencyPhoneCardLoader from "../components/skeleton-load/emergency-phone-card-loader";
+import EmergencyCardLoader from "../components/skeleton-load/emergency-card-loader";
+import NewsLoader from "../components/skeleton-load/news-loader";
+import LineLoader from "../components/skeleton-load/line-loader";
 
 export default function ContactPage() {
   const { t, i18n } = useTranslation();
   const lang = i18n.language as "th" | "en" | "cn";
   const isTH = i18n.language === "th";
+  // const navigate = useNavigate();
+  // const { setOverrideTitle } = useNavbarTitle();
+
+  // const [leaving, setLeaving] = useState(false);
+  const [entering, setEntering] = useState(true);
 
   const [mode, setMode] = useState<IContactMode>("emergency");
   const [prevMode, setPrevMode] = useState<IContactMode>(mode);
@@ -22,12 +244,25 @@ export default function ContactPage() {
   }
 
   useEffect(() => {
+    const timer = setTimeout(() => setEntering(false), 10);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     if (!modeLoading) return;
     const timer = setTimeout(() => setModeLoading(false), 350);
     return () => clearTimeout(timer);
   }, [modeLoading]);
 
   const { items, loading } = useEmergencyItems();
+
+  // const handleClose = () => {
+  //   setLeaving(true);
+  //   setTimeout(() => {
+  //     setOverrideTitle(null);
+  //     navigate("/app");
+  //   }, 100);
+  // };
 
   return (
     <main className="relative w-full h-full flex flex-col overflow-hidden">
@@ -41,154 +276,219 @@ export default function ContactPage() {
         mode2Name={t("contact.news")}
         mode3Name={t("contact.line")}
         isSmallOne={true}
+        isTabStyle={true}
+        // leaving={leaving}
       />
 
-      <section className="w-full flex-1 overflow-y-auto space-y-4 p-7">
-        {mode === "emergency" &&
-          (modeLoading || loading ? (
-            Array.from({ length: 3 }).map((_, i) => <ContactLoader key={i} />)
-          ) : items.length === 0 ? (
-            <p className="text-center text-[13px] text-[#C6C6C6]">
-              ยังไม่มีข้อมูล
-            </p>
-          ) : (
-            items.map((item, idx) => (
-              <div
-                key={item.id}
-                className="animate-fade-in"
-                style={{ animationDelay: `${idx * 60}ms` }}
-              >
-                <EmergencyCard
-                  header={item.header}
-                  items={[
-                    ...(item.address[lang]
-                      ? [{ type: "address" as const, text: item.address[lang] }]
-                      : []),
-                    ...(item.hours[lang]
-                      ? [{ type: "hours" as const, text: item.hours[lang] }]
-                      : []),
-                    ...item.phones.map((ph) => ({
-                      type: "phone" as const,
-                      text: `${ph.label[lang] || `${t("contact.phone")}`} : ${ph.number}`,
-                      ext: ph.ext,
-                    })),
-                  ]}
-                />
-              </div>
-            ))
-          ))}
+      {/* <section
+        className={`z-5 ${i18n.language === "en" ? "max-h-[82.5svh]" : "max-h-[85.5svh]"} shadow-[0_0px_12.3px_0_rgba(50,33,21,0.15)] flex-col absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-[25px] w-[95%] h-full flex items-center justify-start overflow-hidden bg-white transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          leaving || entering ? "translate-y-full" : "translate-y-0"
+        }`}
+      > */}
+      <section
+        className={`z-5 ${i18n.language === "en" ? "max-h-[82.5svh]" : "max-h-[85.5svh]"} shadow-[0_0px_12.3px_0_rgba(50,33,21,0.15)] flex-col absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-[25px] w-[95%] h-full flex items-center justify-start overflow-hidden bg-white transition-transform duration-350 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          entering ? "translate-y-full" : "translate-y-0"
+        }`}
+      >
+        {/* <div
+          onClick={handleClose}
+          className="w-full bg-[#BF4B17] flex justify-center items-center text-white py-1 cursor-pointer shrink-0"
+        >
+          <IoIosArrowDown size={24} />
+        </div> */}
 
-        {mode === "news" &&
-          modeLoading &&
-          Array.from({ length: 2 }).map((_, i) => <ContactLoader key={i} />)}
-
-        {mode === "news" && !modeLoading && (
-          <div className="animate-fade-in flex flex-col gap-y-4">
-            <div className="flex flex-col justify-between items-center gap-y-2 px-5 py-5 border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-              <h1 className="text-[#104DB6] text-[24px] font-semibold">
-                Facebook
-              </h1>
-
-              <LazyImage
-                src="/images/contact-page/fb-pic.svg"
-                className="w-full"
-              />
-
-              <button
-                onClick={() => {
-                  window.open(
-                    "https://www.facebook.com/TourismLamphunMunicipality/?locale=th_TH",
-                    "_blank",
-                    "noopener,noreferrer",
-                  );
-                }}
-                className="text-[14px] font-medium mt-2 text-white bg-[#105DE2] border border-[#105DE2] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-12 py-2"
-              >
-                {t("contact.page")}
-              </button>
-            </div>
-
-            <div className="overflow-hidden border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-              <h1 className="py-2 text-center w-full bg-[#FFF0DC] text-black font-bold text-[16px]">
-                Tourist Care
-              </h1>
-
-              <div className="w-full h-full px-7 py-4 flex flex-col justify-between items-center gap-y-2">
-                <LazyImage
-                  src="/images/contact-page/tourist-care-pic.svg"
-                  className="w-[95%] mb-2"
-                />
-
-                <p className="text-[12px] text-center font-normal mb-1">
-                  {isTH ? (
+        <div className="w-full flex-1 overflow-y-auto space-y-4 p-5">
+          {mode === "emergency" &&
+            (modeLoading || loading ? (
+              <>
+                <EmergencyPhoneCardLoader />
+                <EmergencyCardLoader mode={1} />
+                <EmergencyCardLoader mode={2} />
+                <EmergencyCardLoader mode={3} />
+              </>
+            ) : items.length === 0 ? (
+              <p className="text-center text-[13px] text-[#C6C6C6]">
+                ยังไม่มีข้อมูล
+              </p>
+            ) : (
+              items.map((item, idx) => {
+                if (item.header.th === "เบอร์โทรฉุกเฉิน") {
+                  return (
                     <>
-                      <span className="font-bold">Public Service</span>{" "}
-                      {t("contact.touristCareDesc")}
+                      <div
+                        key={item.id}
+                        className="animate-fade-in"
+                        style={{ animationDelay: `${idx * 60}ms` }}
+                      >
+                        <EmergencyPhoneCard
+                          // header={item.header}
+                          phones={item.phones.map((ph) => ({
+                            label: ph.label,
+                            number: ph.number,
+                            ext: ph.ext,
+                          }))}
+                        />
+                      </div>
                     </>
-                  ) : (
-                    t("contact.touristCareDesc")
-                  )}
-                </p>
+                  );
+                } else {
+                  return (
+                    <div
+                      key={item.id}
+                      className="animate-fade-in"
+                      style={{ animationDelay: `${idx * 60}ms` }}
+                    >
+                      <EmergencyCard
+                        header={item.header}
+                        items={[
+                          ...(item.address[lang]
+                            ? [
+                                {
+                                  type: "address" as const,
+                                  text: item.address[lang],
+                                },
+                              ]
+                            : []),
+                          ...(item.openTime || item.closeTime
+                            ? [
+                                {
+                                  type: "hours" as const,
+                                  text:
+                                    lang === "th"
+                                      ? `${item.openTime ?? "?"} – ${item.closeTime ?? "?"} น.`
+                                      : lang === "en"
+                                        ? `${formatTime12h(item.openTime)} – ${formatTime12h(item.closeTime)}`
+                                        : `${formatTime12hCn(item.openTime)} – ${formatTime12hCn(item.closeTime)}`,
+                                },
+                              ]
+                            : []),
+                          ...item.phones.map((ph) => {
+                            const hasLabel = !!ph.label[lang]?.trim();
+                            return {
+                              type: "phone" as const,
+                              text: ph.number,
+                              label: hasLabel ? ph.label[lang] : undefined,
+                              ext: ph.ext,
+                              hasLabel,
+                            };
+                          }),
+                        ]}
+                      />
+                    </div>
+                  );
+                }
+              })
+            ))}
 
+          {mode === "news" && modeLoading && <NewsLoader />}
+
+          {mode === "news" && !modeLoading && (
+            <div className="animate-fade-in flex flex-col">
+              <div className="flex flex-col justify-between items-center gap-y-2 px-4 pb-5 bg-white">
+                <h1 className="text-[#104DB6] text-[24px] font-semibold">
+                  Facebook
+                </h1>
                 <LazyImage
-                  src="/images/contact-page/tourist-care-qr.svg"
-                  className="w-32"
+                  src="/images/contact-page/fb-pic.svg"
+                  className="w-full rounded-t-[18px] overflow-hidden"
                 />
-
                 <button
-                  onClick={() => {
+                  onClick={() =>
                     window.open(
-                      "https://travel.cmonehealth.org/travel-app/#/?admin_area_id=13164&authorityId=4921",
+                      "https://www.facebook.com/TourismLamphunMunicipality/?locale=th_TH",
                       "_blank",
                       "noopener,noreferrer",
-                    );
-                  }}
-                  className="text-[14px] font-medium mt-2 text-white bg-[#BF4B17] border border-[#BF4B17] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-12 py-2"
+                    )
+                  }
+                  className={`shadow-[0px_4px_10px_0px_rgba(0,0,0,0.125)] flex justify-center items-center gap-1 text-[14px] font-medium bg-[#105DE2] text-white rounded-full h-8 w-36`}
                 >
-                  {t("contact.web")}
+                  {t("contact.page")} <IoIosArrowForward size={18} />
                 </button>
+
+                <div className="w-full border-b border-[#D9D9D9] h-1" />
+              </div>
+
+              <div className="overflow-hidden -mt-3">
+                <h1 className="text-center text-[#BF4B17] text-[24px] font-semibold -mb-2">
+                  Tourist Care
+                </h1>
+                <div className="w-full h-full px-4 pt-4 pb-2 flex flex-col justify-between items-center gap-y-2">
+                  <LazyImage
+                    src="/images/contact-page/tourist-care-pic.svg"
+                    className="w-full mb-2 rounded-[18px] overflow-hidden"
+                  />
+                  <p className="px-3 text-[16px] text-start font-normal mb-1">
+                    {isTH ? (
+                      <>
+                        <span className="font-bold">Public Service</span>{" "}
+                        {t("contact.touristCareDesc")}
+                      </>
+                    ) : (
+                      t("contact.touristCareDesc")
+                    )}
+                  </p>
+                  {/* <LazyImage
+                    src="/images/contact-page/tourist-care-qr.svg"
+                    className="w-32"
+                  /> */}
+
+                  <button
+                    onClick={() =>
+                      window.open(
+                        "https://travel.cmonehealth.org/travel-app/#/?admin_area_id=13164&authorityId=4921",
+                        "_blank",
+                        "noopener,noreferrer",
+                      )
+                    }
+                    className={`shadow-[0px_4px_10px_0px_rgba(0,0,0,0.125)] flex justify-center items-center gap-1 text-[14px] font-medium bg-[#BF4B17] text-white rounded-full h-8 w-36`}
+                  >
+                    {t("contact.web")} <IoIosArrowForward size={18} />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {mode === "line" && modeLoading && <ContactLoader />}
+          {mode === "line" && modeLoading && <LineLoader />}
 
-        {mode === "line" && !modeLoading && (
-          <div className="animate-fade-in min-h-full flex flex-col justify-between items-center gap-y-2 px-10 py-5 border-2 border-[#D9D9D9] rounded-[15px] bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]">
-            <h1 className="text-[#11A04B] text-[24px] font-semibold">Line</h1>
+          {mode === "line" && !modeLoading && (
+            <div className="animate-fade-in min-h-full flex flex-col justify-start items-center gap-y-2 px-4">
+              <h1 className="text-[#11A04B] text-[24px] font-semibold -mb-1">
+                Line
+              </h1>
+              <LazyImage
+                src="/images/contact-page/line-pic.svg"
+                className="w-full rounded-[18px] overflow-hidden"
+              />
+              <p className="text-[16px] mb-5 text-start">
+                {t("contact.lineDesc")}
+              </p>
+              {/* <LazyImage
+                src="/images/contact-page/line-qr.svg"
+                className="w-24"
+              /> */}
+              {/* <p className="text-[12px] text-[#BF4B17] text-center">
+                {t("contact.scan")}
+              </p> */}
 
-            <LazyImage
-              src="/images/contact-page/line-pic.svg"
-              className="w-full"
-            />
-
-            <p className="text-[12px] text-center">{t("contact.lineDesc")}</p>
-
-            <LazyImage
-              src="/images/contact-page/line-qr.svg"
-              className="w-24"
-            />
-
-            <p className="text-[12px] text-[#BF4B17] text-center">
-              {t("contact.scan")}
-            </p>
-
-            <button
-              onClick={() => {
-                window.open(
-                  "https://line.me/ti/p/Xwfq5YWEKd",
-                  "_blank",
-                  "noopener,noreferrer",
-                );
-              }}
-              className="text-[14px] font-medium text-white bg-[#1DCC64] border border-[#1DCC64] rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-12 py-2"
-            >
-              {t("menu.friend")}
-            </button>
-          </div>
-        )}
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://line.me/ti/p/Xwfq5YWEKd",
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
+                className={`shadow-[0px_4px_10px_0px_rgba(0,0,0,0.125)] flex justify-center items-center gap-1 text-[14px] font-medium bg-[#1DCC64] text-white rounded-full h-8 w-36`}
+              >
+                {t("menu.friend")} <IoIosArrowForward size={18} />
+              </button>
+            </div>
+          )}
+        </div>
       </section>
+
+      <div className="min-h-[77svh] max-w-107.5 mx-auto fixed bottom-0 w-full bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_36%,#FBFCF0_62%,#E6EFD8_100%)] z-1" />
     </main>
   );
 }

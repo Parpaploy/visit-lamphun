@@ -6,18 +6,34 @@ import { FaDeleteLeft } from "react-icons/fa6";
 
 export default function DriverLoginPage() {
   const navigate = useNavigate();
-  const [trams, setTrams] = useState<Tram[]>([]);
+  // const [trams, setTrams] = useState<Tram[]>([]);
   const [selectedTram, setSelectedTram] = useState<Tram | null>(null);
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [pageLoading, setPageLoading] = useState(true);
   const [loadingPercent, setLoadingPercent] = useState(0);
 
+  // useEffect(() => {
+  //   const load = async () => {
+  //     try {
+  //       const data = await fetchAllTrams();
+  //       setTrams(data);
+  //     } catch (err) {
+  //       console.error(err);
+  //       setError("โหลดข้อมูลรถรางไม่สำเร็จ");
+  //     }
+  //   };
+  //   load();
+  // }, []);
+
   useEffect(() => {
     const load = async () => {
       try {
         const data = await fetchAllTrams();
-        setTrams(data);
+        // setTrams(data);
+        if (data.length > 0) {
+          setSelectedTram(data[0]);
+        }
       } catch (err) {
         console.error(err);
         setError("โหลดข้อมูลรถรางไม่สำเร็จ");
@@ -103,7 +119,7 @@ export default function DriverLoginPage() {
         <div className="absolute inset-0 backdrop-blur-[5px] bg-white/10" />
 
         <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-5">
-          <div className="relative w-full bg-white rounded-[18px] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] p-5">
+          {/* <div className="relative w-full bg-white rounded-[18px] shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] p-5">
             <div className="rounded-full overflow-hidden w-20 h-20 absolute -top-10 left-1/2 -translate-x-1/2">
               <img
                 className="w-full h-full"
@@ -133,6 +149,10 @@ export default function DriverLoginPage() {
                 </button>
               ))}
             </div>
+          </div> */}
+
+          <div className="absolute top-0 left-0 py-7 w-full bg-[#FDD59E] text-[#543A14] text-[20px] font-bold text-center">
+            ระบบติดตามรถรางลำพูน
           </div>
 
           <div className="relative flex gap-4 mt-8 mb-4">

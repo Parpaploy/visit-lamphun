@@ -34,7 +34,13 @@ export default function TramPanel() {
       );
 
   const handleAdd = async () => {
-    if (!form.place.th || !form.place.en || !form.place.cn) {
+    if (
+      !form.place.th ||
+      !form.place.en ||
+      !form.place.cn ||
+      !form.originTime ||
+      !form.destinationTime
+    ) {
       setFormError(t("dashboard.errorRequiredTram"));
       return;
     }
@@ -60,7 +66,8 @@ export default function TramPanel() {
       await updateTramItem(editing.id, {
         place: editing.place,
         round: editing.round,
-        time: editing.time,
+        originTime: editing.originTime,
+        destinationTime: editing.destinationTime,
         price: editing.price,
       });
       setEditing(null);
@@ -108,27 +115,49 @@ export default function TramPanel() {
             onChange={setPlace("cn")}
             className={inputCls}
           />
-          <div className="flex justify-center items-center gap-2">
-            <select
-              value={form.round}
-              onChange={(e) =>
-                setForm((f) => ({
-                  ...f,
-                  round: e.target.value as "morning" | "afternoon",
-                }))
-              }
-              className={`${inputCls} bg-white`}
-            >
-              <option value="morning">{t("form.morning")}</option>
-              <option value="afternoon">{t("form.afternoon")}</option>
-            </select>
+
+          <select
+            value={form.round}
+            onChange={(e) =>
+              setForm((f) => ({
+                ...f,
+                round: e.target.value as "morning" | "afternoon",
+              }))
+            }
+            className={`${inputCls} bg-white`}
+          >
+            <option value="morning">{t("form.morning")}</option>
+            <option value="afternoon">{t("form.afternoon")}</option>
+          </select>
+
+          <div className="w-full flex flex-col justify-start items-start">
+            <p className="text-[13px] text-[#543A14]">{t("form.originTime")}</p>
             <input
               placeholder={`${t("form.time")} *`}
-              value={form.time}
-              onChange={(e) => setForm((f) => ({ ...f, time: e.target.value }))}
+              type="time"
+              value={form.originTime}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, originTime: e.target.value }))
+              }
               className={inputCls}
             />
           </div>
+
+          <div className="w-full flex flex-col justify-start items-start">
+            <p className="text-[13px] text-[#543A14]">
+              {t("form.destinationTime")}
+            </p>
+            <input
+              placeholder={`${t("form.time")} *`}
+              type="time"
+              value={form.destinationTime}
+              onChange={(e) =>
+                setForm((f) => ({ ...f, destinationTime: e.target.value }))
+              }
+              className={inputCls}
+            />
+          </div>
+
           <input
             placeholder={t("form.price")}
             type="number"
@@ -199,14 +228,39 @@ export default function TramPanel() {
                 <option value="morning">{t("form.morning")}</option>
                 <option value="afternoon">{t("form.afternoon")}</option>
               </select>
-              <input
-                placeholder={t("form.time")}
-                value={editing.time}
-                onChange={(e) =>
-                  setEditing((s) => s && { ...s, time: e.target.value })
-                }
-                className={inputCls}
-              />
+
+              <div className="w-full flex flex-col justify-start items-start">
+                <p className="text-[13px] text-[#543A14]">
+                  {t("form.originTime")}
+                </p>
+                <input
+                  placeholder={t("form.time")}
+                  value={editing.originTime}
+                  type="time"
+                  onChange={(e) =>
+                    setEditing((s) => s && { ...s, originTime: e.target.value })
+                  }
+                  className={inputCls}
+                />
+              </div>
+
+              <div className="w-full flex flex-col justify-start items-start">
+                <p className="text-[13px] text-[#543A14]">
+                  {t("form.destinationTime")}
+                </p>
+                <input
+                  placeholder={t("form.time")}
+                  value={editing.destinationTime}
+                  type="time"
+                  onChange={(e) =>
+                    setEditing(
+                      (s) => s && { ...s, destinationTime: e.target.value },
+                    )
+                  }
+                  className={inputCls}
+                />
+              </div>
+
               <input
                 type="number"
                 value={editing.price === 0 ? "" : editing.price}
@@ -247,7 +301,8 @@ export default function TramPanel() {
                   {item.place.en}
                 </p>
                 <p className="text-[11px] text-[#C6C6C6]">
-                  {t(`form.${item.round}`)} · {item.time} · {item.price} บาท
+                  {t(`form.${item.round}`)} · {item.originTime} -{" "}
+                  {item.destinationTime} · {item.price} บาท
                 </p>
               </div>
               <div className="flex gap-x-3 shrink-0">

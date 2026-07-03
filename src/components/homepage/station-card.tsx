@@ -3,15 +3,22 @@ import { useTranslation } from "react-i18next";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosMore } from "react-icons/io";
 import { SKELETON } from "../skeleton-load/station-card-loader";
+import { PLACE_TAGS } from "../../constant/admin";
 
 export default function StationCard({
   name,
   link,
   img,
+  tag,
+  onSelect,
+  setShowFullDesc,
 }: {
   name: string;
   link: string;
   img: string;
+  tag?: string;
+  onSelect?: (name: string) => void;
+  setShowFullDesc: (showFullDesc: boolean) => void;
 }) {
   const { t } = useTranslation();
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -19,7 +26,8 @@ export default function StationCard({
   return (
     <div
       onClick={() => {
-        window.open(link, "_blank", "noopener,noreferrer");
+        onSelect?.(name);
+        setShowFullDesc(false);
       }}
       className="bg-white h-full min-w-50 w-50 max-w-50 rounded-xl overflow-hidden shadow-[0_4px_10px_0_rgba(0,0,0,0.125)]"
     >
@@ -31,15 +39,21 @@ export default function StationCard({
         />
         <img
           src={img}
-          className={`w-full h-full object-cover object-top transition-opacity duration-500 ${
+          className={`w-full h-full min-h-26 max-h-26 object-cover object-top transition-opacity duration-500 ${
             imageLoaded ? "opacity-100" : "opacity-0"
           }`}
           onLoad={() => setImageLoaded(true)}
           alt={name}
         />
+
+        {tag && (
+          <span className="z-10 absolute top-2 left-2.5 text-[11px] font-medium bg-white/50 backdrop-blur-sm text-white rounded-full px-3 py-1">
+            {t(PLACE_TAGS.find((tg) => tg.value === tag)?.label ?? tag)}
+          </span>
+        )}
       </div>
 
-      <div className="relative w-full h-[40%] px-3 py-2 text-[12px] font-medium">
+      <div className="relative w-full h-[40%] px-3 pt-2 pb-1 text-[12px] font-medium">
         <div
           className={`absolute inset-0 flex flex-col gap-y-2 px-3 py-2 transition-opacity duration-500 ${
             imageLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
@@ -50,15 +64,20 @@ export default function StationCard({
         </div>
 
         <div
-          className={`flex flex-col gap-y-1 transition-opacity duration-500 ${
+          className={`flex flex-col gap-y-1 h-full transition-opacity duration-500 ${
             imageLoaded ? "opacity-100" : "opacity-0"
           }`}
         >
           <div className="w-full flex justify-between items-center">
-            <p className="truncate min-w-0 flex-1 mr-1">{name}</p>
+            <p className="pt-0.5 truncate min-w-0 flex-1 mr-1">{name}</p>
             <IoIosMore size={16} />
           </div>
-          <div className="w-full flex justify-start items-center gap-x-1">
+          <div
+            onClick={() => {
+              window.open(link, "_blank", "noopener,noreferrer");
+            }}
+            className="w-fit flex justify-start items-center gap-x-1"
+          >
             <p className="text-[#F48B3C]">{t("homepage.more")}</p>
             <IoIosArrowForward className="text-[#F48B3C]" />
           </div>

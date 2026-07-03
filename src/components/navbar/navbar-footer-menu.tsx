@@ -45,9 +45,10 @@ export default function NavbarFooterMenu({
         navigate(path);
         setOpenMenu(false);
       }}
-      className="text-[#543A14] w-full flex justify-start items-center gap-5 border-t border-[#D9D9D9] pl-10 py-3"
+      className="relative text-[#543A14] w-full flex justify-start items-center gap-5 pl-1.5 py-4"
     >
-      <div className="w-6.5 h-6.5">
+      <div className="absolute bottom-0 min-h-1 w-[85%] left-1/2 -translate-1/2 border-b border-[#D9D9D9]" />
+      <div className="min-w-9 min-h-9 w-9 h-9 ">
         <img
           style={{ filter: loaded || isNavbarLoad ? "none" : "blur(10px)" }}
           className="w-full h-full"
@@ -55,7 +56,7 @@ export default function NavbarFooterMenu({
         />
       </div>
 
-      <p className="text-[16px] font-semibold mt-1">{title}</p>
+      <p className="text-[16px] font-semibold">{title}</p>
     </button>
   );
 }

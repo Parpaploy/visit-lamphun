@@ -8,6 +8,7 @@ import {
 } from "../../services/contact.services";
 import { EMPTY_CONTACT } from "../../constant/admin";
 import type { ContactEditState } from "../../interfaces/admin.interface";
+import { formatTime12h } from "../../utils/ml";
 
 const EMPTY_PHONE = { label: { th: "", en: "", cn: "" }, number: "", ext: "" };
 
@@ -26,7 +27,7 @@ export default function AdminContact() {
     `${t(key)} ${t(`form.${lang}`)}${req ? " *" : ""}`;
 
   const setML =
-    (field: "header" | "address" | "hours", lang: "th" | "en" | "cn") =>
+    (field: "header" | "address", lang: "th" | "en" | "cn") =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
       setForm((f) => ({
         ...f,
@@ -34,7 +35,7 @@ export default function AdminContact() {
       }));
 
   const setEditML =
-    (field: "header" | "address" | "hours", lang: "th" | "en" | "cn") =>
+    (field: "header" | "address", lang: "th" | "en" | "cn") =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
       setEditing(
         (s) => s && { ...s, [field]: { ...s[field], [lang]: e.target.value } },
@@ -115,7 +116,8 @@ export default function AdminContact() {
       await addEmergencyItem({
         header: form.header,
         address: form.address,
-        hours: form.hours,
+        openTime: form.openTime.trim() || undefined,
+        closeTime: form.closeTime.trim() || undefined,
         phones: form.phones.filter((ph) => ph.number.trim()),
       });
       setForm(EMPTY_CONTACT);
@@ -136,7 +138,8 @@ export default function AdminContact() {
       await updateEmergencyItem(editing.id, {
         header: editing.header,
         address: editing.address,
-        hours: editing.hours,
+        openTime: editing.openTime.trim() || undefined,
+        closeTime: editing.closeTime.trim() || undefined,
         phones: editing.phones.filter((ph) => ph.number.trim()),
       });
       setEditing(null);
@@ -204,24 +207,34 @@ export default function AdminContact() {
             className={inputCls}
           />
 
-          <input
-            placeholder={p("form.hours", "inTh")}
-            value={form.hours.th}
-            onChange={setML("hours", "th")}
-            className={inputCls}
-          />
-          <input
-            placeholder={p("form.hours", "inEn")}
-            value={form.hours.en}
-            onChange={setML("hours", "en")}
-            className={inputCls}
-          />
-          <input
-            placeholder={p("form.hours", "inCn")}
-            value={form.hours.cn}
-            onChange={setML("hours", "cn")}
-            className={inputCls}
-          />
+          <div className="flex gap-x-2">
+            <div className="w-full flex flex-col justify-start items-start">
+              <p className="text-[13px] text-[#543A14]">{t("form.openTime")}</p>
+              <input
+                type="time"
+                placeholder={t("form.openTime")}
+                value={form.openTime}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, openTime: e.target.value }))
+                }
+                className={`${inputCls} flex-1`}
+              />
+            </div>
+            <div className="w-full flex flex-col justify-start items-start">
+              <p className="text-[13px] text-[#543A14]">
+                {t("form.closeTime")}
+              </p>
+              <input
+                type="time"
+                placeholder={t("form.closeTime")}
+                value={form.closeTime}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, closeTime: e.target.value }))
+                }
+                className={`${inputCls} flex-1`}
+              />
+            </div>
+          </div>
 
           <p className="text-[12px] text-[#8B724E] font-medium">
             {t("dashboard.phone")}
@@ -347,24 +360,38 @@ export default function AdminContact() {
                 className={inputCls}
               />
 
-              <input
-                placeholder={p("form.hours", "inTh")}
-                value={editing.hours.th}
-                onChange={setEditML("hours", "th")}
-                className={inputCls}
-              />
-              <input
-                placeholder={p("form.hours", "inEn")}
-                value={editing.hours.en}
-                onChange={setEditML("hours", "en")}
-                className={inputCls}
-              />
-              <input
-                placeholder={p("form.hours", "inCn")}
-                value={editing.hours.cn}
-                onChange={setEditML("hours", "cn")}
-                className={inputCls}
-              />
+              <div className="flex gap-x-2">
+                <div className="w-full flex flex-col justify-start items-start">
+                  <p className="text-[13px] text-[#543A14]">
+                    {t("form.openTime")}
+                  </p>
+                  <input
+                    type="time"
+                    placeholder={t("form.openTime")}
+                    value={editing.openTime}
+                    onChange={(e) =>
+                      setEditing((s) => s && { ...s, openTime: e.target.value })
+                    }
+                    className={`${inputCls} flex-1`}
+                  />
+                </div>
+                <div className="w-full flex flex-col justify-start items-start">
+                  <p className="text-[13px] text-[#543A14]">
+                    {t("form.closeTime")}
+                  </p>
+                  <input
+                    type="time"
+                    placeholder={t("form.closeTime")}
+                    value={editing.closeTime}
+                    onChange={(e) =>
+                      setEditing(
+                        (s) => s && { ...s, closeTime: e.target.value },
+                      )
+                    }
+                    className={`${inputCls} flex-1`}
+                  />
+                </div>
+              </div>
 
               <p className="text-[12px] text-[#8B724E] font-medium">
                 {t("dashboard.phone")}
@@ -455,8 +482,11 @@ export default function AdminContact() {
                     {item.address.th}
                   </p>
                 )}
-                {item.hours.th && (
-                  <p className="text-[11px] text-[#8B724E]">{item.hours.th}</p>
+                {(item.openTime || item.closeTime) && (
+                  <p className="text-[11px] text-[#8B724E]">
+                    {formatTime12h(item.openTime)} –{" "}
+                    {formatTime12h(item.closeTime)}
+                  </p>
                 )}
                 {item.phones.length > 0 && (
                   <p className="text-[11px] text-[#C6C6C6]">
@@ -472,7 +502,14 @@ export default function AdminContact() {
               </div>
               <div className="flex gap-x-3 shrink-0">
                 <button
-                  onClick={() => setEditing({ ...item, saving: false })}
+                  onClick={() =>
+                    setEditing({
+                      ...item,
+                      saving: false,
+                      openTime: item.openTime ?? "",
+                      closeTime: item.closeTime ?? "",
+                    })
+                  }
                   className="text-[12px] text-[#543A14] font-medium"
                 >
                   {t("dashboard.edit")}

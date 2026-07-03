@@ -1,23 +1,20 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import AdminRecommend from "../components/admin/admin-recommend";
 import AdminKome from "../components/admin/admin-kome";
 import AdminTravel from "../components/admin/admin-travel";
 import AdminContact from "../components/admin/admin-contact";
-import AdminPopup from "../components/admin/admin-popup";
 import AdminHeatmap from "../components/admin/admin-heatmap";
-import PlacesPanel from "../components/admin/places-panel";
-
 import type { Tab } from "../interfaces/admin.interface";
 import { useTabs } from "../constant/admin";
 import { useAuth } from "../hooks/useAuth";
 import AdminLoginPage from "./admin-login-page";
+import AdminStation from "../components/admin/admin-station";
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
   const tabs = useTabs();
-  const [tab, setTab] = useState<Tab>("places");
+  const [tab, setTab] = useState<Tab>("station");
   const { user } = useAuth();
 
   if (!user) return <AdminLoginPage />;
@@ -28,7 +25,6 @@ export default function AdminDashboard() {
         <h1 className="text-[20px] font-bold text-[#543A14] mb-5">
           {t("dashboard.title")}
         </h1>
-
         <div className="flex gap-x-2 mb-5 overflow-x-auto pb-1">
           {tabs.map((item) => (
             <button
@@ -44,13 +40,16 @@ export default function AdminDashboard() {
             </button>
           ))}
         </div>
+        {/* {tab === "places" && <PlacesPanel />}
+        {tab === "activities" && <ActivitiesPanel />}
+        {tab === "toilets" && <ToiletsPanel />} */}
 
-        {tab === "places" && <PlacesPanel />}
+        {tab === "station" && <AdminStation />}
         {tab === "recommend" && <AdminRecommend />}
         {tab === "kome" && <AdminKome />}
         {tab === "travel" && <AdminTravel />}
         {tab === "contact" && <AdminContact />}
-        {tab === "popup" && <AdminPopup />}
+        {/* {tab === "popup" && <AdminPopup />} */}
         {tab === "heatmap" && <AdminHeatmap />}
       </div>
     </div>

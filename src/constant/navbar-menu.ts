@@ -3,10 +3,17 @@ import type { NavbarMenuRecord } from "../interfaces/navbar.interface";
 export const menuList: NavbarMenuRecord = {
   th: [
     {
-      title: "หน้าหลัก",
+      title: "แผนที่เส้นทางรถราง",
       path: "/app",
-      img: "/icons/navbar/homepage.svg",
+      img: "/icons/navbar/map-icon.svg",
       sf: "homepage",
+    },
+    {
+      title: "การเดินทาง",
+      path: "/app/travel",
+      img: "/icons/navbar/travel.svg",
+      // desc: "เดินทางจากเชียงใหม่ - ลำพูน",
+      sf: "travel",
     },
     {
       title: "ของดี ที่เด่น เรื่องดัง",
@@ -15,17 +22,16 @@ export const menuList: NavbarMenuRecord = {
       sf: "goods",
     },
     {
-      title: "การเดินทาง",
-      path: "/app/travel",
-      img: "/icons/navbar/travel.svg",
-      desc: "เดินทางจากเชียงใหม่ - ลำพูน",
-      sf: "travel",
-    },
-    {
       title: "กลุ่มผลิตโคม",
       path: "/app/komepage",
       img: "/icons/navbar/kome.svg",
       sf: "kome",
+    },
+    {
+      title: "วารสารท่องเที่ยวลำพูน",
+      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+      img: "/icons/navbar/shop.svg",
+      sf: "tbook",
     },
     // {
     //   title: "วารสารท่องเที่ยวลำพูน",
@@ -36,9 +42,9 @@ export const menuList: NavbarMenuRecord = {
   ],
   en: [
     {
-      title: "Homepage",
-      path: "/app/homepage",
-      img: "/icons/navbar/homepage.svg",
+      title: "Tram Route Map",
+      path: "/app",
+      img: "/icons/navbar/map-icon.svg",
       sf: "homepage",
     },
     {
@@ -51,7 +57,7 @@ export const menuList: NavbarMenuRecord = {
       title: "Lamphun Travel",
       path: "/app/travel",
       img: "/icons/navbar/travel.svg",
-      desc: "Travel from Chiang Mai to Lamphun",
+      // desc: "Travel from Chiang Mai to Lamphun",
       sf: "travel",
     },
     {
@@ -66,12 +72,18 @@ export const menuList: NavbarMenuRecord = {
     //   img: "/icons/navbar/shop.svg",
     //   sf: "tbook",
     // },
+    {
+      title: "Lamphun Travel Magazine",
+      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+      img: "/icons/navbar/shop.svg",
+      sf: "tbook",
+    },
   ],
   cn: [
     {
-      title: "首页",
-      path: "/app/homepage",
-      img: "/icons/navbar/homepage.svg",
+      title: "电车路线图",
+      path: "/app",
+      img: "/icons/navbar/map-icon.svg",
       sf: "homepage",
     },
     {
@@ -84,7 +96,7 @@ export const menuList: NavbarMenuRecord = {
       title: "旅行",
       path: "/app/travel",
       img: "/icons/navbar/travel.svg",
-      desc: "线路",
+      // desc: "线路",
       sf: "travel",
     },
     {
@@ -99,59 +111,65 @@ export const menuList: NavbarMenuRecord = {
     //   img: "/icons/navbar/shop.svg",
     //   sf: "tbook",
     // },
+    {
+      title: "南奔府旅游杂志",
+      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+      img: "/icons/navbar/shop.svg",
+      sf: "tbook",
+    },
   ],
 };
 
 export const footerList: NavbarMenuRecord = {
   th: [
-    {
-      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
-      img: "/icons/navbar/download.svg",
-      title: "ดาวน์โหลดเอกสารท่องเที่ยว",
-    },
+    // {
+    //   path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+    //   img: "/icons/navbar/download.svg",
+    //   title: "ดาวน์โหลดเอกสารท่องเที่ยว",
+    // },
     {
       path: "/app/contact",
       img: "/icons/navbar/phone.svg",
-      title: "ติดต่อเรา / ข้อเสนอแนะ",
+      title: "ช่องทางติดต่อฉุกเฉิน",
     },
     {
       path: "https://ruamkhai.com/",
       img: "/icons/navbar/ruamkhai-icon.svg",
-      title: "ไปยัง Platform Ruamkhai",
+      title: "Platform Ruamkhai",
     },
   ],
   en: [
-    {
-      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
-      img: "/icons/navbar/download.svg",
-      title: "4-Hour Lamphun Travel Guide",
-    },
+    // {
+    //   path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+    //   img: "/icons/navbar/download.svg",
+    //   title: "4-Hour Lamphun Travel Guide",
+    // },
     {
       path: "/app/contact",
       img: "/icons/navbar/phone.svg",
-      title: "Contact / Feedback",
+      title: "Emergency Contact",
     },
     {
       path: "https://ruamkhai.com/",
       img: "/icons/navbar/ruamkhai-icon.svg",
-      title: "Go to Ruamkhai Platform",
+      title: "Platform Ruamkhai",
     },
   ],
   cn: [
-    {
-      path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
-      img: "/icons/navbar/download.svg",
-      title: "旅游指南南奔下载",
-    },
+    // {
+    //   path: "https://online.anyflip.com/nnowl/awei/mobile/index.html",
+    //   img: "/icons/navbar/download.svg",
+    //   title: "旅游指南南奔下载",
+    // },
     {
       path: "/app/contact",
       img: "/icons/navbar/phone.svg",
-      title: "联系方式/提出意见",
+      title: "紧急联系方式",
     },
     {
       path: "https://ruamkhai.com/",
       img: "/icons/navbar/ruamkhai-icon.svg",
-      title: "进入 Ruankhai",
+      title: "Platform Ruamkhai",
     },
   ],
 };
@@ -206,32 +224,32 @@ export const pageTitleMap: Record<
   Record<string, string>
 > = {
   th: {
-    homepage: "หน้าหลัก",
+    homepage: "แผนที่เส้นทางรถราง",
     goods: "ของดี ที่เด่น เรื่องดัง",
     travel: "การเดินทาง",
     kome: "กลุ่มผลิตโคม",
     tbook: "วารสาร",
-    contact: "ติดต่อเรา",
+    contact: "ช่องทางติดต่อฉุกเฉิน",
     checkin: "ติดตามรถราง",
     roadmap: "ติดตามรถราง",
   },
   en: {
-    homepage: "Homepage",
+    homepage: "Tram Route Map",
     goods: "Best of Lamphun",
     travel: "Travel",
     kome: "Lantern Groups",
     tbook: "Magazine",
-    contact: "Contact",
+    contact: "Emergency Contact",
     checkin: "ติดตามรถราง",
     roadmap: "ติดตามรถราง",
   },
   cn: {
-    homepage: "首页",
+    homepage: "电车路线图",
     goods: "精品景点",
     travel: "旅行",
     kome: "灯笼制作",
     tbook: "旅游杂志",
-    contact: "联系方式",
+    contact: "紧急联系方式",
     checkin: "ติดตามรถราง",
     roadmap: "ติดตามรถราง",
   },
@@ -241,4 +259,15 @@ export const subtitleMap: Record<"th" | "en" | "cn", string> = {
   th: "ท่องเที่ยวลำพูน",
   en: "Visit Lamphun",
   cn: "游览南奔",
+};
+
+export const SF_ICON_MAP: Record<string, string> = {
+  homepage: "/icons/navbar/map-icon.svg",
+  travel: "/icons/navbar/travel.svg",
+  goods: "/icons/navbar/recommend.svg",
+  kome: "/icons/navbar/kome.svg",
+  tbook: "/icons/navbar/shop.svg",
+  contact: "/icons/navbar/phone.svg",
+  checkin: "/icons/navbar/checkin-icon.svg",
+  roadmap: "/icons/navbar/roadmap-icon.svg",
 };

@@ -15,7 +15,10 @@ export interface KomeItem {
   id: string;
   name: MLString;
   phone: string;
+  link?: string;
 }
+
+export type Direction = "CNX_LPH" | "LPH_CNX";
 
 export interface TrainItem {
   id: string;
@@ -27,24 +30,28 @@ export interface TrainItem {
   destinationStation: MLString;
   price: number;
   desc: MLString;
-  day: "weekday" | "weekend";
+  day: "weekday" | "weekend" | "everyday";
 }
 
 export interface TramItem {
   id: string;
   place: MLString;
   round: "morning" | "afternoon";
-  time: string;
+  originTime: string;
+  destinationTime: string;
   price: number;
 }
 
 export interface OtherItem {
   id: string;
+  image: string;
   place: MLString;
-  desc: MLString;
-  desc2: MLString;
-  type: "van" | "tricycle" | "songthaew";
-  phone: string;
+  boardingPoint: MLString;
+  route: MLString;
+  departureTime: MLString;
+  price: number;
+  type: "van" | "tricycle" | "songthaew" | "motorcycle";
+  phone?: string;
   link: string;
   lineLink?: string;
   day: "weekday" | "weekend";
@@ -60,7 +67,8 @@ export interface EmergencyItem {
   id: string;
   header: MLString;
   address: MLString;
-  hours: MLString;
+  openTime?: string;
+  closeTime?: string;
   phones: PhoneEntry[];
 }
 
@@ -68,4 +76,10 @@ export interface StationPopupData {
   header: MLString;
   desc: MLString;
   img: string;
+  openTime?: string;
+  closeTime?: string;
+  phone?: string;
+  location?: string;
 }
+
+export type CardType = "van" | "tricycle" | "songthaew" | "motorcycle";

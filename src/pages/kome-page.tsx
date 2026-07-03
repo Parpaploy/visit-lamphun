@@ -2,14 +2,17 @@ import { useState } from "react";
 import KomeCard from "../components/komepage/kome-card";
 import KomeLoader from "../components/skeleton-load/kome-loader";
 import { useKomeItems } from "../hooks/useKomeItems";
+import { useTranslation } from "react-i18next";
 
 export default function KomePage() {
+  const { t } = useTranslation();
+
   const { items, loading } = useKomeItems();
-  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState<boolean>(false);
 
   return (
     <main className="w-full h-full flex flex-col overflow-hidden">
-      <section className="w-full h-auto mt-4 relative">
+      <section className="z-50 w-full h-auto mt-7 relative">
         {!imgLoaded && (
           <div className="w-full h-40 bg-gray-200 animate-pulse rounded" />
         )}
@@ -21,27 +24,40 @@ export default function KomePage() {
         />
       </section>
 
-      <div className="mx-auto w-[85%] border-b border-[#D9D9D9] h-5" />
+      {/* <div className="z-50 mx-auto w-[85%] border-b border-[#D9D9D9] h-5" /> */}
+      <div className="z-50 mx-auto w-[85%] min-h-3 bg-white" />
 
-      <section className="w-full h-full overflow-y-auto px-10 space-y-3 py-5">
-        {loading ? (
-          Array.from({ length: 4 }).map((_, i) => <KomeLoader key={i} />)
-        ) : items.length === 0 ? (
-          <p className="text-center text-[13px] text-[#C6C6C6]">
-            ยังไม่มีข้อมูล
-          </p>
-        ) : (
-          items.map((item, idx) => (
-            <div
-              key={item.id}
-              className="animate-fade-in"
-              style={{ animationDelay: `${idx * 60}ms` }}
-            >
-              <KomeCard name={item.name} phone={item.phone} />
-            </div>
-          ))
-        )}
+      <section className="z-50 w-full flex-1 min-h-0 flex flex-col pt-5 bg-[linear-gradient(-201deg,#FFE2A5_0%,#FBFCF0_22%,#FBFCF0_62%,#E6EFD8_100%)]">
+        <h1 className="text-[#543A14] font-bold text-[16px] text-center">
+          {t("komepage.header")}
+        </h1>
+
+        <div className="w-full h-full overflow-y-auto space-y-4 pb-5 px-10 pt-3">
+          {loading ? (
+            Array.from({ length: 4 }).map((_, i) => <KomeLoader key={i} />)
+          ) : items.length === 0 ? (
+            <p className="text-center text-[13px] text-[#C6C6C6]">
+              ยังไม่มีข้อมูล
+            </p>
+          ) : (
+            items.map((item, idx) => (
+              <div
+                key={item.id}
+                className="animate-fade-in"
+                style={{ animationDelay: `${idx * 60}ms` }}
+              >
+                <KomeCard
+                  name={item.name}
+                  phone={item.phone}
+                  link={item.link}
+                />
+              </div>
+            ))
+          )}
+        </div>
       </section>
+
+      {/* <div className="min-h-[77svh] max-w-107.5 mx-auto fixed bottom-0 w-full bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_36%,#FBFCF0_62%,#E6EFD8_100%)] z-1" /> */}
     </main>
   );
 }

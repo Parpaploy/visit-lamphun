@@ -46,7 +46,11 @@ export default function AdminKome() {
     setFormError("");
     setSaving(true);
     try {
-      await addKomeItem({ name: form.name, phone: form.phone.trim() });
+      await addKomeItem({
+        name: form.name,
+        phone: form.phone.trim(),
+        link: form.link.trim() || undefined,
+      });
       setForm(EMPTY_KOME);
       refetch();
     } catch (e) {
@@ -65,6 +69,7 @@ export default function AdminKome() {
       await updateKomeItem(editing.id, {
         name: editing.name,
         phone: editing.phone.trim(),
+        link: editing.link?.trim() || undefined,
       });
       setEditing(null);
       refetch();
@@ -115,6 +120,12 @@ export default function AdminKome() {
             placeholder={`${t("form.phone")} *`}
             value={form.phone}
             onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+            className={inputCls}
+          />
+          <input
+            placeholder={t("form.link")}
+            value={form.link}
+            onChange={(e) => setForm((f) => ({ ...f, link: e.target.value }))}
             className={inputCls}
           />
           {formError && (
@@ -170,6 +181,14 @@ export default function AdminKome() {
                 placeholder={t("form.phone")}
                 className={inputCls}
               />
+              <input
+                value={editing.link ?? ""}
+                onChange={(e) =>
+                  setEditing((s) => s && { ...s, link: e.target.value })
+                }
+                placeholder={t("form.link")}
+                className={inputCls}
+              />
               <div className="flex gap-x-2">
                 <button
                   onClick={handleSaveEdit}
@@ -199,10 +218,26 @@ export default function AdminKome() {
                   {item.name.en}
                 </p>
                 <p className="text-[11px] text-[#8B724E]">{item.phone}</p>
+                {item.link && (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] text-[#BF4B17] underline truncate block"
+                  >
+                    {item.link}
+                  </a>
+                )}
               </div>
               <div className="flex gap-x-3 shrink-0">
                 <button
-                  onClick={() => setEditing({ ...item, saving: false })}
+                  onClick={() =>
+                    setEditing({
+                      ...item,
+                      link: item.link ?? "",
+                      saving: false,
+                    })
+                  }
                   className="text-[12px] text-[#543A14] font-medium"
                 >
                   {t("dashboard.edit")}

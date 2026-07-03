@@ -22,7 +22,26 @@
     "back": "返回首页",
     "close": "关闭",
     "loading": "加载中...",
-    "noPlaces": "暂无地点"
+    "noPlaces": "暂无地点",
+    "noActivities": "暂无活动",
+    "noToilets": "暂无厕所",
+    "storeNearMe": "附近商店",
+    "activityNearMe": "附近活动",
+    "toiletNearMe": "附近洗手间",
+    "readMore": "阅读更多",
+    "readLess": "收起",
+    "tramUsers": "当前有 {{count}} 位游客乘坐电车",
+    "goToStore": "导航至商店",
+    "goToActivity": "点击导航",
+    "goToToilet": "点击导航",
+    "recommendStore": "附近推荐商店",
+    "recommendActivity": "附近推荐活动",
+    "recommendToilet": "附近洗手间",
+    "tramTime": "电车将于 {{time}} 发车"
+  },
+
+  "komepage": {
+    "header": "灯笼制作小组联系方式"
   },
 
   "contact": {
@@ -40,14 +59,23 @@
   },
 
   "navbar": {
-    "stat": "用户数",
-    "unit": "人"
+    "stat": "用户数量",
+    "unit": "人",
+    "changeLanguage": "切换语言",
+    "menu": "菜单"
   },
 
   "recommend": {
     "goods": "精品",
     "places": "著名景点",
     "story": "名人"
+  },
+
+  "station": {
+    "history": "历史",
+    "places": "商店",
+    "activities": "活动",
+    "toilets": "洗手间"
   },
 
   "travel": {
@@ -62,8 +90,25 @@
     "openDesc": "周二至周日",
     "close": "关闭",
     "closeDesc": "每周一",
-    "allRoute": "泰铢（全程）",
-    "price": "价格"
+    "allRoute": "全程",
+    "price": "价格",
+    "baht": "泰铢",
+    "departure": "出发时间",
+    "arrival": "到达时间",
+    "desc": "可在出发火车站购票，最迟可在火车出发前 2 小时购买。",
+    "tramHeader1": "营业时间：周二至周日",
+    "tramHeader2": "每周一休息",
+    "tramDesc1": "车票可在帕塔哈里奔猜寺对面购买",
+    "tramDesc2": "可在发车前购票",
+    "boardingPoint": "上车点",
+    "otherTravelWay": "其他出行方式",
+    "otherSuggestion": "公共交通上车点推荐",
+    "route": "路线",
+    "departureTime": "发车时间",
+    "priceTitle": "票价",
+    "phoneTitle": "联系电话",
+    "phone": "电话",
+    "noPrice": "具体费用请在上车地点询问"
   },
 
   "form": {
@@ -81,6 +126,8 @@
     "weekday": "工作日",
     "weekend": "周末",
     "place": "地点",
+    "activity": "活动",
+    "toilet": "厕所",
     "descFull": "描述",
     "desc2": "附加信息",
     "groupName": "组名",
@@ -97,20 +144,40 @@
     "van": "面包车",
     "tricycle": "三轮车",
     "songthaew": "双条车",
+    "motorcycle": "摩托车出租",
     "lineLink": "LINE link（加好友）",
-    "extension": "分机号"
+    "boardingPoint": "上车点",
+    "route": "路线",
+    "departureTime": "出发时间",
+    "baht": "泰铢",
+    "extension": "分机号",
+    "selectTag": "选择地点类别",
+    "openTime": "开放时间",
+    "closeTime": "关闭时间",
+    "location": "位置",
+    "everyday": "每天",
+    "addLine": "添加行"
   },
 
   "dashboard": {
     "title": "管理数据",
     "tabs": {
       "places": "地点",
+      "activities": "活动",
+      "toilets": "厕所",
+      "station": "站点",
       "popup": "弹窗",
       "recommend": "精品，著名景点，名人",
       "kome": "灯笼制作群体",
       "travel": "旅行",
-      "contact": "联系方式/提出意见",
+      "contact": "紧急电话号码",
       "heatmap": "各地点用户数量"
+    },
+    "placeCategory": {
+      "cafe": "咖啡厅",
+      "restaurant": "餐厅",
+      "market": "市场",
+      "other": "其他"
     },
 
     "loading": "加载中...",
@@ -132,9 +199,13 @@
     "editPopup": "编辑弹窗",
     "image": "图片",
     "addPlace": "+ 添加地点",
+    "addActivity": "+ 添加活动",
+    "addToilet": "+ 添加厕所",
     "addTravel": "添加其他交通方式",
     "selectStation": "选择站点",
     "placesIn": "位于",
+    "activitiesIn": "的活动",
+    "toiletsIn": "的厕所",
     "editPlace": "编辑地点",
     "uploading": "上传中",
     "confirmDelete": "删除此项目？",
@@ -178,5 +249,11 @@
     "login": "登录",
     "loading": "正在登录...",
     "error": "邮箱或密码错误"
+  },
+
+  "inactivePopup": {
+    "title": "今天电车停止服务",
+    "desc": "对此带来的不便，敬请谅解",
+    "contactMore": "如需更多信息，请联系"
   }
 }

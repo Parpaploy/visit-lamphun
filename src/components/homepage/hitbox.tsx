@@ -1,17 +1,28 @@
 import { useTranslation } from "react-i18next";
 import { hitboxData } from "../../constant/homepage";
 import type { stationNumber } from "../../interfaces/homepage.interface";
+import { useEffect, useState } from "react";
 
 export default function Hitbox({
+  setMode,
   loaded,
   setStationExpanded,
 }: {
+  setMode: (mode: "store" | "activity" | "toilet" | null) => void;
   loaded: boolean;
   setStationExpanded: (stationExpanded: stationNumber) => void;
 }) {
   const { i18n } = useTranslation();
+  const [lang, setLang] = useState(i18n.language);
 
-  const currentLangData = hitboxData[i18n.language] || hitboxData.th;
+  useEffect(() => {
+    const handler = (lng: string) => setLang(lng);
+    i18n.on("languageChanged", handler);
+    return () => i18n.off("languageChanged", handler);
+  }, [i18n]);
+
+  const langKey = lang.startsWith("zh") || lang === "cn" ? "cn" : lang;
+  const currentLangData = hitboxData[langKey] || hitboxData.th;
 
   return (
     <svg
@@ -23,7 +34,10 @@ export default function Hitbox({
         {currentLangData.map((loc) => (
           <g
             key={loc.id}
-            onClick={() => setStationExpanded(loc.no as stationNumber)}
+            onClick={() => {
+              setStationExpanded(loc.no as stationNumber);
+              setMode("store");
+            }}
           >
             {loc.points.map((point, index) => (
               <rect

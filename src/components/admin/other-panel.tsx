@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useOtherItems } from "../../hooks/useTravelItems";
-import { EMPTY_OTHER } from "../../constant/admin";
+import { EMPTY_OTHER, FIELD_VISIBILITY } from "../../constant/admin";
 import type { OtherItem } from "../../interfaces/content.interface";
 import {
   addOtherItem,
@@ -13,16 +13,51 @@ import OtherForm from "./other-form";
 
 type OtherFormData = Omit<OtherItem, "id">;
 
+const EMPTY_ML = { th: "", en: "", cn: "" };
+
+function normalizeItem(item: OtherItem): OtherItem {
+  return {
+    ...item,
+    place: item.place ?? { ...EMPTY_ML },
+    boardingPoint: item.boardingPoint ?? { ...EMPTY_ML },
+    route: item.route ?? { ...EMPTY_ML },
+    departureTime: item.departureTime ?? { ...EMPTY_ML },
+    price: item.price ?? 0,
+    image: item.image ?? "",
+    type: item.type ?? "van",
+    day: item.day ?? "weekday",
+    phone: item.phone ?? "",
+    link: item.link ?? "",
+    lineLink: item.lineLink ?? "",
+  };
+}
+
+function validateForm(f: OtherFormData): boolean {
+  const vis = FIELD_VISIBILITY[f.type];
+
+  const hasPlace = f.place.th && f.place.en && f.place.cn;
+  const hasBoarding =
+    f.boardingPoint.th && f.boardingPoint.en && f.boardingPoint.cn;
+  if (!hasPlace || !hasBoarding) return false;
+
+  if (vis.price && (!f.price || f.price <= 0)) return false;
+  if (vis.phone && !f.phone) return false;
+
+  return true;
+}
+
 export default function OtherPanel() {
   const { t } = useTranslation();
-  const { items, loading, refetch } = useOtherItems();
+  const { items: rawItems, loading, refetch } = useOtherItems();
+  const items = (rawItems ?? []).map(normalizeItem);
+
   const [form, setForm] = useState<OtherFormData>(EMPTY_OTHER);
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState("");
   const [editing, setEditing] = useState<OtherEdit | null>(null);
 
   const handleAdd = async () => {
-    if (!form.place.th || !form.place.en || !form.place.cn) {
+    if (!validateForm(form)) {
       setFormError(t("dashboard.errorRequiredPlace"));
       return;
     }
@@ -43,17 +78,24 @@ export default function OtherPanel() {
 
   const handleSaveEdit = async () => {
     if (!editing) return;
+    if (!validateForm(editing)) {
+      alert(t("dashboard.errorRequiredPlace"));
+      return;
+    }
     setEditing((s) => s && { ...s, saving: true });
     try {
       await updateOtherItem(editing.id, {
         place: editing.place,
-        desc: editing.desc,
-        desc2: editing.desc2,
+        boardingPoint: editing.boardingPoint,
+        route: editing.route,
+        departureTime: editing.departureTime,
+        price: editing.price,
         type: editing.type,
         phone: editing.phone,
         link: editing.link,
         day: editing.day,
         lineLink: editing.lineLink ?? "",
+        image: editing.image ?? "",
       });
       setEditing(null);
       refetch();
@@ -107,13 +149,16 @@ export default function OtherPanel() {
               <OtherForm
                 v={{
                   place: editing.place,
-                  desc: editing.desc,
-                  desc2: editing.desc2,
+                  boardingPoint: editing.boardingPoint,
+                  route: editing.route,
+                  departureTime: editing.departureTime,
+                  price: editing.price,
                   type: editing.type,
                   phone: editing.phone,
                   link: editing.link,
                   day: editing.day,
                   lineLink: editing.lineLink ?? "",
+                  image: editing.image ?? "",
                 }}
                 ch={(updater) =>
                   setEditing((s) => {
@@ -135,15 +180,20 @@ export default function OtherPanel() {
             >
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold text-[#543A14] truncate">
-                  {item.place.th}
+                  {item.place.th || "-"}
                 </p>
-                <p className="text-[11px] text-[#8B724E]">
-                  {item.place.en} · {t(`form.${item.type}`)} ·{" "}
+                {/* <p className="text-[11px] text-[#8B724E]">
+                  {item.place.en || "-"} · {t(`form.${item.type}`)} ·{" "}
                   {t(`form.${item.day}`)}
-                </p>
-                {item.desc.th && (
+                </p> */}
+                {item.boardingPoint.th && (
                   <p className="text-[11px] text-[#C6C6C6] line-clamp-1">
-                    {item.desc.th}
+                    {t("form.boardingPoint")}: {item.boardingPoint.th}
+                  </p>
+                )}
+                {item.price > 0 && (
+                  <p className="text-[11px] text-[#C6C6C6] line-clamp-1">
+                    {t("form.price")}: {item.price} {t("form.baht")}
                   </p>
                 )}
               </div>

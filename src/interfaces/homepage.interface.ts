@@ -29,15 +29,51 @@ export interface IStationMode {
 
 export type stationNumber = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
 
-export interface StationPlaceName {
+export type PlaceTag = "cafe" | "restaurant" | "market" | "other";
+
+export type StationPlaceName = {
   th: string;
   en: string;
   cn: string;
-}
+};
 
-export interface StationPlace {
+export type StationPlace = {
   id: string;
   name: StationPlaceName;
   img: string;
   link: string;
-}
+  tag?: PlaceTag;
+  openTime?: string;
+  closeTime?: string;
+  phone?: string;
+  location?: string;
+};
+
+export type PlaceData = {
+  name: StationPlaceName;
+  img: string;
+  link: string;
+  tag?: string;
+  openTime?: string;
+  closeTime?: string;
+  phone?: string;
+};
+
+export type SelectedCard = {
+  name: string;
+  img: string;
+  link: string;
+  openTime?: string;
+  closeTime?: string;
+  phone?: string;
+  location?: string;
+} | null;
+
+export type Lang = "th" | "en" | "cn";
+
+export type StationPin = {
+  x: number;
+  y: number;
+  offsetX?: number;
+  offsetY?: number;
+};
