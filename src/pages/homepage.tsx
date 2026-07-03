@@ -1915,7 +1915,7 @@ export default function Homepage() {
     observer.observe(el);
 
     return () => observer.disconnect();
-  }, [data, i18n.language, showFullDesc]);
+  }, [data, i18n.language, showFullDesc, visible]);
 
   return (
     <main className="relative w-full h-full overflow-hidden flex flex-col items-center justify-start">
