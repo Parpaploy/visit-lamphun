@@ -2109,7 +2109,7 @@ export default function Homepage() {
                       <div className="text-[#543A14] text-[16px] font-normal mt-1">
                         <p
                           ref={descRef}
-                          className={`${showFullDesc ? "" : "line-clamp-3"}`}
+                          className={`${showFullDesc ? "" : lang === "en" ? "line-clamp-2" : "line-clamp-3"}`}
                         >
                           {data?.desc[i18n.language as keyof MLString] ??
                             data?.desc.th}

@@ -134,6 +134,9 @@ export default function SubNavbar<T extends string | null>({
   leaving?: boolean;
   entering?: boolean;
 }) {
+  const lang =
+    i18n.language === "en" || i18n.language === "cn" ? i18n.language : "th";
+
   const [localEntering, setLocalEntering] = useState<boolean>(true);
 
   useEffect(() => {
@@ -162,7 +165,7 @@ export default function SubNavbar<T extends string | null>({
               mode === m
                 ? "min-h-27 shadow-[0_0px_12.3px_0_rgba(191,75,23)] py-3 text-white font-bold bg-[#BF4B17]"
                 : "min-h-25 py-2 bg-white/80 text-black font-normal"
-            } w-full text-[16px] rounded-t-[15px] text-center px-1`}
+            } ${lang === "en" ? "whitespace-pre-line" : "whitespace-nowrap"}  w-full text-[16px] rounded-t-[15px] text-center px-1`}
           >
             {name}
           </div>
@@ -184,7 +187,11 @@ export default function SubNavbar<T extends string | null>({
             onClick={() => setMode(m)}
             className={`relative h-full ${w} flex justify-center items-center font-semibold text-[#543A14] text-[15px]`}
           >
-            <p>{name}</p>
+            <p
+              className={`${lang === "en" ? "whitespace-pre-line" : "whitespace-nowrap"}`}
+            >
+              {name}
+            </p>
             {mode === m && (
               <div className="z-100 absolute -bottom-0.5 left-1/2 -translate-x-1/2 rounded-full w-[90%] border-2 border-[#BF4B17]" />
             )}
