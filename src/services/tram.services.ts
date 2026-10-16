@@ -53,6 +53,7 @@ export const updateTramCheckin = async (
   await updateDoc(doc(db, "trams", tramId), {
     current_station_id: station.id,
     current_station_name: station.name,
+    last_checkin_station_id: station.id,
     current_lat: station.lat,
     current_lng: station.lng,
     last_checkin_at: serverTimestamp(),
@@ -80,6 +81,7 @@ export const clearTramStation = async (tramId: string) => {
   await updateDoc(doc(db, "trams", tramId), {
     current_station_id: null,
     current_station_name: null,
+    last_checkin_station_id: null,
     current_lat: null,
     current_lng: null,
     last_checkin_at: null,

@@ -114,49 +114,68 @@ export default function DriverNavbar({ stopGps }: { stopGps?: () => void }) {
 
   const pageTitle = pageTitleMap[lang]?.[sf] ?? pageTitleMap.th[sf];
   const subtitle = subtitleMap[lang];
+  const isRoadmap = location.pathname === "/driver/roadmap";
+  const pageIcon = matched?.img ?? "/icons/navbar/roadmap-icon.svg";
 
   return (
-    <div className="w-full max-w-107.5 mx-auto relative z-999">
+    <div
+      className={`w-full max-w-107.5 mx-auto z-999 ${
+        isRoadmap ? "fixed top-0" : "relative"
+      }`}
+    >
       <div
-        className={`${location.pathname === "/app/contact" || location.pathname === "/app/travel" || location.pathname === "/app/recommend" ? "" : "shadow-[0_4px_10px_0_rgba(0,0,0,0.12)]"} bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)] w-full h-[15svh] px-3.75 pt-1.25 flex justify-between items-center`}
+        className={`${
+          isRoadmap
+            ? "h-[9svh] px-3.75 pt-1.25"
+            : "bg-[linear-gradient(68deg,#C07349_0%,#FC8B32_50%,#FBC859_100%)] h-[15svh] px-3.75 pt-1.25"
+        } w-full flex justify-between items-center`}
       >
-        <div className="flex justify-center items-center gap-x-2">
-          <div
-            className="h-19 w-19"
-            onClick={() => {
-              navigation("/app");
-            }}
-          >
-            <img src="/icons/logo.svg" className="h-full w-full" />
-          </div>
-          <div className="flex flex-col items-start justify-center">
-            <h2 className="text-white text-[15px] font-medium mb-1">
-              {subtitle}
-            </h2>
+        {isRoadmap ? (
+          <>
+            <div className="w-12 h-12 -mt-1.5">
+              <img className="w-full h-full" src={pageIcon} alt={pageTitle} />
+            </div>
             <h1 className="text-[#543A14] text-[20px] font-bold leading-7">
               {pageTitle}
             </h1>
-          </div>
-        </div>
+            <button
+              className="transition-all mb-1 text-[#75521F]"
+              onClick={() => setOpenMenu((v) => !v)}
+            >
+              <IoMenu size={42} />
+            </button>
+          </>
+        ) : (
+          <>
+            <div className="flex justify-center items-center gap-x-2">
+              <div
+                className="h-19 w-19"
+                onClick={() => {
+                  navigation("/app");
+                }}
+              >
+                <img src="/icons/logo.svg" className="h-full w-full" />
+              </div>
+              <div className="flex flex-col items-start justify-center">
+                <h2 className="text-white text-[15px] font-medium mb-1">
+                  {subtitle}
+                </h2>
+                <h1 className="text-[#543A14] text-[20px] font-bold leading-7">
+                  {pageTitle}
+                </h1>
+              </div>
+            </div>
 
-        <div className="flex justify-center items-center gap-2.5">
-          {/* <button
-            className="bg-white shadow-[0_4px_4px_0_rgba(0,0,0,0.25)] rounded-full w-8.5 h-8.5"
-            onClick={() => setOpen((v) => !v)}
-          >
-            <img
-              src={current.icon}
-              className="w-full h-full rounded-full object-cover"
-            />
-          </button> */}
-
-          <button
-            className={`transition-all ${openMenu ? "text-white" : "text-[#75521F]"}`}
-            onClick={() => setOpenMenu((v) => !v)}
-          >
-            <IoMenu size={42} />
-          </button>
-        </div>
+            <div className="flex justify-center items-center gap-2.5">
+              <button
+                className={`transition-all ${openMenu ? "text-white" : "text-[#75521F]"}`}
+                onClick={() => setOpenMenu((v) => !v)}
+              >
+                <IoMenu size={42} />
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {/* {open && (
@@ -218,7 +237,11 @@ export default function DriverNavbar({ stopGps }: { stopGps?: () => void }) {
             onClick={() => setOpenMenu(false)}
           />
 
-          <div className="min-h-[50svh] max-w-107.5 mx-auto max-h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 top-[calc(15svh)] z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full">
+          <div
+            className={`min-h-[50svh] max-w-107.5 mx-auto max-h-[78svh] px-7 flex fixed left-1/2 -translate-x-1/2 ${
+              isRoadmap ? "top-[calc(9svh)]" : "top-[calc(15svh)]"
+            } z-998 bg-white rounded-b-xl shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] w-full`}
+          >
             <svg
               className="absolute -top-5 right-4 w-10 h-7"
               viewBox="0 0 30 20"

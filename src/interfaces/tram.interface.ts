@@ -7,6 +7,7 @@ export type Tram = {
   status: "active" | "inactive";
   current_station_id?: string;
   current_station_name?: string;
+  last_checkin_station_id?: string | null;
   current_lat?: number;
   current_lng?: number;
   last_checkin_at?: Timestamp;
@@ -18,6 +19,7 @@ export type Station = {
   name: string;
   lat: number;
   lng: number;
+  phoneGpsRadiusMeters: number;
 };
 
 export type GpsPosition = {

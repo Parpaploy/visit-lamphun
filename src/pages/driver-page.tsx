@@ -19,9 +19,14 @@ export default function DriverPage() {
 
   const [currentStationId, setCurrentStationId] = useState<string | null>(null);
   const [isNearStation, setIsNearStation] = useState(false);
-  const [step, setStep] = useState<"mode" | "manual" | "gps">("mode");
+  const [step, setStep] = useState<"mode" | "manual" | "gps" | "phone-gps">(
+    "mode",
+  );
   const [gpsPosition, setGpsPosition] = useState<GpsPosition | null>(null);
   const [gpsError, setGpsError] = useState<string | null>(null);
+  const [nearestDistanceMeters, setNearestDistanceMeters] = useState<
+    number | null
+  >(null);
   const [loadingManual, setLoadingManual] = useState(false);
   const [pendingFinish, setPendingFinish] = useState(false);
 
@@ -39,7 +44,7 @@ export default function DriverPage() {
   const nextIndexRef = useRef(0);
   const watchIdRef = useRef<number | null>(null);
   const lastAutoCheckinRef = useRef<string | null>(null);
-  const lastPositionRef = useRef<{ lat: number; lng: number } | null>(null);
+  const lastPositionWriteAtRef = useRef(0);
 
   const updateNextIndex = (val: number) => {
     nextIndexRef.current = val;
@@ -71,7 +76,12 @@ export default function DriverPage() {
   }, [writeCheckin]);
 
   const updateNearestStation = useCallback(
-    async (lat: number, lng: number) => {
+    async (
+      lat: number,
+      lng: number,
+      source: "sensor" | "phone" = "sensor",
+      accuracy = 0,
+    ) => {
       let nearest: Station | null = null;
       let minDist = Infinity;
       let nearestIdx = -1;
@@ -92,25 +102,40 @@ export default function DriverPage() {
 
       if (!nearest || !tramId) return;
 
-      console.log(
-        "nearest:",
-        nearest.id,
-        "dist:",
-        minDist,
-        "isNear:",
-        minDist <= AUTO_CHECKIN_RADIUS,
-        "nearestIdx:",
-        nearestIdx,
-        "nextIndexRef:",
-        nextIndexRef.current,
-      );
+      const radius =
+        source === "phone" ? nearest.phoneGpsRadiusMeters : AUTO_CHECKIN_RADIUS;
+      const accuracyIsGood = source !== "phone" || accuracy <= 30;
+      const isWithinRadius = minDist <= radius && accuracyIsGood;
 
       setCurrentStationId(nearest.id);
-      setIsNearStation(minDist <= AUTO_CHECKIN_RADIUS);
+      setNearestDistanceMeters(minDist);
+      setIsNearStation(isWithinRadius);
 
-      await updateTramPosition(tramId, nearest, lat, lng);
+      if (source === "phone") {
+        setGpsError(
+          accuracyIsGood
+            ? null
+            : `ตำแหน่งยังคลาดเคลื่อน ±${Math.round(accuracy)} ม. รอสัญญาณแม่นขึ้น หรือเลือกเช็กอินด้วยตนเอง`,
+        );
+      }
 
-      if (minDist <= AUTO_CHECKIN_RADIUS) {
+      const now = Date.now();
+      const shouldWritePosition =
+        source === "sensor" ||
+        (accuracyIsGood && now - lastPositionWriteAtRef.current >= 10_000);
+      if (shouldWritePosition) {
+        try {
+          await updateTramPosition(tramId, nearest, lat, lng);
+          lastPositionWriteAtRef.current = now;
+        } catch (error) {
+          console.error("Tram position update failed:", error);
+          if (source === "phone") {
+            setGpsError("บันทึกตำแหน่งไม่ได้ กรุณาตรวจสอบสัญญาณอินเทอร์เน็ต");
+          }
+        }
+      }
+
+      if (isWithinRadius) {
         if (lastAutoCheckinRef.current === nearest.id) return;
 
         if (nearestIdx === nextIndexRef.current) {
@@ -142,12 +167,12 @@ export default function DriverPage() {
     const fetchAndUpdate = async () => {
       const sensor = await fetchLatestSensorReading();
       if (!sensor || sensor.lat === -999 || sensor.lon === -999) {
-        setGpsError("ไม่มีสัญญาณ GPS จาก sensor");
+        setGpsError("ไม่มีสัญญาณ GPS จากอุปกรณ์บนรถราง");
         return;
       }
       setGpsError(null);
       setGpsPosition({ lat: sensor.lat, lng: sensor.lon, accuracy: 0 });
-      updateNearestStationRef.current(sensor.lat, sensor.lon);
+      updateNearestStationRef.current(sensor.lat, sensor.lon, "sensor");
     };
 
     fetchAndUpdate();
@@ -157,17 +182,51 @@ export default function DriverPage() {
     return () => {
       stopGps();
       clearInterval(interval);
-      lastPositionRef.current = null;
     };
+  }, [step, stopGps]);
+
+  useEffect(() => {
+    stopGps();
+    if (step !== "phone-gps") return;
+
+    if (!navigator.geolocation) return;
+
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const { latitude, longitude, accuracy } = position.coords;
+        setGpsPosition({ lat: latitude, lng: longitude, accuracy });
+        updateNearestStationRef.current(latitude, longitude, "phone", accuracy);
+      },
+      (error) => {
+        setIsNearStation(false);
+        if (error.code === 1) {
+          setGpsError(
+            "กรุณาอนุญาตให้เบราว์เซอร์ใช้ตำแหน่ง แล้วลองเปิด GPS มือถืออีกครั้ง",
+          );
+        } else if (error.code === 3) {
+          setGpsError("ยังรับตำแหน่งไม่ทันใจ ลองเปิด GPS และรอสัญญาณอีกครั้ง");
+        } else {
+          setGpsError(
+            "รับตำแหน่งจาก GPS มือถือไม่ได้ กรุณาลองใหม่หรือเช็กอินด้วยตนเอง",
+          );
+        }
+      },
+      { enableHighAccuracy: true, maximumAge: 5_000, timeout: 20_000 },
+    );
+    watchIdRef.current = watchId;
+
+    return stopGps;
   }, [step, stopGps]);
 
   const enterManual = async () => {
     setLoadingManual(true);
     try {
       const tram = await fetchTramById(tramId);
-      if (tram?.current_station_id) {
+      const checkedInStationId =
+        tram?.last_checkin_station_id ?? tram?.current_station_id;
+      if (checkedInStationId) {
         const currentIdx = STATIONS.findIndex(
-          (s) => s.id === tram.current_station_id,
+          (s) => s.id === checkedInStationId,
         );
         updateNextIndex(currentIdx >= 0 ? currentIdx + 1 : 0);
       } else {
@@ -179,12 +238,20 @@ export default function DriverPage() {
     }
   };
 
-  const enterGps = async () => {
+  const enterGpsMode = async (mode: "gps" | "phone-gps") => {
+    if (mode === "phone-gps" && !navigator.geolocation) {
+      setGpsError("อุปกรณ์นี้ไม่รองรับ GPS มือถือ กรุณาเช็กอินด้วยตนเอง");
+      setStep(mode);
+      return;
+    }
+
     try {
       const tram = await fetchTramById(tramId);
-      if (tram?.current_station_id) {
+      const checkedInStationId =
+        tram?.last_checkin_station_id ?? tram?.current_station_id;
+      if (checkedInStationId) {
         const currentIdx = STATIONS.findIndex(
-          (s) => s.id === tram.current_station_id,
+          (s) => s.id === checkedInStationId,
         );
         const newIndex = currentIdx >= 0 ? currentIdx + 1 : 0;
         nextIndexRef.current = newIndex;
@@ -199,10 +266,13 @@ export default function DriverPage() {
     }
 
     lastAutoCheckinRef.current = null;
-    lastPositionRef.current = null;
+    lastPositionWriteAtRef.current = 0;
     setCurrentStationId(null);
     setIsNearStation(false);
-    setStep("gps");
+    setNearestDistanceMeters(null);
+    setGpsPosition(null);
+    setGpsError(null);
+    setStep(mode);
   };
 
   const handleConfirmCheckin = async () => {
@@ -240,7 +310,7 @@ export default function DriverPage() {
                 เลือกโหมดการใช้งาน
               </h1>
               <p className="text-[14px] font-normal text-[#543A14] mb-4 text-center">
-                กรุณาเลือก เช็คอินด้วยตนเอง หรือ เช็คอินด้วย GPS
+                เลือกกดเช็กอินแบบเดิม หรือให้ GPS มือถือบันทึกเมื่อถึงจุด
               </p>
               <div className="w-full flex flex-col justify-center items-center gap-2">
                 <button
@@ -251,10 +321,16 @@ export default function DriverPage() {
                   {loadingManual ? "กำลังโหลด..." : "เช็คอินด้วยตนเอง"}
                 </button>
                 <button
-                  onClick={enterGps}
+                  onClick={() => enterGpsMode("phone-gps")}
+                  className="bg-[#d96410] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
+                >
+                  เช็คอินด้วย GPS มือถือ
+                </button>
+                <button
+                  onClick={() => enterGpsMode("gps")}
                   className="bg-[#BF4B17] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
                 >
-                  เช็คอินด้วย GPS
+                  เช็คอินด้วย GPS รถราง
                 </button>
               </div>
             </div>
@@ -338,7 +414,7 @@ export default function DriverPage() {
           </div>
         )}
 
-        {step === "gps" && (
+        {(step === "gps" || step === "phone-gps") && (
           <div className="w-full h-full flex flex-col gap-3">
             <button
               onClick={() => setStep("mode")}
@@ -355,9 +431,17 @@ export default function DriverPage() {
                 </div>
                 <div className="flex-1">
                   <p className="text-[16px] font-medium text-[#543A14]">
-                    GPS กำลังทำงาน
+                    {step === "phone-gps"
+                      ? "กำลังใช้ GPS มือถือ"
+                      : "GPS รถรางกำลังทำงาน"}
                   </p>
-                  <p className="text-[14px] text-[#559200]">รับสัญญาณอยู่</p>
+                  <p className="text-[14px] text-[#559200]">
+                    {step === "phone-gps"
+                      ? gpsPosition
+                        ? "รับตำแหน่งจากโทรศัพท์แล้ว"
+                        : "กำลังรอตำแหน่งจากโทรศัพท์"
+                      : "รับสัญญาณจากเซนเซอร์รถรางอยู่"}
+                  </p>
                 </div>
                 {gpsPosition?.accuracy ? (
                   <span className="text-[14px] bg-[#559200]/15 text-[#559200] font-medium px-2.5 py-1 rounded-full">
@@ -373,10 +457,27 @@ export default function DriverPage() {
               )}
 
               {gpsPosition && (
-                <div className="flex justify-center items-center gap-3 bg-[#FFF0DC] rounded-[9px] text-center py-3 text-[16px] font-medium text-[#543A14]">
-                  <span>{gpsPosition.lat}°N</span>
-                  <span>{gpsPosition.lng}°E</span>
+                <div className="flex flex-col gap-1 bg-[#FFF0DC] rounded-[9px] text-center py-3 px-2 text-[14px] font-medium text-[#543A14]">
+                  <div className="flex justify-center items-center gap-3">
+                    <span>{gpsPosition.lat.toFixed(6)}°N</span>
+                    <span>{gpsPosition.lng.toFixed(6)}°E</span>
+                  </div>
+                  {step === "phone-gps" &&
+                    currentStationId &&
+                    nearestDistanceMeters !== null && (
+                      <span className="text-[12px] text-[#765932]">
+                        จุดใกล้สุด{" "}
+                        {STATIONS.find((s) => s.id === currentStationId)?.name}{" "}
+                        · ห่าง {Math.round(nearestDistanceMeters)} ม.
+                      </span>
+                    )}
                 </div>
+              )}
+
+              {step === "phone-gps" && (
+                <p className="mt-2 text-[12px] text-[#765932] text-center">
+                  ระบบจะเช็กอินเมื่อ GPS อยู่ในรัศมีของจุดนั้นและสัญญาณแม่นพอ
+                </p>
               )}
             </div>
 
@@ -413,17 +514,24 @@ export default function DriverPage() {
                       <span className="w-7 h-7 rounded-full flex items-center justify-center font-medium text-[20px]">
                         {i + 1}
                       </span>
-                      <p className="font-medium text-[16px]">
-                        {s.name.includes("(") ? (
-                          <>
-                            {s.name.split("(")[0]}
-                            <br />
-                            {"(" + s.name.split("(")[1]}
-                          </>
-                        ) : (
-                          s.name
+                      <div>
+                        <p className="font-medium text-[16px]">
+                          {s.name.includes("(") ? (
+                            <>
+                              {s.name.split("(")[0]}
+                              <br />
+                              {"(" + s.name.split("(")[1]}
+                            </>
+                          ) : (
+                            s.name
+                          )}
+                        </p>
+                        {step === "phone-gps" && (
+                          <p className="text-[11px] leading-4 text-[#765932]">
+                            รัศมี GPS {s.phoneGpsRadiusMeters} ม.
+                          </p>
                         )}
-                      </p>
+                      </div>
                     </span>
 
                     <div className="flex items-center justify-end">
