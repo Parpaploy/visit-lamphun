@@ -11,6 +11,7 @@ import { STATIONS, AUTO_CHECKIN_RADIUS } from "../constant/tram";
 import CheckinPopup from "../components/driver-page/checkin-popup";
 import UndoCheckinPopup from "../components/driver-page/undo-checkin-popup";
 import FinishRoutePopup from "../components/driver-page/finish-route-popup";
+import PassengerCounter from "../components/driver-page/passenger-counter";
 import { IoIosArrowBack } from "react-icons/io";
 import { fetchLatestSensorReading } from "../services/sensor.services";
 
@@ -304,7 +305,8 @@ export default function DriverPage() {
     >
       <div className="w-full p-4">
         {step === "mode" && (
-          <div className="w-full h-[80svh] flex justify-center items-start pt-10 px-3">
+          <div className="w-full h-[80svh] flex flex-col justify-start items-center gap-3 pt-10 px-3">
+            <PassengerCounter tramId={tramId} />
             <div className="w-full bg-white rounded-[18px] shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-5 px-7 flex flex-col justify-center items-center">
               <h1 className="text-[20px] font-medium text-black mb-1">
                 เลือกโหมดการใช้งาน
@@ -345,6 +347,8 @@ export default function DriverPage() {
             >
               <IoIosArrowBack size={28} /> <p className="mt-0.5">กลับ</p>
             </button>
+
+            <PassengerCounter tramId={tramId} />
 
             {STATIONS.map((s, i) => {
               const done = i < nextIndex;
@@ -422,6 +426,8 @@ export default function DriverPage() {
             >
               <IoIosArrowBack size={28} /> <p className="mt-0.5">กลับ</p>
             </button>
+
+            <PassengerCounter tramId={tramId} />
 
             <div className="relative w-full bg-white rounded-[18px] shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-5 px-7">
               <div className="flex items-center gap-5 mb-3">

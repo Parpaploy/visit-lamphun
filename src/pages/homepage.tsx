@@ -1570,7 +1570,6 @@ import { fetchAllTrams } from "../services/tram.services";
 import InactivePopup from "../components/homepage/inactive-popup";
 import { useStationPopup } from "../hooks/useStationPopup";
 import type { MLString } from "../interfaces/content.interface";
-import { subscribeTransportStats } from "../services/stat.services";
 import NewHomepageSkeletonLoader from "../components/skeleton-load/new-homepage-skeleton-loader";
 import { useStationActivities } from "../hooks/useStationActivities";
 import { useStationToilets } from "../hooks/useStationToilets";
@@ -1608,7 +1607,6 @@ export default function Homepage() {
     null,
   );
   const [showFullDesc, setShowFullDesc] = useState<boolean>(false);
-  const [tramUsers, setTramUsers] = useState<number>(0);
   const [visible, setVisible] = useState<boolean>(false);
 
   const [selectedTag, setSelectedTag] = useState<string | null>("");
@@ -1711,6 +1709,7 @@ export default function Homepage() {
   const tram = useTramPosition(selected);
   const tramStationId = tram?.current_station_id ?? null;
   const tramUpdatedAt = tram?.last_checkin_at ?? null;
+  const tramUsers = Math.max(0, tram?.passenger_count ?? 0);
 
   const tramStationNumber = Object.entries(STATION_ID_MAP).find(
     ([, id]) => id === tramStationId,
@@ -1815,13 +1814,6 @@ export default function Homepage() {
       }
     }
   };
-
-  useEffect(() => {
-    const unsub = subscribeTransportStats((stats) => {
-      setTramUsers(stats.tram);
-    });
-    return () => unsub();
-  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 300);

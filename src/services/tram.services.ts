@@ -5,6 +5,7 @@ import {
   getDoc,
   updateDoc,
   serverTimestamp,
+  increment,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import type { Tram } from "../interfaces/tram.interface";
@@ -86,6 +87,17 @@ export const clearTramStation = async (tramId: string) => {
     current_lng: null,
     last_checkin_at: null,
     last_checkin_mode: null,
+    passenger_count: 0,
+  });
+};
+
+export const updateTramPassengerCount = async (
+  tramId: string,
+  delta: number,
+) => {
+  await updateDoc(doc(db, "trams", tramId), {
+    passenger_count: increment(delta),
+    passenger_count_updated_at: serverTimestamp(),
   });
 };
 
