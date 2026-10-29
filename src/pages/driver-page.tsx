@@ -7,13 +7,19 @@ import {
 } from "../services/tram.services";
 import { haversineDistance } from "../utils/geo";
 import type { GpsPosition, Station } from "../interfaces/tram.interface";
-import { STATIONS, AUTO_CHECKIN_RADIUS } from "../constant/tram";
+import {
+  STATIONS,
+  AUTO_CHECKIN_RADIUS,
+  NEAREST_STATION_DISPLAY_RADIUS,
+} from "../constant/tram";
 import CheckinPopup from "../components/driver-page/checkin-popup";
 import UndoCheckinPopup from "../components/driver-page/undo-checkin-popup";
 import FinishRoutePopup from "../components/driver-page/finish-route-popup";
 import PassengerCounter from "../components/driver-page/passenger-counter";
 import { IoIosArrowBack } from "react-icons/io";
 import { fetchLatestSensorReading } from "../services/sensor.services";
+
+const PHONE_GPS_ACCURACY_LIMIT = 30;
 
 export default function DriverPage() {
   const tramId = localStorage.getItem("driver_tram_id") ?? "";
@@ -31,7 +37,7 @@ export default function DriverPage() {
   const [loadingManual, setLoadingManual] = useState(false);
   const [pendingFinish, setPendingFinish] = useState(false);
 
-  const [nextIndex, setNextIndex] = useState(0);
+  const [checkedStationIds, setCheckedStationIds] = useState<string[]>([]);
   const [pendingStation, setPendingStation] = useState<{
     station: Station;
     index: number;
@@ -42,14 +48,14 @@ export default function DriverPage() {
     index: number;
   } | null>(null);
 
-  const nextIndexRef = useRef(0);
+  const checkedStationIdsRef = useRef<string[]>([]);
   const watchIdRef = useRef<number | null>(null);
   const lastAutoCheckinRef = useRef<string | null>(null);
   const lastPositionWriteAtRef = useRef(0);
 
-  const updateNextIndex = (val: number) => {
-    nextIndexRef.current = val;
-    setNextIndex(val);
+  const updateCheckedStationIds = (ids: string[]) => {
+    checkedStationIdsRef.current = ids;
+    setCheckedStationIds(ids);
   };
 
   const stopGps = useCallback(() => {
@@ -85,7 +91,6 @@ export default function DriverPage() {
     ) => {
       let nearest: Station | null = null;
       let minDist = Infinity;
-      let nearestIdx = -1;
 
       for (let i = 0; i < STATIONS.length; i++) {
         const dist = haversineDistance(
@@ -97,7 +102,6 @@ export default function DriverPage() {
         if (dist < minDist) {
           minDist = dist;
           nearest = STATIONS[i];
-          nearestIdx = i;
         }
       }
 
@@ -105,20 +109,15 @@ export default function DriverPage() {
 
       const radius =
         source === "phone" ? nearest.phoneGpsRadiusMeters : AUTO_CHECKIN_RADIUS;
-      const accuracyIsGood = source !== "phone" || accuracy <= 30;
+      const accuracyIsGood =
+        source !== "phone" || accuracy <= PHONE_GPS_ACCURACY_LIMIT;
       const isWithinRadius = minDist <= radius && accuracyIsGood;
 
       setCurrentStationId(nearest.id);
       setNearestDistanceMeters(minDist);
       setIsNearStation(isWithinRadius);
 
-      if (source === "phone") {
-        setGpsError(
-          accuracyIsGood
-            ? null
-            : `ตำแหน่งยังคลาดเคลื่อน ±${Math.round(accuracy)} ม. รอสัญญาณแม่นขึ้น หรือเลือกเช็กอินด้วยตนเอง`,
-        );
-      }
+      if (source === "phone") setGpsError(null);
 
       const now = Date.now();
       const shouldWritePosition =
@@ -139,10 +138,13 @@ export default function DriverPage() {
       if (isWithinRadius) {
         if (lastAutoCheckinRef.current === nearest.id) return;
 
-        if (nearestIdx === nextIndexRef.current) {
-          lastAutoCheckinRef.current = nearest.id;
-          await writeCheckinRef.current(nearest, "gps");
-          updateNextIndex(nearestIdx + 1);
+        lastAutoCheckinRef.current = nearest.id;
+        await writeCheckinRef.current(nearest, "gps");
+        if (!checkedStationIdsRef.current.includes(nearest.id)) {
+          updateCheckedStationIds([
+            ...checkedStationIdsRef.current,
+            nearest.id,
+          ]);
         }
       }
     },
@@ -157,7 +159,7 @@ export default function DriverPage() {
   const handleFinishConfirm = async () => {
     if (tramId) await clearTramStation(tramId);
     setPendingFinish(false);
-    updateNextIndex(0);
+    updateCheckedStationIds([]);
     setStep("mode");
   };
 
@@ -225,45 +227,24 @@ export default function DriverPage() {
       const tram = await fetchTramById(tramId);
       const checkedInStationId =
         tram?.last_checkin_station_id ?? tram?.current_station_id;
-      if (checkedInStationId) {
-        const currentIdx = STATIONS.findIndex(
-          (s) => s.id === checkedInStationId,
-        );
-        updateNextIndex(currentIdx >= 0 ? currentIdx + 1 : 0);
-      } else {
-        updateNextIndex(0);
-      }
+      updateCheckedStationIds(
+        checkedInStationId && STATIONS.some((s) => s.id === checkedInStationId)
+          ? [checkedInStationId]
+          : [],
+      );
     } finally {
       setLoadingManual(false);
       setStep("manual");
     }
   };
 
-  const enterGpsMode = async (mode: "gps" | "phone-gps") => {
+  const enterGpsMode = (mode: "gps" | "phone-gps") => {
+    updateCheckedStationIds([]);
+
     if (mode === "phone-gps" && !navigator.geolocation) {
       setGpsError("อุปกรณ์นี้ไม่รองรับ GPS มือถือ กรุณาเช็กอินด้วยตนเอง");
       setStep(mode);
       return;
-    }
-
-    try {
-      const tram = await fetchTramById(tramId);
-      const checkedInStationId =
-        tram?.last_checkin_station_id ?? tram?.current_station_id;
-      if (checkedInStationId) {
-        const currentIdx = STATIONS.findIndex(
-          (s) => s.id === checkedInStationId,
-        );
-        const newIndex = currentIdx >= 0 ? currentIdx + 1 : 0;
-        nextIndexRef.current = newIndex;
-        setNextIndex(newIndex);
-      } else {
-        nextIndexRef.current = 0;
-        setNextIndex(0);
-      }
-    } catch {
-      nextIndexRef.current = 0;
-      setNextIndex(0);
     }
 
     lastAutoCheckinRef.current = null;
@@ -276,28 +257,51 @@ export default function DriverPage() {
     setStep(mode);
   };
 
+  const isAccuracyLow =
+    step === "phone-gps" &&
+    !!gpsPosition &&
+    gpsPosition.accuracy > PHONE_GPS_ACCURACY_LIMIT;
+
   const handleConfirmCheckin = async () => {
     if (!pendingStation) return;
     await writeCheckin(pendingStation.station, "manual");
-    updateNextIndex(pendingStation.index + 1);
+    updateCheckedStationIds([...checkedStationIds, pendingStation.station.id]);
     setPendingStation(null);
   };
 
+  const lastCheckedStationId = checkedStationIds[checkedStationIds.length - 1];
+
   const handleUndoRequest = (index: number) => {
-    if (index === nextIndex - 1) {
+    if (STATIONS[index].id === lastCheckedStationId) {
       setPendingUndo({ station: STATIONS[index], index });
     }
   };
 
   const handleUndoConfirm = async () => {
     if (!pendingUndo) return;
-    const prevIndex = pendingUndo.index - 1;
-    updateNextIndex(pendingUndo.index);
-    if (prevIndex >= 0) {
-      await writeCheckin(STATIONS[prevIndex], "manual");
+    const remaining = checkedStationIds.slice(0, -1);
+    updateCheckedStationIds(remaining);
+    const prevStation = STATIONS.find(
+      (s) => s.id === remaining[remaining.length - 1],
+    );
+    if (prevStation) {
+      await writeCheckin(prevStation, "manual");
     }
     setPendingUndo(null);
   };
+
+  const finishRouteButton = (
+    <div className="w-full justify-center items-center flex">
+      <button
+        onClick={() => {
+          if (checkedStationIds.length > 0) setPendingFinish(true);
+        }}
+        className={`${checkedStationIds.length > 0 ? "bg-[#FF8B2B]" : "bg-[#B9B9B9]"} text-white rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-10 py-2 font-medium text-[24px] mt-2`}
+      >
+        จบรอบ
+      </button>
+    </div>
+  );
 
   return (
     <main
@@ -348,11 +352,9 @@ export default function DriverPage() {
               <IoIosArrowBack size={28} /> <p className="mt-0.5">กลับ</p>
             </button>
 
-            <PassengerCounter tramId={tramId} />
-
             {STATIONS.map((s, i) => {
-              const done = i < nextIndex;
-              const isNext = i === nextIndex;
+              const done = checkedStationIds.includes(s.id);
+              const isLastChecked = s.id === lastCheckedStationId;
 
               return (
                 <div
@@ -379,12 +381,12 @@ export default function DriverPage() {
                   {done ? (
                     <button
                       onClick={() => handleUndoRequest(i)}
-                      disabled={i !== nextIndex - 1}
-                      className={`px-4 py-px rounded-full text-[14px] font-medium ${i === nextIndex - 1 ? "bg-[#FFFFFF] text-[#B9B9B9] block" : "hidden"}`}
+                      disabled={!isLastChecked}
+                      className={`px-4 py-px rounded-full text-[14px] font-medium ${isLastChecked ? "bg-[#FFFFFF] text-[#B9B9B9] block" : "hidden"}`}
                     >
                       ยกเลิก
                     </button>
-                  ) : isNext ? (
+                  ) : (
                     <button
                       onClick={() =>
                         setPendingStation({ station: s, index: i })
@@ -393,28 +395,12 @@ export default function DriverPage() {
                     >
                       ยืนยัน
                     </button>
-                  ) : (
-                    <button
-                      disabled
-                      className="bg-[#B9B9B9] text-white px-4 py-0.5 rounded-full text-[14px] font-medium"
-                    >
-                      ยืนยัน
-                    </button>
                   )}
                 </div>
               );
             })}
 
-            <div className="w-full justify-center items-center flex">
-              <button
-                onClick={() => {
-                  if (nextIndex >= STATIONS.length) setPendingFinish(true);
-                }}
-                className={`${nextIndex >= STATIONS.length ? "bg-[#FF8B2B]" : "bg-[#B9B9B9]"} text-white rounded-full shadow-[0_4px_10px_0_rgba(0,0,0,0.125)] px-10 py-2 font-medium text-[24px] mt-2`}
-              >
-                จบรอบ
-              </button>
-            </div>
+            {finishRouteButton}
           </div>
         )}
 
@@ -427,21 +413,19 @@ export default function DriverPage() {
               <IoIosArrowBack size={28} /> <p className="mt-0.5">กลับ</p>
             </button>
 
-            <PassengerCounter tramId={tramId} />
-
-            <div className="relative w-full bg-white rounded-[18px] shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] py-5 px-7">
-              <div className="flex items-center gap-5 mb-3">
-                <div className="relative flex items-center justify-center w-7 h-7">
+            <div className="w-full bg-white rounded-[18px] shadow-[0_4px_10px_0_rgba(0,0,0,0.25)] p-4 flex flex-col gap-3">
+              <div className="flex items-center gap-3">
+                <div className="relative flex items-center justify-center w-4 h-4 shrink-0">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-[#559200] opacity-40 animate-ping" />
-                  <span className="relative inline-flex rounded-full h-5 w-5 bg-[#559200]" />
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-[#559200]" />
                 </div>
-                <div className="flex-1">
-                  <p className="text-[16px] font-medium text-[#543A14]">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[16px] font-medium text-[#543A14] leading-5">
                     {step === "phone-gps"
                       ? "กำลังใช้ GPS มือถือ"
                       : "GPS รถรางกำลังทำงาน"}
                   </p>
-                  <p className="text-[14px] text-[#559200]">
+                  <p className="text-[13px] text-[#559200]">
                     {step === "phone-gps"
                       ? gpsPosition
                         ? "รับตำแหน่งจากโทรศัพท์แล้ว"
@@ -450,39 +434,54 @@ export default function DriverPage() {
                   </p>
                 </div>
                 {gpsPosition?.accuracy ? (
-                  <span className="text-[14px] bg-[#559200]/15 text-[#559200] font-medium px-2.5 py-1 rounded-full">
+                  <span
+                    className={`shrink-0 text-[13px] font-medium px-2.5 py-0.5 rounded-full ${isAccuracyLow ? "bg-[#FFF0DC] text-[#BF4B17]" : "bg-[#559200]/15 text-[#559200]"}`}
+                  >
                     ±{Math.round(gpsPosition.accuracy)} ม.
                   </span>
                 ) : null}
               </div>
 
-              {gpsError && (
-                <p className="text-[14px] text-[#FF0000] text-center bg-red-50 rounded-xl px-3 py-2">
+              {gpsError ? (
+                <p className="text-[13px] text-[#D00000] text-center text-balance bg-red-50 rounded-xl px-3 py-2">
                   {gpsError}
                 </p>
-              )}
+              ) : isAccuracyLow ? (
+                <p className="text-[13px] text-[#BF4B17] text-center text-balance bg-[#FFF0DC] rounded-xl px-3 py-2">
+                  สัญญาณยังไม่แม่นพอ (ต้องไม่เกิน ±{PHONE_GPS_ACCURACY_LIMIT}{" "}
+                  ม.) รอสักครู่ หรือเช็กอินด้วยตนเอง
+                </p>
+              ) : null}
 
               {gpsPosition && (
-                <div className="flex flex-col gap-1 bg-[#FFF0DC] rounded-[9px] text-center py-3 px-2 text-[14px] font-medium text-[#543A14]">
-                  <div className="flex justify-center items-center gap-3">
-                    <span>{gpsPosition.lat.toFixed(6)}°N</span>
-                    <span>{gpsPosition.lng.toFixed(6)}°E</span>
-                  </div>
-                  {step === "phone-gps" &&
-                    currentStationId &&
-                    nearestDistanceMeters !== null && (
-                      <span className="text-[12px] text-[#765932]">
-                        จุดใกล้สุด{" "}
-                        {STATIONS.find((s) => s.id === currentStationId)?.name}{" "}
-                        · ห่าง {Math.round(nearestDistanceMeters)} ม.
-                      </span>
-                    )}
+                <div className="bg-[#FEF8EC] border border-[#F3E2C0] rounded-xl py-2.5 px-3 text-center">
+                  {currentStationId &&
+                  nearestDistanceMeters !== null &&
+                  nearestDistanceMeters <= NEAREST_STATION_DISPLAY_RADIUS ? (
+                    <>
+                      <p className="text-[12px] text-[#8B724E]">จุดใกล้สุด</p>
+                      <p className="text-[16px] font-medium text-[#543A14] leading-5">
+                        {STATIONS.find((s) => s.id === currentStationId)?.name}
+                      </p>
+                      <p className="text-[13px] font-medium text-[#FF8B2B]">
+                        ห่าง {Math.round(nearestDistanceMeters)} ม.
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-[14px] font-medium text-[#543A14]">
+                      ยังไม่อยู่ในเส้นทางรถราง
+                    </p>
+                  )}
+                  <p className="text-[11px] text-[#B9A07A] mt-1 tabular-nums">
+                    {gpsPosition.lat.toFixed(6)}°N ·{" "}
+                    {gpsPosition.lng.toFixed(6)}°E
+                  </p>
                 </div>
               )}
 
               {step === "phone-gps" && (
-                <p className="mt-2 text-[12px] text-[#765932] text-center">
-                  ระบบจะเช็กอินเมื่อ GPS อยู่ในรัศมีของจุดนั้นและสัญญาณแม่นพอ
+                <p className="text-[12px] text-[#765932] text-center text-balance">
+                  เช็กอินอัตโนมัติเมื่อเข้ารัศมีของจุด และสัญญาณแม่นพอ
                 </p>
               )}
             </div>
@@ -497,13 +496,15 @@ export default function DriverPage() {
                   ? STATIONS.findIndex((st) => st.id === currentStationId)
                   : -1;
 
-                const isDone =
-                  nearestIdx !== -1 ? i < nearestIdx : i < nextIndex;
+                const isDone = checkedStationIds.includes(s.id);
 
                 const isHere = isNearStation && i === nearestIdx;
 
-                const isHeading =
-                  isNearStation && nearestIdx !== -1 && i === nearestIdx + 1;
+                const isNearest =
+                  !isNearStation &&
+                  i === nearestIdx &&
+                  nearestDistanceMeters !== null &&
+                  nearestDistanceMeters <= NEAREST_STATION_DISPLAY_RADIUS;
 
                 return (
                   <div
@@ -545,13 +546,13 @@ export default function DriverPage() {
                         <span className="px-4 py-0.5 rounded-full text-[14px] font-medium text-white bg-[#559200] animate-pulse">
                           อยู่ที่นี่
                         </span>
+                      ) : isNearest ? (
+                        <span className="px-3 py-0.5 rounded-full text-[14px] font-medium text-white bg-[#FF8B2B]">
+                          ใกล้สุด · {Math.round(nearestDistanceMeters)} ม.
+                        </span>
                       ) : isDone ? (
                         <span className="px-4 py-px rounded-full text-[14px] font-medium bg-[#FFFFFF] text-[#B9B9B9]">
                           เช็คอินแล้ว
-                        </span>
-                      ) : isHeading ? (
-                        <span className="px-4 py-0.5 rounded-full text-[14px] font-medium text-white bg-[#FF8B2B] animate-pulse">
-                          กำลังมุ่งหน้า
                         </span>
                       ) : (
                         <span className="bg-[#B9B9B9] text-white px-4 py-0.5 rounded-full text-[14px] font-medium">
@@ -563,6 +564,8 @@ export default function DriverPage() {
                 );
               })}
             </div>
+
+            {finishRouteButton}
           </div>
         )}
       </div>

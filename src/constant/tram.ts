@@ -2,6 +2,7 @@ import type { Station } from "../interfaces/tram.interface";
 import { STATION_COORDS } from "../utils/heatmap";
 
 export const AUTO_CHECKIN_RADIUS = 50;
+export const NEAREST_STATION_DISPLAY_RADIUS = 1000;
 
 // The two northern stops are only about 100 m apart, so their mobile GPS
 // geofences stay small enough to keep one stop from triggering the other.
