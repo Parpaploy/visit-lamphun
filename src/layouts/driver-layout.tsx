@@ -22,7 +22,7 @@ export default function DriverLayout() {
 
   return (
     <div
-      className={`h-svh w-full flex flex-col items-center overflow-hidden ${
+      className={`max-w-107.5 mx-auto h-svh w-full flex flex-col items-center overflow-hidden ${
         isRoadmap ? "bg-[linear-gradient(68deg,#FC8B32_0%,#FBC859_100%)]" : ""
       }`}
     >
