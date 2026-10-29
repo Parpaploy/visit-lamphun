@@ -37,6 +37,8 @@
     "recommendStore": "Nearby Recommended Stores",
     "recommendActivity": "Nearby Recommended Activities",
     "recommendToilet": "Nearby Restrooms",
+    "readAloud": "Read aloud",
+    "stopReading": "Stop reading",
     "tramTime": "The tram departs at {{time}}."
   },
 

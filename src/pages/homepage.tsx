@@ -1574,6 +1574,13 @@ import NewHomepageSkeletonLoader from "../components/skeleton-load/new-homepage-
 import { useStationActivities } from "../hooks/useStationActivities";
 import { useStationToilets } from "../hooks/useStationToilets";
 import { formatTime12h, formatTime12hCn } from "../utils/ml";
+import { useSpeech } from "../hooks/useSpeech";
+import {
+  buildStationSpeechText,
+  stationAudioPublicId,
+  stationAudioUrl,
+} from "../utils/station-audio";
+import { HiSpeakerWave, HiStop } from "react-icons/hi2";
 import { useNavbarTitle } from "../hooks/useNavbar";
 import SubNavbar from "../components/navbar/sub-navbar";
 import { getNextTramTime } from "../utils/stat";
@@ -1730,6 +1737,76 @@ export default function Homepage() {
   }
 
   const { data } = useStationPopup(activeStationId);
+  const {
+    speak,
+    stop: stopSpeech,
+    speaking,
+    supported: speechSupported,
+  } = useSpeech();
+
+  const popupHeader =
+    selectedCard?.name ??
+    data?.header[i18n.language as keyof MLString] ??
+    data?.header.th;
+
+  const popupOpenTime =
+    selectedCard && (selectedCard.openTime || selectedCard.closeTime)
+      ? i18n.language === "th"
+        ? `เปิด ${selectedCard.openTime ?? "?"} – ${selectedCard.closeTime ?? "?"} น.`
+        : i18n.language === "en"
+          ? `Open ${formatTime12h(selectedCard.openTime)} – ${formatTime12h(selectedCard.closeTime)}`
+          : `开放 ${formatTime12hCn(selectedCard.openTime)} – ${formatTime12hCn(selectedCard.closeTime)}`
+      : null;
+
+  const popupDesc = selectedCard?.link
+    ? null
+    : (data?.desc[i18n.language as keyof MLString] ?? data?.desc.th);
+
+  // Read-aloud is only for the station popup, not place/activity/toilet cards.
+  const popupSpeechText =
+    !selectedCard && data
+      ? buildStationSpeechText(data.header, data.desc, i18n.language)
+      : "";
+
+  const [stationAudio, setStationAudio] = useState<{
+    key: string;
+    url: string;
+  } | null>(null);
+  const stationAudioKey = `${activeStationId}:${i18n.language}`;
+
+  // Resolved ahead of the tap: iOS Safari won't start audio after an await.
+  useEffect(() => {
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+    if (!data || !activeStationId || !cloudName) return;
+
+    let cancelled = false;
+    const text = buildStationSpeechText(data.header, data.desc, i18n.language);
+    stationAudioPublicId(activeStationId, i18n.language, text).then((id) => {
+      if (!cancelled) {
+        setStationAudio({
+          key: `${activeStationId}:${i18n.language}`,
+          url: stationAudioUrl(cloudName, id),
+        });
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [data, activeStationId, i18n.language]);
+
+  const toggleSpeech = () => {
+    if (speaking) {
+      stopSpeech();
+      return;
+    }
+    const audioUrl =
+      stationAudio?.key === stationAudioKey ? stationAudio.url : null;
+    speak(popupSpeechText, i18n.language, audioUrl);
+  };
+
+  useEffect(() => {
+    stopSpeech();
+  }, [stationExpanded, selectedCard, mode, i18n.language, stopSpeech]);
 
   useEffect(() => {
     if (loadedRef.current === currentBg) return;
@@ -2048,11 +2125,28 @@ export default function Homepage() {
                     className={`px-5 h-full flex flex-col ${selectedCard ? "justify-between" : "justify-start"} items-center text-center`}
                   >
                     <div className="flex flex-col justify-center items-center text-center">
-                      <h1 className="text-[#543A14] text-[16px] font-bold mb-3 text-center">
-                        {selectedCard?.name ??
-                          data?.header[i18n.language as keyof MLString] ??
-                          data?.header.th}
-                      </h1>
+                      <div className="mb-3 flex justify-center items-center gap-2">
+                        <h1 className="text-[#543A14] text-[16px] font-bold text-center">
+                          {popupHeader}
+                        </h1>
+                        {speechSupported && popupSpeechText && (
+                          <button
+                            onClick={toggleSpeech}
+                            aria-label={
+                              speaking
+                                ? t("homepage.stopReading")
+                                : t("homepage.readAloud")
+                            }
+                            className={`shrink-0 w-8 h-8 rounded-full flex justify-center items-center text-white transition-all active:scale-110 ${speaking ? "bg-[#BF4B17] animate-pulse" : "bg-[#FF8B2B]"}`}
+                          >
+                            {speaking ? (
+                              <HiStop size={16} />
+                            ) : (
+                              <HiSpeakerWave size={18} />
+                            )}
+                          </button>
+                        )}
+                      </div>
                       <img
                         className="min-w-full w-full min-h-42 aspect-video object-cover rounded-xl"
                         src={selectedCard?.img ?? data?.img}
@@ -2065,16 +2159,11 @@ export default function Homepage() {
                           </p>
                         )}
 
-                        {selectedCard &&
-                          (selectedCard.openTime || selectedCard.closeTime) && (
-                            <p className="text-[16px] text-[#543A14]">
-                              {i18n.language === "th"
-                                ? `เปิด ${selectedCard.openTime ?? "?"} – ${selectedCard.closeTime ?? "?"} น.`
-                                : i18n.language === "en"
-                                  ? `Open ${formatTime12h(selectedCard.openTime)} – ${formatTime12h(selectedCard.closeTime)}`
-                                  : `开放 ${formatTime12hCn(selectedCard.openTime)} – ${formatTime12hCn(selectedCard.closeTime)}`}
-                            </p>
-                          )}
+                        {popupOpenTime && (
+                          <p className="text-[16px] text-[#543A14]">
+                            {popupOpenTime}
+                          </p>
+                        )}
                         {selectedCard?.phone && (
                           <p className="text-[16px] text-[#543A14]">
                             {t("contact.phone")} {selectedCard.phone}
@@ -2103,8 +2192,7 @@ export default function Homepage() {
                           ref={descRef}
                           className={`${showFullDesc ? "" : lang === "en" ? "line-clamp-2" : "line-clamp-3"}`}
                         >
-                          {data?.desc[i18n.language as keyof MLString] ??
-                            data?.desc.th}
+                          {popupDesc}
                         </p>
                         {(isClamped || showFullDesc) && (
                           <button

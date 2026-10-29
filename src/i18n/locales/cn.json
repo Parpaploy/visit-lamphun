@@ -37,6 +37,8 @@
     "recommendStore": "附近推荐商店",
     "recommendActivity": "附近推荐活动",
     "recommendToilet": "附近洗手间",
+    "readAloud": "朗读",
+    "stopReading": "停止朗读",
     "tramTime": "电车将于 {{time}} 发车"
   },
 

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build --outDir ./dist/public",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "audio:stations": "node --env-file=.env scripts/generate-station-audio.ts"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
