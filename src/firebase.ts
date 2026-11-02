@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -25,7 +25,8 @@ const sensorFirebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const sensorApp = initializeApp(sensorFirebaseConfig, "sensor");
 
-export const db = getFirestore(app);
+// Optional form fields are sent as `undefined`; skip them instead of throwing.
+export const db = initializeFirestore(app, { ignoreUndefinedProperties: true });
 export const storage = getStorage(app);
 export const auth = getAuth(app);
 

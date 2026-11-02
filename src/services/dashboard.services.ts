@@ -5,8 +5,16 @@ import {
   updateDoc,
   doc,
   serverTimestamp,
+  deleteField,
 } from "firebase/firestore";
 import { db } from "../firebase";
+
+// On update, an emptied optional field (undefined) should be removed from the doc.
+const withDeletedOptionals = <T extends object>(data: T, keys: string[]) => {
+  const out = { ...data } as Record<string, unknown>;
+  for (const k of keys) if (out[k] === undefined) out[k] = deleteField();
+  return out;
+};
 import type {
   PlaceData,
   StationPlaceName,
@@ -96,7 +104,7 @@ export const updateActivity = async (
 ): Promise<void> => {
   await updateDoc(
     doc(db, "stations", stationId, "activities", activityId),
-    data,
+    withDeletedOptionals(data, ["openTime", "closeTime", "phone"]),
   );
 };
 
@@ -134,5 +142,8 @@ export const updateToilet = async (
     phone?: string;
   },
 ): Promise<void> => {
-  await updateDoc(doc(db, "stations", stationId, "toilets", toiletId), data);
+  await updateDoc(
+    doc(db, "stations", stationId, "toilets", toiletId),
+    withDeletedOptionals(data, ["location", "phone"]),
+  );
 };
