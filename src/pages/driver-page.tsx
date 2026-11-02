@@ -19,7 +19,8 @@ import PassengerCounter from "../components/driver-page/passenger-counter";
 import { IoIosArrowBack } from "react-icons/io";
 import { fetchLatestSensorReading } from "../services/sensor.services";
 
-const PHONE_GPS_ACCURACY_LIMIT = 30;
+// Phones inside a moving tram rarely report better than ~30 m.
+const PHONE_GPS_ACCURACY_LIMIT = 50;
 
 export default function DriverPage() {
   const tramId = localStorage.getItem("driver_tram_id") ?? "";

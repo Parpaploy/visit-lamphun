@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { FaMinus, FaPlus } from "react-icons/fa6";
+import { FaArrowRotateLeft, FaMinus, FaPlus } from "react-icons/fa6";
 import { useTramPosition } from "../../hooks/useTramPosition";
-import { updateTramPassengerCount } from "../../services/tram.services";
+import {
+  resetTramPassengerCount,
+  updateTramPassengerCount,
+} from "../../services/tram.services";
 import { subscribeTransportStats } from "../../services/stat.services";
 
 interface Props {
@@ -29,6 +32,18 @@ export default function PassengerCounter({ tramId }: Props) {
     } catch (err) {
       console.error("Passenger count update failed:", err);
       setError("บันทึกจำนวนผู้โดยสารไม่ได้ กรุณาตรวจสอบสัญญาณอินเทอร์เน็ต");
+    }
+  };
+
+  const resetCount = async () => {
+    if (!tramId || count === 0) return;
+    if (!confirm("เริ่มนับจำนวนผู้ซื้อตั๋วใหม่ตั้งแต่ 0 ใช่ไหม?")) return;
+    try {
+      await resetTramPassengerCount(tramId);
+      setError(null);
+    } catch (err) {
+      console.error("Passenger count reset failed:", err);
+      setError("เริ่มนับใหม่ไม่ได้ กรุณาตรวจสอบสัญญาณอินเทอร์เน็ต");
     }
   };
 
@@ -61,6 +76,20 @@ export default function PassengerCounter({ tramId }: Props) {
           </button>
         </div>
         <p className="text-[12px] text-[#765932] text-center mt-1">คน</p>
+        <div className="flex justify-center mt-3">
+          <button
+            onClick={resetCount}
+            disabled={count === 0}
+            className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[13px] font-medium transition-all ${
+              count === 0
+                ? "bg-[#F3F3F3] text-[#B9B9B9]"
+                : "bg-[#FFF1E5] text-[#BF4B17] active:scale-95 active:bg-[#FFE2C8]"
+            }`}
+          >
+            <FaArrowRotateLeft size={12} />
+            เริ่มนับใหม่
+          </button>
+        </div>
         {error && (
           <p className="text-[14px] text-[#FF0000] text-center bg-red-50 rounded-xl px-3 py-2 mt-2">
             {error}

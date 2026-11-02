@@ -4,19 +4,20 @@ import { STATION_COORDS } from "../utils/heatmap";
 export const AUTO_CHECKIN_RADIUS = 50;
 export const NEAREST_STATION_DISPLAY_RADIUS = 1000;
 
-// The two northern stops are only about 100 m apart, so their mobile GPS
-// geofences stay small enough to keep one stop from triggering the other.
+// Phone GPS geofence per stop. Only the nearest stop can match, so each radius
+// just needs to stay under half the gap to its closest neighbour:
+// hariphunchai↔community 258 m, ku-chang↔muan-chai 100 m, others 320 m+.
 const PHONE_GPS_RADIUS_METERS: Record<string, number> = {
-  hariphunchai: 80,
-  community: 70,
-  chamthewi: 80,
-  "wat-chamthewi": 70,
-  mahawan: 70,
-  "khong-ruesi": 70,
-  "san-pa-yang": 70,
-  "ku-chang": 35,
-  "muan-chai": 35,
-  "mai-thai": 70,
+  hariphunchai: 120,
+  community: 120,
+  chamthewi: 150,
+  "wat-chamthewi": 150,
+  mahawan: 150,
+  "khong-ruesi": 150,
+  "san-pa-yang": 150,
+  "ku-chang": 50,
+  "muan-chai": 50,
+  "mai-thai": 150,
 };
 
 export const STATIONS: Station[] = Object.entries(STATION_COORDS)
@@ -25,6 +26,6 @@ export const STATIONS: Station[] = Object.entries(STATION_COORDS)
     name: s.name.th,
     lat: s.lat,
     lng: s.lng,
-    phoneGpsRadiusMeters: PHONE_GPS_RADIUS_METERS[id] ?? 70,
+    phoneGpsRadiusMeters: PHONE_GPS_RADIUS_METERS[id] ?? 100,
   }))
   .filter((s) => s.lat && s.lng);

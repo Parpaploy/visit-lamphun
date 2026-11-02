@@ -101,6 +101,13 @@ export const updateTramPassengerCount = async (
   });
 };
 
+export const resetTramPassengerCount = async (tramId: string) => {
+  await updateDoc(doc(db, "trams", tramId), {
+    passenger_count: 0,
+    passenger_count_updated_at: serverTimestamp(),
+  });
+};
+
 export const updateTramPosition = async (
   tramId: string,
   nearestStation: { id: string; name: string; lat: number; lng: number },
