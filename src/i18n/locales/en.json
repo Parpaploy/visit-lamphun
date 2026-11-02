@@ -39,7 +39,7 @@
     "recommendToilet": "Nearby Restrooms",
     "readAloud": "Read aloud",
     "stopReading": "Stop reading",
-    "tramTime": "The tram departs at {{time}}."
+    "tramTime": "The tram runs from {{time}}."
   },
 
   "komepage": {

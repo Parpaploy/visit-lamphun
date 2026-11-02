@@ -1728,13 +1728,14 @@ export default function Homepage() {
 
   const nextTime = getNextTramTime();
 
-  let formattedTime = nextTime;
-
-  if (i18n.language === "en") {
-    formattedTime = formatTime12h(nextTime);
-  } else if (i18n.language === "zh") {
-    formattedTime = formatTime12hCn(nextTime);
-  }
+  const formatTramTime = (time: string) => {
+    if (i18n.language === "en") return formatTime12h(time);
+    if (i18n.language === "cn") return formatTime12hCn(time);
+    // Thai: 9.30, 13.30
+    const [h, m] = time.split(":");
+    return `${Number(h)}.${m}`;
+  };
+  const formattedTime = `${formatTramTime(nextTime.start)}-${formatTramTime(nextTime.end)}`;
 
   const { data } = useStationPopup(activeStationId);
   const {
@@ -1914,12 +1915,17 @@ export default function Homepage() {
   }, [tramStationNumber, t, setOverrideTitle]);
 
   useEffect(() => {
+    // Tram service is closed every Monday.
+    const isMonday = new Date().getDay() === 1;
+    if (isMonday) setIsInactivePopup(true);
+
     fetchAllTrams().then((data) => {
       setTrams(data);
 
       if (data.length > 0) {
         setSelected(data[0].id);
 
+        if (isMonday) return;
         if (data[0].status === "active") {
           setIsInactivePopup(false);
         } else {
@@ -2027,7 +2033,9 @@ export default function Homepage() {
                   {t("homepage.tramUsers", { count: tramUsers })}
                 </p>
                 <p className="text-[#543A14]">
-                  {t("homepage.tramTime", { time: formattedTime })}
+                  {new Date().getDay() === 1
+                    ? t("inactivePopup.title")
+                    : t("homepage.tramTime", { time: formattedTime })}
                 </p>
               </div>
 

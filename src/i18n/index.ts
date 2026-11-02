@@ -14,8 +14,13 @@ i18n
       en: { translation: en },
       cn: { translation: cn },
     },
-    lng: "th",
-    fallbackLng: "en",
+    // Remember the chosen language across reloads; first visit defaults to Thai.
+    supportedLngs: ["th", "en", "cn"],
+    fallbackLng: "th",
+    detection: {
+      order: ["localStorage"],
+      caches: ["localStorage"],
+    },
     interpolation: {
       escapeValue: false,
     },

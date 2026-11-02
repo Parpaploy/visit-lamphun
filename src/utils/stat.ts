@@ -16,33 +16,17 @@ export function getCurrentRound(): "morning" | "afternoon" | null {
   return null;
 }
 
-export function getNextTramTime() {
+// Service window shown to riders: the current round, or the next one if between rounds.
+export function getNextTramTime(): { start: string; end: string } {
   const now = new Date();
   const totalMinutes = now.getHours() * 60 + now.getMinutes();
 
-  const MORNING_START = 9 * 60 + 30; // 09:30
-  const MORNING_END = 12 * 60; // 12:00
+  const MORNING = { start: "09:30", end: "12:00" };
+  const AFTERNOON = { start: "13:30", end: "16:30" };
 
-  const AFTERNOON_START = 13 * 60 + 30; // 13:30
-  const AFTERNOON_END = 16 * 60 + 30; // 16:30
-
-  if (totalMinutes < MORNING_START) {
-    return "09:30";
-  }
-
-  if (totalMinutes >= MORNING_START && totalMinutes < MORNING_END) {
-    return "09:30";
-  }
-
-  if (totalMinutes >= MORNING_END && totalMinutes < AFTERNOON_START) {
-    return "13:30";
-  }
-
-  if (totalMinutes >= AFTERNOON_START && totalMinutes < AFTERNOON_END) {
-    return "13:30";
-  }
-
-  return "09:30";
+  // Morning round ends 12:00; afterwards show the afternoon round until 16:30.
+  if (totalMinutes >= 12 * 60 && totalMinutes < 16 * 60 + 30) return AFTERNOON;
+  return MORNING;
 }
 
 export function getTodayDocId(): string | null {
