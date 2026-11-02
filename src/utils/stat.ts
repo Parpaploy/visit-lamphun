@@ -9,9 +9,9 @@ export function getCurrentRound(): "morning" | "afternoon" | null {
   // 12:00 = 720
   if (totalMinutes >= 570 && totalMinutes < 720) return "morning";
 
-  // 13:00 = 780
-  // 16:00 = 960
-  if (totalMinutes >= 780 && totalMinutes < 960) return "afternoon";
+  // 13:30 = 810
+  // 16:30 = 990
+  if (totalMinutes >= 810 && totalMinutes < 990) return "afternoon";
 
   return null;
 }
@@ -23,8 +23,8 @@ export function getNextTramTime() {
   const MORNING_START = 9 * 60 + 30; // 09:30
   const MORNING_END = 12 * 60; // 12:00
 
-  const AFTERNOON_START = 13 * 60; // 13:00
-  const AFTERNOON_END = 16 * 60; // 16:00
+  const AFTERNOON_START = 13 * 60 + 30; // 13:30
+  const AFTERNOON_END = 16 * 60 + 30; // 16:30
 
   if (totalMinutes < MORNING_START) {
     return "09:30";
@@ -35,11 +35,11 @@ export function getNextTramTime() {
   }
 
   if (totalMinutes >= MORNING_END && totalMinutes < AFTERNOON_START) {
-    return "13:00";
+    return "13:30";
   }
 
   if (totalMinutes >= AFTERNOON_START && totalMinutes < AFTERNOON_END) {
-    return "13:00";
+    return "13:30";
   }
 
   return "09:30";
