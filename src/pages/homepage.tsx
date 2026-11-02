@@ -2122,7 +2122,7 @@ export default function Homepage() {
                   }`}
                 >
                   <div
-                    className={`px-5 h-full flex flex-col ${selectedCard ? "justify-between" : "justify-start"} items-center text-center`}
+                    className={`px-5 h-full flex flex-col ${selectedCard && (selectedCard.location || popupOpenTime || selectedCard.phone) ? "justify-between" : "justify-start"} items-center text-center`}
                   >
                     <div className="flex flex-col justify-center items-center text-center">
                       <div className="mb-3 flex justify-center items-center gap-2">
@@ -2152,7 +2152,7 @@ export default function Homepage() {
                         src={selectedCard?.img ?? data?.img}
                       />
 
-                      <div className="text-start w-full px-5 mt-3 flex flex-col justify-center items-start gap-y-1">
+                      <div className="text-start w-full px-5 mt-3 empty:hidden flex flex-col justify-center items-start gap-y-1">
                         {selectedCard?.location && (
                           <p className="text-[16px] text-[#543A14]">
                             {t("form.location")}:{selectedCard?.location}
