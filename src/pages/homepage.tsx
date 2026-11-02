@@ -1573,6 +1573,8 @@ import type { MLString } from "../interfaces/content.interface";
 import NewHomepageSkeletonLoader from "../components/skeleton-load/new-homepage-skeleton-loader";
 import { useStationActivities } from "../hooks/useStationActivities";
 import { useStationToilets } from "../hooks/useStationToilets";
+import { useAllStationItems } from "../hooks/useAllStationItems";
+import { STATION_COORDS } from "../utils/heatmap";
 import { formatTime12h, formatTime12hCn } from "../utils/ml";
 import { useSpeech } from "../hooks/useSpeech";
 import {
@@ -1725,6 +1727,31 @@ export default function Homepage() {
   const filteredPlaces = selectedTag
     ? places.filter((p) => p.tag === selectedTag)
     : places;
+
+  // Tabs list every station when no stop is open and the tram isn't at one
+  // (otherwise opening a tab jumps to the tram's current stop).
+  const listAll = stationExpanded === 0 && !tramStationId;
+
+  // No station open (e.g. tram not at any stop): list every station's items.
+  const showAllStations =
+    stationExpanded === 0 &&
+    (mode === "store" || mode === "activity" || mode === "toilet");
+  const { groups: allGroups, loading: allLoading } = useAllStationItems(
+    showAllStations ? mode : null,
+  );
+  const visibleGroups = allGroups
+    .map((g) => ({
+      ...g,
+      items:
+        mode === "store" && selectedTag
+          ? g.items.filter((p) => p.tag === selectedTag)
+          : g.items,
+    }))
+    .filter((g) => g.items.length > 0);
+  const stationLabel = (id: string) => {
+    const name = STATION_COORDS[id as keyof typeof STATION_COORDS]?.name;
+    return name ? (name[i18n.language as keyof typeof name] ?? name.th) : id;
+  };
 
   const nextTime = getNextTramTime();
 
@@ -2004,9 +2031,11 @@ export default function Homepage() {
         mode1="store"
         mode2="activity"
         mode3="toilet"
-        mode1Name={t("homepage.storeNearMe")}
-        mode2Name={t("homepage.activityNearMe")}
-        mode3Name={t("homepage.toiletNearMe")}
+        mode1Name={t(listAll ? "homepage.storeAll" : "homepage.storeNearMe")}
+        mode2Name={t(
+          listAll ? "homepage.activityAll" : "homepage.activityNearMe",
+        )}
+        mode3Name={t(listAll ? "homepage.toiletAll" : "homepage.toiletNearMe")}
         isTabStyle={true}
         leaving={false}
         entering={entering}
@@ -2117,6 +2146,104 @@ export default function Homepage() {
           ref={detailScrollRef}
           className="w-full overflow-y-auto flex flex-col flex-1 justify-between items-start pt-4"
         >
+          {showAllStations && (
+            <div className="w-full flex flex-col pb-6">
+              <div className="w-full px-5 flex justify-between items-center">
+                <h1 className="text-[#543A14] font-bold text-[16px]">
+                  {mode === "store"
+                    ? t("homepage.recommendStore")
+                    : mode === "activity"
+                      ? t("homepage.recommendActivity")
+                      : t("homepage.recommendToilet")}
+                </h1>
+                {mode === "store" && (
+                  <select
+                    value={selectedTag ?? ""}
+                    onChange={(e) =>
+                      setSelectedTag(
+                        e.target.value === ""
+                          ? null
+                          : (e.target.value as PlaceTag),
+                      )
+                    }
+                    className="text-[12px] px-2 py-px rounded-full border-2 border-[#543A14] bg-white text-[#543A14] outline-none"
+                  >
+                    <option value="">{t("heatmap.all")}</option>
+                    {ALL_TAGS.map((tag) => (
+                      <option key={tag} value={tag}>
+                        {t(`dashboard.placeCategory.${tag}`)}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+
+              {allLoading && (
+                <p className="px-5 pt-3 text-[12px] text-[#8B724E]">
+                  {t("homepage.loading")}
+                </p>
+              )}
+              {!allLoading && visibleGroups.length === 0 && (
+                <p className="px-5 pt-3 text-[12px] text-[#C6C6C6]">
+                  {mode === "store"
+                    ? t("homepage.noPlaces")
+                    : mode === "activity"
+                      ? t("homepage.noActivities")
+                      : t("homepage.noToilets")}
+                </p>
+              )}
+
+              {visibleGroups.map((group, i) => (
+                <section
+                  key={group.stationId}
+                  className={`w-full pt-4 ${i > 0 ? "mt-4 border-t border-[#E9DFCF]" : ""}`}
+                >
+                  <div className="px-5 flex items-center gap-2">
+                    <span className="shrink-0 w-6 h-6 rounded-full bg-[#BF4B17] text-white text-[12px] font-bold flex justify-center items-center">
+                      {group.stationNumber}
+                    </span>
+                    <h2 className="text-[#543A14] font-semibold text-[15px] truncate">
+                      {stationLabel(group.stationId)}
+                    </h2>
+                  </div>
+                  <div className="h-44 px-5 flex justify-start items-stretch gap-x-3 w-full overflow-x-auto pt-2 pb-3">
+                    {group.items.map((item) => {
+                      const name =
+                        item.name[i18n.language as keyof typeof item.name] ??
+                        item.name.th;
+                      return (
+                        <StationCard
+                          key={item.id}
+                          name={name}
+                          img={item.img}
+                          link={item.link}
+                          tag={mode === "store" ? item.tag : undefined}
+                          onSelect={() => {
+                            // Open that station with this card selected.
+                            setSelectedCard({
+                              name,
+                              img: item.img,
+                              link: item.link,
+                              openTime: item.openTime,
+                              closeTime: item.closeTime,
+                              phone: item.phone,
+                              location: item.location,
+                            });
+                            setStationExpanded(
+                              group.stationNumber as stationNumber,
+                            );
+                            detailScrollRef.current?.scrollTo({ top: 0 });
+                          }}
+                          setShowFullDesc={setShowFullDesc}
+                        />
+                      );
+                    })}
+                  </div>
+                </section>
+              ))}
+            </div>
+          )}
+
           {stationExpanded !== 0 && (
             <div
               className={`${showFullDesc ? "" : "h-full"} w-full flex flex-col gap-2`}
