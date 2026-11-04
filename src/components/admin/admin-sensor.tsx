@@ -442,27 +442,32 @@ function SensorChart({
                 {tickLabel(tk.t)}
               </text>
             ))}
+            {/* Fills first, then all lines on top so no line is tinted. */}
+            {series.map((s, si) => {
+              const pts = seriesPts(si);
+              if (pts.length < 2) return null;
+              return (
+                <path
+                  key={`area-${s.m.key}`}
+                  d={`${linePath(pts)} L${pts[pts.length - 1].x.toFixed(1)},${baseY} L${pts[0].x.toFixed(1)},${baseY} Z`}
+                  fill={s.color}
+                  fillOpacity={single ? 0.1 : 0.07}
+                />
+              );
+            })}
             {series.map((s, si) => {
               const pts = seriesPts(si);
               if (pts.length === 0) return null;
               return (
-                <g key={s.m.key}>
-                  {single && pts.length > 1 && (
-                    <path
-                      d={`${linePath(pts)} L${pts[pts.length - 1].x.toFixed(1)},${baseY} L${pts[0].x.toFixed(1)},${baseY} Z`}
-                      fill={s.color}
-                      fillOpacity={0.1}
-                    />
-                  )}
-                  <path
-                    d={linePath(pts)}
-                    fill="none"
-                    stroke={s.color}
-                    strokeWidth="1.5"
-                    strokeLinejoin="round"
-                    strokeLinecap="round"
-                  />
-                </g>
+                <path
+                  key={`line-${s.m.key}`}
+                  d={linePath(pts)}
+                  fill="none"
+                  stroke={s.color}
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                />
               );
             })}
             {hp && (
