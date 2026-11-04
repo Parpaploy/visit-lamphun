@@ -176,7 +176,8 @@
       "kome": "Lantern Production Groups",
       "travel": "Lamphun Travel",
       "contact": "Emergency Numbers",
-      "heatmap": "Users by Location"
+      "heatmap": "Users by Location",
+      "sensor": "Sensor Data"
     },
     "placeCategory": {
       "cafe": "Cafe",
@@ -230,6 +231,7 @@
   },
 
   "heatmap": {
+    "exportCsv": "Export CSV",
     "all": "All",
     "today": "Today",
     "week": "7 Days",
@@ -260,5 +262,58 @@
     "title": "The tram is not in service today",
     "desc": "We apologize for the inconvenience",
     "contactMore": "For more information, please contact"
+  },
+
+  "sensor": {
+    "multiHint": "Select several values to overlay them",
+    "heatmapSingleHint": "Heatmap shows one value at a time",
+    "ownScale": "Each line uses its own scale; hover to see actual values",
+    "lineChart": "Line chart",
+    "heatmap": "Heatmap",
+    "hourAxis": "X: hour · Y: date · color = hourly average",
+    "summary": "{{total}} records",
+    "capped": "Too much data in this range; showing the latest {{n}} records",
+    "tableCapped": "Table shows the latest {{n}} records. Download CSV for everything",
+    "noDataInRange": "No data in the selected range",
+    "samples": "{{n}} samples",
+    "hour": "Hour",
+    "title": "Sensor Data",
+    "device": "Device",
+    "lastUpdate": "Last updated",
+    "live": "Live",
+    "online": "Online",
+    "offline": "No data for over 5 minutes",
+    "noData": "No sensor data yet",
+    "loading": "Loading...",
+    "records": "Records",
+    "latest": "Latest",
+    "trend": "Trend",
+    "history": "History",
+    "time": "Time",
+    "exportCsv": "Download CSV",
+    "noGps": "No GPS fix",
+    "openMap": "Open map",
+    "min": "Min",
+    "max": "Max",
+    "avg": "Avg",
+    "showing": "Show",
+    "m": {
+      "temp": "Temperature",
+      "hum": "Humidity",
+      "pres": "Pressure",
+      "pm1": "PM1.0",
+      "pm25": "PM2.5",
+      "pm10": "PM10",
+      "voc_idx": "VOC Index",
+      "gas_r": "Gas Resistance",
+      "lux": "Light",
+      "ws_spd": "Wind Speed",
+      "wd": "Wind Direction",
+      "spd": "Speed (GPS)",
+      "alt": "Altitude",
+      "sat": "Satellites",
+      "hdg": "Heading",
+      "gps": "GPS Location"
+    }
   }
 }

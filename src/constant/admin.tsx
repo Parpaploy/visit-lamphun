@@ -96,6 +96,7 @@ export function useTabs(): { value: Tab; label: string }[] {
     { value: "kome", label: t("dashboard.tabs.kome") },
     { value: "contact", label: t("dashboard.tabs.contact") },
     { label: t("dashboard.tabs.heatmap"), value: "heatmap" },
+    { value: "sensor", label: t("dashboard.tabs.sensor") },
   ];
 }
 

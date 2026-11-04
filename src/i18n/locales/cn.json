@@ -176,7 +176,8 @@
       "kome": "灯笼制作群体",
       "travel": "旅行",
       "contact": "紧急电话号码",
-      "heatmap": "各地点用户数量"
+      "heatmap": "各地点用户数量",
+      "sensor": "传感器数据"
     },
     "placeCategory": {
       "cafe": "咖啡厅",
@@ -230,6 +231,7 @@
   },
 
   "heatmap": {
+    "exportCsv": "导出 CSV",
     "all": "全部",
     "today": "今天",
     "week": "7天",
@@ -260,5 +262,58 @@
     "title": "今天电车停止服务",
     "desc": "对此带来的不便，敬请谅解",
     "contactMore": "如需更多信息，请联系"
+  },
+
+  "sensor": {
+    "multiHint": "可多选以叠加显示图表",
+    "heatmapSingleHint": "热力图一次显示一个数值",
+    "ownScale": "每条线使用各自的刻度，悬停查看实际数值",
+    "lineChart": "折线图",
+    "heatmap": "热力图",
+    "hourAxis": "X 轴：小时 · Y 轴：日期 · 颜色 = 每小时平均值",
+    "summary": "{{total}} 条记录",
+    "capped": "该范围数据过多，仅显示最新 {{n}} 条",
+    "tableCapped": "表格显示最新 {{n}} 条，下载 CSV 查看全部",
+    "noDataInRange": "所选范围内没有数据",
+    "samples": "{{n}} 个数据",
+    "hour": "小时",
+    "title": "传感器数据",
+    "device": "设备",
+    "lastUpdate": "最后更新",
+    "live": "实时",
+    "online": "在线",
+    "offline": "超过5分钟未收到数据",
+    "noData": "暂无传感器数据",
+    "loading": "加载中...",
+    "records": "记录数",
+    "latest": "最新值",
+    "trend": "趋势",
+    "history": "历史数据",
+    "time": "时间",
+    "exportCsv": "下载 CSV",
+    "noGps": "无 GPS 信号",
+    "openMap": "打开地图",
+    "min": "最低",
+    "max": "最高",
+    "avg": "平均",
+    "showing": "显示",
+    "m": {
+      "temp": "温度",
+      "hum": "湿度",
+      "pres": "气压",
+      "pm1": "PM1.0",
+      "pm25": "PM2.5",
+      "pm10": "PM10",
+      "voc_idx": "VOC 指数",
+      "gas_r": "气体电阻",
+      "lux": "光照",
+      "ws_spd": "风速",
+      "wd": "风向",
+      "spd": "速度 (GPS)",
+      "alt": "海拔",
+      "sat": "卫星数",
+      "hdg": "航向",
+      "gps": "GPS 位置"
+    }
   }
 }

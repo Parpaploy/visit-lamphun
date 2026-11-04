@@ -10,6 +10,7 @@ import { useTabs } from "../constant/admin";
 import { useAuth } from "../hooks/useAuth";
 import AdminLoginPage from "./admin-login-page";
 import AdminStation from "../components/admin/admin-station";
+import AdminSensor from "../components/admin/admin-sensor";
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
@@ -51,6 +52,7 @@ export default function AdminDashboard() {
         {tab === "contact" && <AdminContact />}
         {/* {tab === "popup" && <AdminPopup />} */}
         {tab === "heatmap" && <AdminHeatmap />}
+        {tab === "sensor" && <AdminSensor />}
       </div>
     </div>
   );

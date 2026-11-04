@@ -45,7 +45,13 @@ export type Tab =
   // | "places"
   // | "activities"
   // | "toilets"
-  "station" | "recommend" | "kome" | "travel" | "contact" | "heatmap";
+  | "station"
+  | "recommend"
+  | "kome"
+  | "travel"
+  | "contact"
+  | "heatmap"
+  | "sensor";
 
 export interface ContactEditState extends EmergencyItem {
   saving: boolean;
