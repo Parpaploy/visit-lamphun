@@ -2044,7 +2044,7 @@ export default function Homepage() {
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className={`${i18n.language === "en" ? "max-h-[83svh]" : "max-h-[86svh]"} transition-all absolute bottom-0 z-5 mt-1 overflow-y-auto rounded-t-[25px] w-full h-full flex flex-col items-center justify-start bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_22%,#FBFCF0_62%,#E6EFD8_100%)] duration-350 ease-in-out ${
+        className={`${i18n.language === "en" ? "max-h-[83svh]" : "max-h-[86svh]"} transition-all absolute bottom-0 z-5 mt-1 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-t-[25px] w-full h-full flex flex-col items-center justify-start bg-[linear-gradient(-181deg,#FFE2A5_0%,#FBFCF0_22%,#FBFCF0_62%,#E6EFD8_100%)] duration-350 ease-in-out ${
           entering
             ? "translate-y-full"
             : mode === null

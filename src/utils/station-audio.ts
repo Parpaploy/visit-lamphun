@@ -39,7 +39,6 @@ const AUDIO_VERSION: Record<StationAudioLang, string> = {
 // can't overwrite), e.g. the model repeated or ad-libbed part of the text.
 const RETAKES: Record<string, number> = {
   "community:th": 4,
-  "muan-chai:cn": 2,
 };
 
 // The id changes whenever the text changes, so edited popups never play stale audio.

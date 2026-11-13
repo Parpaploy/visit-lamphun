@@ -6,7 +6,7 @@ export const NEAREST_STATION_DISPLAY_RADIUS = 1000;
 
 // Phone GPS geofence per stop. Only the nearest stop can match, so each radius
 // just needs to stay under half the gap to its closest neighbour:
-// hariphunchai↔community 258 m, ku-chang↔muan-chai 100 m, others 320 m+.
+// hariphunchai↔community 258 m, others 320 m+.
 const PHONE_GPS_RADIUS_METERS: Record<string, number> = {
   hariphunchai: 120,
   community: 120,
@@ -15,8 +15,7 @@ const PHONE_GPS_RADIUS_METERS: Record<string, number> = {
   mahawan: 150,
   "khong-ruesi": 150,
   "san-pa-yang": 150,
-  "ku-chang": 50,
-  "muan-chai": 50,
+  "ku-chang": 150,
   "mai-thai": 150,
 };
 

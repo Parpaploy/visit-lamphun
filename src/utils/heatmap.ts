@@ -69,15 +69,15 @@ export const STATION_COORDS = {
     lat: 18.5867288,
     lng: 99.015298,
   },
-  "muan-chai": {
-    name: {
-      th: "สวนม่วนใจ๋ (ศูนย์การเรียนรู้รถไฟ)",
-      en: "Suan Muan Jai (Railway Learning Center)",
-      cn: "欢乐公园 (铁路学习中心)",
-    },
-    lat: 18.5862119,
-    lng: 99.016078,
-  },
+  // "muan-chai": {
+  //   name: {
+  //     th: "สวนม่วนใจ๋ (ศูนย์การเรียนรู้รถไฟ)",
+  //     en: "Suan Muan Jai (Railway Learning Center)",
+  //     cn: "欢乐公园 (铁路学习中心)",
+  //   },
+  //   lat: 18.5862119,
+  //   lng: 99.016078,
+  // },
   "mai-thai": {
     name: {
       th: "ศูนย์การเรียนรู้ลำพูนไหมไทย",
