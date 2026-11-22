@@ -16,7 +16,7 @@ import CheckinPopup from "../components/driver-page/checkin-popup";
 import UndoCheckinPopup from "../components/driver-page/undo-checkin-popup";
 import FinishRoutePopup from "../components/driver-page/finish-route-popup";
 import PassengerCounter from "../components/driver-page/passenger-counter";
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
 import { fetchLatestSensorReading } from "../services/sensor.services";
 
 // Phones inside a moving tram rarely report better than ~30 m.
@@ -37,6 +37,7 @@ export default function DriverPage() {
   >(null);
   const [loadingManual, setLoadingManual] = useState(false);
   const [pendingFinish, setPendingFinish] = useState(false);
+  const [showOtherModes, setShowOtherModes] = useState(false);
 
   const [checkedStationIds, setCheckedStationIds] = useState<string[]>([]);
   const [pendingStation, setPendingStation] = useState<{
@@ -321,24 +322,38 @@ export default function DriverPage() {
               </p>
               <div className="w-full flex flex-col justify-center items-center gap-2">
                 <button
-                  onClick={enterManual}
-                  disabled={loadingManual}
-                  className="bg-[#FF8B2B] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
-                >
-                  {loadingManual ? "กำลังโหลด..." : "เช็คอินด้วยตนเอง"}
-                </button>
-                <button
-                  onClick={() => enterGpsMode("phone-gps")}
-                  className="bg-[#d96410] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
-                >
-                  เช็คอินด้วย GPS มือถือ
-                </button>
-                <button
                   onClick={() => enterGpsMode("gps")}
                   className="bg-[#BF4B17] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
                 >
                   เช็คอินด้วย GPS รถราง
                 </button>
+                <button
+                  onClick={() => setShowOtherModes((v) => !v)}
+                  className="text-[#543A14] text-[14px] flex items-center gap-1 mt-1"
+                >
+                  โหมดอื่น ๆ
+                  <IoIosArrowDown
+                    size={16}
+                    className={`transition-transform ${showOtherModes ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {showOtherModes && (
+                  <>
+                    <button
+                      onClick={enterManual}
+                      disabled={loadingManual}
+                      className="bg-[#FF8B2B] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
+                    >
+                      {loadingManual ? "กำลังโหลด..." : "เช็คอินด้วยตนเอง"}
+                    </button>
+                    <button
+                      onClick={() => enterGpsMode("phone-gps")}
+                      className="bg-[#d96410] transition-all active:scale-110 w-full text-white rounded-full py-2 shadow-[0_4px_4px_0_rgba(0,0,0,0.125)]"
+                    >
+                      เช็คอินด้วย GPS มือถือ
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
